@@ -111,6 +111,9 @@ mod dav_secret_read;
 mod dav_secret_read_tests;
 #[cfg(test)]
 mod dav_secrets_tests;
+mod dav_settings;
+#[cfg(test)]
+mod dav_settings_tests;
 #[cfg(test)]
 mod dialog_focus_tests;
 #[cfg(test)]
