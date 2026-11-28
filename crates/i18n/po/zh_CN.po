@@ -322,6 +322,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. 复制下面的消息，并发送给您所在组织的管理员。"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. 如果尚未开启，请先为你的 Google 账号开启两步验证：Google 只有在此之后才提供应用专用密码。"
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -369,6 +375,12 @@ msgstr "2 周"
 msgid "2 years"
 msgstr "2 年"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. 打开 Google 的应用专用密码页面，登录你要添加的账号，输入一个名称（例如 MailCraft），然后点击创建。"
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -398,6 +410,12 @@ msgstr "3 天"
 #, fuzzy
 msgid "3 months"
 msgstr "3 个月"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. 复制 Google 显示的 16 位密码（它只显示一次），并粘贴到此处。"
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -824,6 +842,12 @@ msgstr "一段附有该页面链接的简短说明,可粘贴到邮件或聊天�
 #, fuzzy
 msgid "A sign-in with your own identity provider is never sent to Microsoft's or Google's mail servers: change the servers above to your own."
 msgstr "使用你自己的身份提供方的登录绝不会发送到 Microsoft 或 Google 的邮件服务器：请把上面的服务器改成你自己的。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "A text signature file is at most 10,000 characters."
+msgstr "文本签名文件最多 10,000 个字符。"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -1562,7 +1586,7 @@ msgid "Allowed"
 msgstr "已允许"
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Already in your contacts"
 msgstr "已在您的通讯录中"
@@ -1628,6 +1652,12 @@ msgid "An Exchange server or IMAP?"
 msgstr "Exchange 服务器还是 IMAP？"
 
 #. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "An HTML signature file is at most 64 KB."
+msgstr "HTML 签名文件最大 64 KB。"
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "An OpenPGP secret key, protected by a passphrase"
@@ -1674,6 +1704,12 @@ msgstr "此账户可用于发送邮件的地址"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "没有域名的地址。"
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "此联系人由代理创建，或由代理为其添加了地址。在您编辑此联系人之前，来自这些地址的邮件中的图片不会自动下载。"
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3220,7 +3256,7 @@ msgid "Celebrate"
 msgstr "庆祝"
 
 #. interface
-#: crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Certificates"
 msgstr "证书"
@@ -3545,6 +3581,12 @@ msgstr "选择默认签名"
 msgid "Choose Google sign-in, or select Use an app password instead."
 msgstr "选择 Google 登录，或选择使用应用密码。"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Choose Signature File"
+msgstr "选择签名文件"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -3568,6 +3610,24 @@ msgstr "选择开始日期和结束日期，两者相隔最多一年。"
 #, fuzzy
 msgid "Choose a folder"
 msgstr "选择一个文件夹"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose a signature file"
+msgstr "选择签名文件"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
+msgstr "请选择文本、HTML、PNG、JPEG 或 GIF 签名文件。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose an absolute local path for the signature file."
+msgstr "请为签名文件选择本地绝对路径。"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -3598,6 +3658,12 @@ msgstr "选择是否将这些任务发送到 Microsoft 账户的 To Do。未经�
 #, fuzzy
 msgid "Choose who this is sent from"
 msgstr "选择发件人"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose…"
+msgstr "选择…"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -5206,6 +5272,12 @@ msgstr "下载图片"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "下载联系人邮件中的图片"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "下载所有邮件中的图片"
 
@@ -5214,6 +5286,18 @@ msgstr "下载所有邮件中的图片"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "自动下载邮件中的图片"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "下载来自联系人的邮件中的图片"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "从联系人邮件中下载"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5250,6 +5334,12 @@ msgstr "无需逐封询问即可下载邮件中的图片，垃圾邮件除外。
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "自动下载邮件中的图片"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "下载来自我的联系人的邮件中的图片"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -5289,6 +5379,12 @@ msgid "Downloading pictures…"
 msgstr "正在下载图片…"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the address book stopped unexpectedly"
+msgstr "通讯簿下载意外中止"
+
+#. interface
 #: crates/ui-egui/src/graph_fetch.rs
 #, fuzzy
 msgid "Downloading the message first…"
@@ -5299,6 +5395,12 @@ msgstr "正在先下载邮件…"
 #, fuzzy
 msgid "Downloading the messages first…"
 msgstr "正在先下载邮件…"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the organisation's address book…"
+msgstr "正在下载组织的通讯簿…"
 
 #. interface
 #: crates/ui-egui/src/reading.rs
@@ -6045,8 +6147,8 @@ msgstr "反馈意见"
 msgid "Fewer than two of these contacts are still here, so there is nothing to merge."
 msgstr "这些联系人中剩余的不足两人，无需合并。"
 
-#. command label, name, ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs
+#. command label, interface, name, ribbon location
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "File"
 msgstr "文件"
@@ -6056,6 +6158,12 @@ msgstr "文件"
 #, fuzzy
 msgid "File dialogs aren't available here"
 msgstr "文件对话框在此处不可用"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "File signature"
+msgstr "文件签名"
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -6676,6 +6784,12 @@ msgstr "发件人包含"
 #, fuzzy
 msgid "From outside your organisation."
 msgstr "来自组织外部。"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
+msgstr "来自 {account} 所在组织的通讯簿，仅在 MailCraft 运行期间保存在内存中，从不存储：“添加至联系人”会在这台计算机上保留一份副本。"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -7372,6 +7486,12 @@ msgid "Horizontal Line"
 msgstr "水平线"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "如何创建应用专用密码？"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7436,6 +7556,12 @@ msgstr "身份提供程序（颁发者）"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "如果 Google 表示应用正在测试，请联系开发者将您的电子邮件地址添加为测试用户。如果您的组织阻止 MailCraft，请联系 Google Workspace 管理员。这些页面可能不会返回此处：请取消，待授权后重试；如果允许，也可使用应用密码。"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "如果 Google 页面提示该设置不可用，则要么两步验证已关闭，要么该账号不允许使用应用专用密码（某些工作或学校账号、启用了高级保护的账号，以及两步验证仅使用安全密钥的账号）。"
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -7839,6 +7965,12 @@ msgstr "在所选内容中"
 #, fuzzy
 msgid "In this calendar:"
 msgstr "在此日历中："
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "In your contacts"
+msgstr "已在联系人中"
 
 #. interface
 #: crates/ui-egui/src/import_pst.rs
@@ -11385,6 +11517,12 @@ msgstr "尚无人提出其他时间。"
 #. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
+msgid "Nobody in the address book matches"
+msgstr "通讯簿中没有匹配的人"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Nobody in the address list matches"
 msgstr "地址列表中没有匹配的人"
 
@@ -11561,6 +11699,12 @@ msgstr "并非所有服务器都已找到：其余部分只是根据域名推测
 #, fuzzy
 msgid "Not everything could be removed. Some of it is still here. Try again."
 msgstr "无法移除全部内容，仍有一部分保留。请重试。"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
+msgstr "不用于邮件，或属于证书颁发机构：“添加至联系人”不会包含它。"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12280,6 +12424,12 @@ msgstr "打开附件"
 msgid "Open Calendar"
 msgstr "打开日历"
 
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Open Contact"
+msgstr "打开联系人"
+
 #. command label
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
@@ -12302,6 +12452,12 @@ msgstr "打开草稿"
 #: crates/ui-egui/src/lib.rs
 msgid "Open Draft Attachment"
 msgstr ""
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "打开 Google 的应用专用密码页面"
 
 #. interface
 #: crates/ui-egui/src/data_removal.rs
@@ -13036,10 +13192,22 @@ msgid "Pictures are always downloaded from ({n}):"
 msgstr "始终下载图片的来源（{n}）："
 
 #. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
+msgstr "纯文本邮件不包含图片。切换到 HTML 即可包含图片。"
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Pictures in mail"
 msgstr "邮件中的图片"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "只有在发件地址与联系人中保存的地址完全一致，且您的邮件服务器确认邮件来自该地址的域时，邮件中的图片才会直接下载。服务器无法确认地址本身。垃圾邮件始终不适用此规则。每位发件人的服务器都会得知您打开了邮件、打开时间以及所用的网络地址。由代理创建或添加了地址的联系人，需要您编辑之后才适用此规则。"
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
@@ -13064,6 +13232,12 @@ msgstr "对于不在您邮箱中的邮件，不会下载其中的网络图片；
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "您打开的每封邮件都会下载其中的网络图片。发件人的服务器会因此得知您何时打开邮件以及使用的互联网地址。"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "来自联系人的邮件中的网络图片将被下载。发件人的服务器会得知您打开邮件的时间以及所用的网络地址。"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13485,6 +13659,12 @@ msgid "Read Invitation"
 msgstr "阅读邀请"
 
 #. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Read again for each new message. If unavailable, the usual signature is used."
+msgstr "每封新邮件都会重新读取。若不可用,则使用常规签名。"
+
+#. interface
 #: crates/ui-egui/src/advanced_search.rs
 #, fuzzy
 msgid "Read status"
@@ -13713,6 +13893,12 @@ msgstr "重做 {what}"
 #, fuzzy
 msgid "Refresh"
 msgstr "刷新"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Refresh Preview"
+msgstr "刷新预览"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -16457,8 +16643,8 @@ msgstr "登录地址"
 msgid "Sign-in cancelled"
 msgstr "登录已取消"
 
-#. android, command label, ribbon
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs
+#. android, command label, interface, ribbon
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/signature_files.rs
 #, fuzzy
 msgid "Signature"
 msgstr "签名"
@@ -16469,8 +16655,20 @@ msgstr "签名"
 msgid "Signature file:"
 msgstr "签名文件："
 
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Signature files can only be configured by the owner in the desktop app."
+msgstr "签名文件只能由所有者在桌面应用中配置。"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Signature from File"
+msgstr "来自文件的签名"
+
 #. android, command label, interface, ribbon location
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Signatures"
 msgstr "签名"
@@ -17122,6 +17320,12 @@ msgstr "切换"
 #, fuzzy
 msgid "Switch to Google sign-in"
 msgstr "切换到 Google 登录"
+
+#. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Switch to HTML"
+msgstr "切换到 HTML"
 
 #. command label, interface
 #: crates/engine/src/cmd/graph_switch.rs crates/ui-egui/src/graph_switch.rs crates/ui-egui/src/lib.rs
@@ -18680,6 +18884,12 @@ msgid "The one this build came with"
 msgstr "此版本附带的设置"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The organisation's address book is empty"
+msgstr "组织的通讯簿为空"
+
+#. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
 #, fuzzy
 msgid "The organizer can't be written to from this account."
@@ -19061,6 +19271,12 @@ msgid "The server or the organisation wouldn't give its settings. Ask your admin
 msgstr "服务器或组织未提供其设置。请向管理员询问服务器地址，并在服务器设置中输入。"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The server sent no address book"
+msgstr "服务器未发送通讯簿"
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server sent the setup somewhere that isn't encrypted, which MailCraft never follows. Type the server's address in Server settings."
@@ -19286,9 +19502,45 @@ msgid "The sign-in was declined."
 msgstr "登录被拒绝。"
 
 #. interface
+#: crates/ui-egui/src/files.rs
+#, fuzzy
+msgid "The signature changed while the signature file picker was open."
+msgstr "签名文件选择器打开期间,签名已更改。"
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
 msgstr ""
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file could not be read."
+msgstr "无法读取签名文件。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file is too large."
+msgstr "签名文件过大。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must be a regular file of at most 256 KB."
+msgstr "签名文件必须是不超过 256 KB 的常规文件。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must contain UTF-8 text."
+msgstr "签名文件必须包含 UTF-8 文本。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature image could not be decoded."
+msgstr "无法解码签名图片。"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
@@ -22127,6 +22379,12 @@ msgstr "您无权访问 {address} 的日历。对方需要与您共享日历；�
 #, fuzzy
 msgid "You don't have access to {address}. If access was just given, try again in an hour."
 msgstr "您无权访问 {address}。如果刚刚授予访问权限，请在一小时后重试。"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "您允许下载来自联系人的图片，但邮件服务器未能确认此邮件来自这位联系人，因此下载前会先询问。"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -28183,6 +28441,12 @@ msgstr "{provider} 的登录页面已在您的浏览器中打开"
 #, fuzzy
 msgid "{read} of {total} MB"
 msgstr "{total} MB 中已读取 {read} MB"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "{reason} Using the account's usual signature instead."
+msgstr "{reason} 改用账户的常规签名。"
 
 #. interface
 #: crates/ui-egui/src/sync_panel.rs

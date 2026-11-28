@@ -322,6 +322,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. Copiați mesajul de mai jos și trimiteți-l administratorului organizației dvs."
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. Activați verificarea în doi pași pentru contul Google, dacă nu este încă activată: Google oferă parole pentru aplicații doar atunci."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -369,6 +375,12 @@ msgstr "2 săptămâni"
 msgid "2 years"
 msgstr "2 ani"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. Deschideți pagina Google Parole pentru aplicații, conectați-vă la contul pe care îl adăugați, introduceți un nume, de exemplu MailCraft, și apăsați Creare."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -398,6 +410,12 @@ msgstr "3 zile"
 #, fuzzy
 msgid "3 months"
 msgstr "3 luni"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. Copiați parola de 16 litere pe care Google o arată o singură dată și lipiți-o aici."
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -824,6 +842,12 @@ msgstr "O scurtă notă cu linkul către acea pagină, de lipit într-un e-mail 
 #, fuzzy
 msgid "A sign-in with your own identity provider is never sent to Microsoft's or Google's mail servers: change the servers above to your own."
 msgstr "O autentificare cu propriul furnizor de identitate nu este trimisă niciodată către serverele de e-mail Microsoft sau Google: înlocuiți serverele de mai sus cu ale dumneavoastră."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "A text signature file is at most 10,000 characters."
+msgstr "Un fișier de semnătură text are cel mult 10.000 de caractere."
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -1562,7 +1586,7 @@ msgid "Allowed"
 msgstr "Permis"
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Already in your contacts"
 msgstr "Este deja în contactele dvs."
@@ -1628,6 +1652,12 @@ msgid "An Exchange server or IMAP?"
 msgstr "Server Exchange sau IMAP?"
 
 #. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "An HTML signature file is at most 64 KB."
+msgstr "Un fișier de semnătură HTML are cel mult 64 KB."
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "An OpenPGP secret key, protected by a passphrase"
@@ -1674,6 +1704,12 @@ msgstr "O adresă de la care acest cont poate trimite"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "O adresă fără domeniu."
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "Un agent a creat acest contact sau i-a adăugat o adresă. Până când editați contactul, imaginile din mesajele de la adresele lui nu se descarcă automat."
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3226,7 +3262,7 @@ msgid "Celebrate"
 msgstr "Sărbătorește"
 
 #. interface
-#: crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Certificates"
 msgstr "Certificate"
@@ -3551,6 +3587,12 @@ msgstr "Alegere semnătură implicită"
 msgid "Choose Google sign-in, or select Use an app password instead."
 msgstr "Alegeți conectarea Google sau selectați Folosiți în schimb o parolă de aplicație."
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Choose Signature File"
+msgstr "Alege fișierul de semnătură"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -3574,6 +3616,24 @@ msgstr "Alegeți o primă și o ultimă zi, la cel mult un an distanță."
 #, fuzzy
 msgid "Choose a folder"
 msgstr "Alegeți un dosar"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose a signature file"
+msgstr "Alege un fișier de semnătură"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
+msgstr "Alegeți un fișier de semnătură text, HTML, PNG, JPEG sau GIF."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose an absolute local path for the signature file."
+msgstr "Alegeți o cale locală absolută pentru fișierul de semnătură."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -3604,6 +3664,12 @@ msgstr "Alegeți dacă aceste sarcini se trimit în To Do-ul unui cont Microsoft
 #, fuzzy
 msgid "Choose who this is sent from"
 msgstr "Alegeți de la cine se trimite"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose…"
+msgstr "Alege…"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -5213,6 +5279,12 @@ msgstr "Descărcare imagini"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "Descarcă imaginile de la contacte"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "Descărcare imagini în toate e-mailurile"
 
@@ -5221,6 +5293,18 @@ msgstr "Descărcare imagini în toate e-mailurile"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "Descărcare automată imagini din e-mail"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "Descarcă imaginile din mesajele de la contacte"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "Descarcă de la contacte"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5257,6 +5341,12 @@ msgstr "Descărcați imaginile din orice mesaj fără să întrebe, mai puțin �
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "Descărcare automată imagini din e-mail"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "Descarcă imaginile din mesajele de la persoanele din contactele mele"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -5298,6 +5388,12 @@ msgid "Downloading pictures…"
 msgstr "Se descarcă imaginile…"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the address book stopped unexpectedly"
+msgstr "Descărcarea agendei s-a oprit neașteptat"
+
+#. interface
 #: crates/ui-egui/src/graph_fetch.rs
 #, fuzzy
 msgid "Downloading the message first…"
@@ -5308,6 +5404,12 @@ msgstr "Se descarcă întâi mesajul…"
 #, fuzzy
 msgid "Downloading the messages first…"
 msgstr "Se descarcă întâi mesajele…"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the organisation's address book…"
+msgstr "Se descarcă agenda organizației…"
 
 #. interface
 #: crates/ui-egui/src/reading.rs
@@ -6068,8 +6170,8 @@ msgstr "Feedback"
 msgid "Fewer than two of these contacts are still here, so there is nothing to merge."
 msgstr "Mai puțin de două dintre aceste contacte mai sunt aici, deci nu e nimic de îmbinat."
 
-#. command label, name, ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs
+#. command label, interface, name, ribbon location
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "File"
 msgstr "Fișier"
@@ -6079,6 +6181,12 @@ msgstr "Fișier"
 #, fuzzy
 msgid "File dialogs aren't available here"
 msgstr "Ferestrele de fișiere nu sunt disponibile aici"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "File signature"
+msgstr "Semnătură din fișier"
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -6703,6 +6811,12 @@ msgstr "De la conține"
 #, fuzzy
 msgid "From outside your organisation."
 msgstr "Din afara organizației dvs."
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
+msgstr "Din agenda organizației lui {account}, păstrată în memorie cât timp rulează MailCraft și niciodată salvată: Adăugare la Contacte păstrează o copie pe acest computer."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -7403,6 +7517,12 @@ msgid "Horizontal Line"
 msgstr "Linie orizontală"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "Cum creez o parolă pentru aplicații?"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7467,6 +7587,12 @@ msgstr "Furnizor de identitate (emitent)"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "Dacă Google spune că aplicația este în testare, cereți dezvoltatorului să vă adauge adresa ca utilizator de test. Dacă organizația dvs. blochează MailCraft, întrebați administratorul Workspace. Paginile acelea s-ar putea să nu revină aici: anulați, apoi reîncercați după ce primiți acces sau folosiți o parolă de aplicație, dacă e permisă."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "Dacă pagina Google spune că setarea nu este disponibilă, fie verificarea în doi pași este dezactivată, fie contul nu permite parole pentru aplicații (unele conturi de serviciu sau de școală, conturile cu Protecție avansată și conturile a căror verificare în doi pași folosește doar chei de securitate)."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -7872,6 +7998,12 @@ msgstr "În selecție"
 #, fuzzy
 msgid "In this calendar:"
 msgstr "În acest calendar:"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "In your contacts"
+msgstr "În contactele dvs."
 
 #. interface
 #: crates/ui-egui/src/import_pst.rs
@@ -11428,6 +11560,12 @@ msgstr "Nimeni nu a propus altă oră."
 #. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
+msgid "Nobody in the address book matches"
+msgstr "Nimeni din agendă nu corespunde"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Nobody in the address list matches"
 msgstr "Nimeni din lista de adrese nu corespunde"
 
@@ -11604,6 +11742,12 @@ msgstr "Nu au fost găsite toate serverele: restul este doar o presupunere făcu
 #, fuzzy
 msgid "Not everything could be removed. Some of it is still here. Try again."
 msgstr "Nu s-a putut elimina totul. O parte este încă aici. Încercați din nou."
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
+msgstr "Nu este pentru e-mail sau este al unei autorități: Adăugare la Contacte îl omite."
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12323,6 +12467,12 @@ msgstr "Deschidere atașament"
 msgid "Open Calendar"
 msgstr "Deschidere calendar"
 
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Open Contact"
+msgstr "Deschidere contact"
+
 #. command label
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
@@ -12345,6 +12495,12 @@ msgstr "Deschidere ciornă"
 #: crates/ui-egui/src/lib.rs
 msgid "Open Draft Attachment"
 msgstr ""
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "Deschide pagina Google Parole pentru aplicații"
 
 #. interface
 #: crates/ui-egui/src/data_removal.rs
@@ -13079,10 +13235,22 @@ msgid "Pictures are always downloaded from ({n}):"
 msgstr "Imaginile se descarcă mereu de la ({n}):"
 
 #. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
+msgstr "Imaginile nu sunt incluse în mesajele text simplu. Comutați la HTML pentru a le include."
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Pictures in mail"
 msgstr "Imagini în e-mail"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "Imaginile din mesajele de la o adresă din contacte sunt descărcate fără confirmare doar dacă adresa coincide exact și serverul de e-mail confirmă domeniul expeditorului. Serverul nu poate confirma adresa propriu-zisă. Regula nu se aplică niciodată mesajelor nedorite. Serverul fiecărui astfel de expeditor află că ați deschis mesajul, când și de la ce adresă de internet. Un contact creat de un agent sau căruia agentul i-a adăugat o adresă este luat în considerare doar după ce îl editați."
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
@@ -13107,6 +13275,12 @@ msgstr "Imaginile de pe web nu se descarcă pentru un mesaj care nu este în cut
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "Imaginile de pe web vor fi descărcate în fiecare mesaj pe care îl deschideți. Serverul fiecărui expeditor află astfel când ați deschis mesajul și de la ce adresă de internet."
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "Imaginile de pe internet vor fi descărcate în mesajele de la persoanele din contacte. Serverele lor vor afla când ați deschis mesajul și de la ce adresă de internet."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13530,6 +13704,12 @@ msgid "Read Invitation"
 msgstr "Citire invitație"
 
 #. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Read again for each new message. If unavailable, the usual signature is used."
+msgstr "Se citește din nou pentru fiecare mesaj nou. Dacă nu este disponibil, se folosește semnătura obișnuită."
+
+#. interface
 #: crates/ui-egui/src/advanced_search.rs
 #, fuzzy
 msgid "Read status"
@@ -13758,6 +13938,12 @@ msgstr "Refacere {what}"
 #, fuzzy
 msgid "Refresh"
 msgstr "Reîmprospătare"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Refresh Preview"
+msgstr "Reîmprospătează previzualizarea"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -16514,8 +16700,8 @@ msgstr "Adresă de conectare"
 msgid "Sign-in cancelled"
 msgstr "Conectare anulată"
 
-#. android, command label, ribbon
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs
+#. android, command label, interface, ribbon
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/signature_files.rs
 #, fuzzy
 msgid "Signature"
 msgstr "Semnătură"
@@ -16526,8 +16712,20 @@ msgstr "Semnătură"
 msgid "Signature file:"
 msgstr "Fișier semnătură:"
 
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Signature files can only be configured by the owner in the desktop app."
+msgstr "Fișierele de semnătură pot fi configurate doar de proprietar în aplicația desktop."
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Signature from File"
+msgstr "Semnătură din fișier"
+
 #. android, command label, interface, ribbon location
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Signatures"
 msgstr "Semnături"
@@ -17179,6 +17377,12 @@ msgstr "Schimbare"
 #, fuzzy
 msgid "Switch to Google sign-in"
 msgstr "Trecere la conectarea Google"
+
+#. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Switch to HTML"
+msgstr "Comută la HTML"
 
 #. command label, interface
 #: crates/engine/src/cmd/graph_switch.rs crates/ui-egui/src/graph_switch.rs crates/ui-egui/src/lib.rs
@@ -18743,6 +18947,12 @@ msgid "The one this build came with"
 msgstr "Cel cu care a venit această versiune"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The organisation's address book is empty"
+msgstr "Agenda organizației este goală"
+
+#. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
 #, fuzzy
 msgid "The organizer can't be written to from this account."
@@ -19130,6 +19340,12 @@ msgid "The server or the organisation wouldn't give its settings. Ask your admin
 msgstr "Serverul sau organizația nu a vrut să-și dea setările. Cereți administratorului adresa serverului și scrieți-o în Setări server."
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The server sent no address book"
+msgstr "Serverul nu a trimis nicio agendă"
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server sent the setup somewhere that isn't encrypted, which MailCraft never follows. Type the server's address in Server settings."
@@ -19361,9 +19577,45 @@ msgid "The sign-in was declined."
 msgstr "Autentificarea a fost refuzată."
 
 #. interface
+#: crates/ui-egui/src/files.rs
+#, fuzzy
+msgid "The signature changed while the signature file picker was open."
+msgstr "Semnătura s-a schimbat cât timp selectorul fișierului de semnătură era deschis."
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
 msgstr ""
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file could not be read."
+msgstr "Fișierul de semnătură nu a putut fi citit."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file is too large."
+msgstr "Fișierul de semnătură este prea mare."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must be a regular file of at most 256 KB."
+msgstr "Fișierul de semnătură trebuie să fie un fișier obișnuit de cel mult 256 KB."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must contain UTF-8 text."
+msgstr "Fișierul de semnătură trebuie să conțină text UTF-8."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature image could not be decoded."
+msgstr "Imaginea semnăturii nu a putut fi decodată."
 
 #. interface
 #: crates/ui-egui/src/compose.rs
@@ -22228,6 +22480,12 @@ msgstr "Nu aveți acces la calendarul lui {address}. Persoana trebuie să vi-l p
 #, fuzzy
 msgid "You don't have access to {address}. If access was just given, try again in an hour."
 msgstr "Nu aveți acces la {address}. Dacă accesul tocmai a fost dat, încercați din nou peste o oră."
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "Descărcați imaginile de la contacte, dar serverul de e-mail nu a confirmat că acest mesaj vine de la acest contact. De aceea se cere mai întâi confirmarea."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -28549,6 +28807,12 @@ msgstr "Pagina de conectare {provider} este deschisă în browser"
 #, fuzzy
 msgid "{read} of {total} MB"
 msgstr "{read} din {total} MB"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "{reason} Using the account's usual signature instead."
+msgstr "{reason} Se folosește în schimb semnătura obișnuită a contului."
 
 #. interface
 #: crates/ui-egui/src/sync_panel.rs
