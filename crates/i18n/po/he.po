@@ -819,6 +819,12 @@ msgid "A short note with the link to that page, to paste into mail or chat. Mail
 msgstr "הודעה קצרה עם הקישור לדף זה, להדבקה בדוא\"ל או בצ'אט. MailCraft אינו שולח דבר בעצמו."
 
 #. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "A text signature file is at most 10,000 characters."
+msgstr "קובץ חתימה טקסטואלי מוגבל לעד 10,000 תווים."
+
+#. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
 msgid "A web address, an email address, a phone number (tel:) or another address such as ms-settings:network-vpn. With nothing selected, the address is put in as it is."
@@ -1553,7 +1559,7 @@ msgid "Allowed"
 msgstr "מורשה"
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Already in your contacts"
 msgstr "כבר נמצא באנשי הקשר שלך"
@@ -1617,6 +1623,12 @@ msgstr "סוכן מבקש אישור"
 #, fuzzy
 msgid "An Exchange server or IMAP?"
 msgstr "שרת Exchange או IMAP?"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "An HTML signature file is at most 64 KB."
+msgstr "קובץ חתימה מסוג HTML מוגבל לעד 64 KB."
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -3203,7 +3215,7 @@ msgid "Celebrate"
 msgstr "חגיגה"
 
 #. interface
-#: crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Certificates"
 msgstr "אישורים דיגיטליים"
@@ -3528,6 +3540,12 @@ msgstr "בחירת חתימת ברירת מחדל"
 msgid "Choose Google sign-in, or select Use an app password instead."
 msgstr "יש לבחור בכניסה באמצעות Google, או לבחור במקום זאת בשימוש בסיסמת אפליקציה."
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Choose Signature File"
+msgstr "בחירת קובץ חתימה"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -3551,6 +3569,24 @@ msgstr "יש לבחור יום ראשון ויום אחרון, במרחק של �
 #, fuzzy
 msgid "Choose a folder"
 msgstr "בחירת תיקייה"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose a signature file"
+msgstr "בחירת קובץ חתימה"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
+msgstr "יש לבחור קובץ חתימה מסוג טקסט, HTML, PNG, JPEG או GIF."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose an absolute local path for the signature file."
+msgstr "יש לבחור נתיב מקומי מוחלט עבור קובץ החתימה."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -3581,6 +3617,12 @@ msgstr "יש לבחור אם משימות אלה יישלחו אל Microsoft To 
 #, fuzzy
 msgid "Choose who this is sent from"
 msgstr "יש לבחור את השולח"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose…"
+msgstr "בחירה…"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -5243,7 +5285,7 @@ msgstr "הקובץ {name} הורד"
 #, fuzzy
 msgid "Downloaded {n} attachment"
 msgid_plural "Downloaded {n} attachments"
-msgstr[0] "הורד {n} קובץ מצורף"
+msgstr[0] "{n} קובץ מצורף הורד"
 msgstr[1] "הורדו {n} קבצים מצורפים"
 
 #. interface
@@ -5251,6 +5293,12 @@ msgstr[1] "הורדו {n} קבצים מצורפים"
 #, fuzzy
 msgid "Downloading pictures…"
 msgstr "מוריד תמונות…"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the address book stopped unexpectedly"
+msgstr "הורדת פנקס הכתובות נעצרה באופן בלתי צפוי"
 
 #. interface
 #: crates/ui-egui/src/graph_fetch.rs
@@ -5263,6 +5311,12 @@ msgstr "מוריד תחילה את ההודעה…"
 #, fuzzy
 msgid "Downloading the messages first…"
 msgstr "מוריד תחילה את ההודעות…"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the organisation's address book…"
+msgstr "הורדת פנקס הכתובות של הארגון…"
 
 #. interface
 #: crates/ui-egui/src/reading.rs
@@ -6010,8 +6064,8 @@ msgstr "משוב"
 msgid "Fewer than two of these contacts are still here, so there is nothing to merge."
 msgstr "נותרו כאן פחות משני אנשי קשר, ולכן אין מה למזג."
 
-#. command label, name, ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs
+#. command label, interface, name, ribbon location
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "File"
 msgstr "קובץ"
@@ -6021,6 +6075,12 @@ msgstr "קובץ"
 #, fuzzy
 msgid "File dialogs aren't available here"
 msgstr "תיבות דו־שיח לבחירת קבצים אינן זמינות כאן"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "File signature"
+msgstr "חתימה מקובץ"
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -6426,25 +6486,25 @@ msgstr "לעת עתה התשובות האוטומטיות שלך אינן משת
 #: crates/ui-egui/src/ews_setup.rs
 #, fuzzy
 msgid "Forget"
-msgstr "שכח"
+msgstr "הסרה"
 
 #. command label
 #: crates/engine/src/cmd/remote.rs
 #, fuzzy
 msgid "Forget Downloaded Calendar and Contacts"
-msgstr "שכח נתוני לוחות שנה ואנשי קשר שהורדו"
+msgstr "הסרת נתוני לוחות שנה ואנשי קשר שהורדו"
 
 #. command label
 #: crates/engine/src/cmd/account.rs
 #, fuzzy
 msgid "Forget Trusted Certificate"
-msgstr "שכח תעודה מהימנה"
+msgstr "הסרת תעודה מהימנה"
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesSettings.kt crates/ui-egui/src/reading/remote.rs
 #, fuzzy
 msgid "Forget the pictures that are kept; they are downloaded again when you ask."
-msgstr "שכח את התמונות שנשמרו; הן יורדו שוב לפי בקשתך."
+msgstr "הסרת התמונות שנשמרו; הן יורדו שוב לפי בקשה."
 
 #. ribbon, ribbon location
 #: crates/engine/src/cmd/format.rs crates/ui-egui/src/ribbon.rs
@@ -6615,6 +6675,12 @@ msgstr "״מאת״ מכיל"
 #, fuzzy
 msgid "From outside your organisation."
 msgstr "מחוץ לארגון שלך."
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
+msgstr "מפנקס הכתובות הארגוני של {account}, נשמר בזיכרון בלבד כל עוד MailCraft פועל ואינו נשמר בדיסק: ״הוספה לאנשי הקשר״ שומרת עותק במחשב זה."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -7739,6 +7805,12 @@ msgstr "בטקסט שנבחר"
 #, fuzzy
 msgid "In this calendar:"
 msgstr "בלוח השנה הזה:"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "In your contacts"
+msgstr "באנשי הקשר שלך"
 
 #. interface
 #: crates/ui-egui/src/import_pst.rs
@@ -10056,7 +10128,7 @@ msgstr "העברת אירוע"
 #: crates/engine/src/cmd/folder.rs
 #, fuzzy
 msgid "Move Favorite Up or Down"
-msgstr "הזז מועדף למעלה או למטה"
+msgstr "הזזת מועדף למעלה או למטה"
 
 #. command label, ribbon
 #: crates/engine/src/cmd/folder.rs crates/ui-egui/src/ribbon.rs
@@ -10068,7 +10140,7 @@ msgstr "העברת תיקייה"
 #: crates/engine/src/cmd/folder.rs
 #, fuzzy
 msgid "Move Folder Up or Down"
-msgstr "הזז תיקייה למעלה או למטה"
+msgstr "הזזת תיקייה למעלה או למטה"
 
 #. interface
 #: crates/ui-egui/src/move_items.rs
@@ -10140,13 +10212,13 @@ msgstr "העברת הפריטים שנבחרו לתיקייה:"
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "Move this rule down: it runs later"
-msgstr "הזז כלל זה למטה: הוא יופעל מאוחר יותר"
+msgstr "הזזת כלל זה למטה: הכלל יופעל מאוחר יותר"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "Move this rule up: it runs earlier"
-msgstr "הזז כלל זה למעלה: הוא יופעל מוקדם יותר"
+msgstr "הזזת כלל זה למעלה: הכלל יופעל מוקדם יותר"
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/send_warnings.rs
@@ -11251,6 +11323,12 @@ msgstr "לא הוצע מועד חלופי."
 #. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
+msgid "Nobody in the address book matches"
+msgstr "אין התאמות בפנקס הכתובות"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Nobody in the address list matches"
 msgstr "איש ברשימת הכתובות אינו תואם"
 
@@ -11427,6 +11505,12 @@ msgstr "לא כל השרתים נמצאו: יתר הפרטים הם ניחוש �
 #, fuzzy
 msgid "Not everything could be removed. Some of it is still here. Try again."
 msgstr "לא ניתן היה להסיר את הכול. חלק מהנתונים עדיין כאן. יש לנסות שוב."
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
+msgstr "אינו מיועד לדוא״ל, או שמדובר בכתובת של רשות: ״הוספה לאנשי הקשר״ משמיטה אותו."
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12032,7 +12116,7 @@ msgstr "שליחה רק במהלך טווח הזמנים הבא:"
 #: crates/ui-egui/src/reading.rs
 #, fuzzy
 msgid "Only the beginning of this message is here. The rest downloads with the next Send/Receive."
-msgstr "רק תחילת ההודעה נמצאת כאן. השאר יורד בפעולת שלח/קבל הבאה."
+msgstr "רק תחילת ההודעה נמצאת כאן. השאר יורד בפעולת השליחה/קבלה הבאה."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -12127,6 +12211,12 @@ msgstr "פתיחת קובץ מצורף"
 #, fuzzy
 msgid "Open Calendar"
 msgstr "פתיחת לוח השנה"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Open Contact"
+msgstr "פתיחת איש קשר"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -12885,6 +12975,12 @@ msgid "Pictures are always downloaded from ({n}):"
 msgstr "תמונות מורדות תמיד מאת ({n}):"
 
 #. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
+msgstr "תמונות אינן נכללות בהודעות טקסט רגיל. יש לעבור ל־HTML כדי לכלול אותן."
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Pictures in mail"
@@ -13337,6 +13433,12 @@ msgid "Read Invitation"
 msgstr "קריאת הזמנה"
 
 #. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Read again for each new message. If unavailable, the usual signature is used."
+msgstr "נקרא מחדש עבור כל הודעה חדשה. אם הקובץ אינו זמין, נעשה שימוש בחתימה הרגילה."
+
+#. interface
 #: crates/ui-egui/src/advanced_search.rs
 #, fuzzy
 msgid "Read status"
@@ -13559,6 +13661,12 @@ msgstr "ביצוע מחדש: {what}"
 #, fuzzy
 msgid "Refresh"
 msgstr "רענון"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Refresh Preview"
+msgstr "רענון תצוגה מקדימה"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -16274,8 +16382,8 @@ msgstr "יש להתחבר באמצעות שלח/קבל כדי לראות מתי 
 msgid "Sign-in cancelled"
 msgstr "הכניסה בוטלה"
 
-#. android, command label, ribbon
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs
+#. android, command label, interface, ribbon
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/signature_files.rs
 #, fuzzy
 msgid "Signature"
 msgstr "חתימה"
@@ -16286,8 +16394,20 @@ msgstr "חתימה"
 msgid "Signature file:"
 msgstr "קובץ חתימה:"
 
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Signature files can only be configured by the owner in the desktop app."
+msgstr "ניתן להגדיר קובצי חתימה רק על ידי הבעלים באפליקציית שולחן העבודה."
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Signature from File"
+msgstr "חתימה מקובץ"
+
 #. android, command label, interface, ribbon location
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Signatures"
 msgstr "חתימות"
@@ -16939,6 +17059,12 @@ msgstr "מעבר"
 #, fuzzy
 msgid "Switch to Google sign-in"
 msgstr "מעבר לכניסה באמצעות Google"
+
+#. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Switch to HTML"
+msgstr "מעבר ל־HTML"
 
 #. command label, interface
 #: crates/engine/src/cmd/graph_switch.rs crates/ui-egui/src/graph_switch.rs crates/ui-egui/src/lib.rs
@@ -17884,7 +18010,7 @@ msgstr "תעודת האבטחה חתמה על עצמה, ומחשב זה אינו
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The certificate the server at {host} shows is not the one you trusted for this account, and this computer doesn't trust it. Trust it only if your administrator has changed it."
-msgstr "תעודת האבטחה שמציג השרת בכתובת {host} אינה זו שנתת בה אמון עבור חשבון זה, וגם מחשב זה אינו נותן בה אמון. תן בה אמון רק אם מנהל המערכת שלך החליף אותה."
+msgstr "תעודת האבטחה שמציג השרת בכתובת {host} אינה זו שניתנה בה הסכמה לחשבון זה, וגם מחשב זה אינו נותן בה אמון. יש לתת בה אמון רק אם מנהל המערכת החליף אותה."
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -18477,6 +18603,12 @@ msgid "The one this build came with"
 msgstr "זה שצורף לגרסה זו"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The organisation's address book is empty"
+msgstr "פנקס הכתובות של הארגון ריק"
+
+#. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
 #, fuzzy
 msgid "The organizer can't be written to from this account."
@@ -18855,6 +18987,12 @@ msgid "The server or the organisation wouldn't give its settings. Ask your admin
 msgstr "השרת או הארגון לא מסרו את ההגדרות. יש לבקש ממנהל המערכת את כתובת השרת ולהקליד אותה בהגדרות שרת."
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The server sent no address book"
+msgstr "השרת לא שלח פנקס כתובות"
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server sent the setup somewhere that isn't encrypted, which MailCraft never follows. Type the server's address in Server settings."
@@ -19077,10 +19215,46 @@ msgid "The sign-in was declined."
 msgstr "הכניסה נדחתה."
 
 #. interface
+#: crates/ui-egui/src/files.rs
+#, fuzzy
+msgid "The signature changed while the signature file picker was open."
+msgstr "החתימה השתנתה בזמן שבוחר קובץ החתימה היה פתוח."
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
 msgstr "לא ניתן היה לשמור את החתימה: {why}. יש לסגור שוב כדי להשאיר אותה ללא שמירה."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file could not be read."
+msgstr "לא ניתן היה לקרוא את קובץ החתימה."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file is too large."
+msgstr "קובץ החתימה גדול מדי."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must be a regular file of at most 256 KB."
+msgstr "קובץ החתימה חייב להיות קובץ רגיל בגודל של עד 256 KB."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must contain UTF-8 text."
+msgstr "קובץ החתימה חייב להכיל טקסט UTF-8."
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature image could not be decoded."
+msgstr "לא ניתן היה לפענח את תמונת החתימה."
 
 #. interface
 #: crates/ui-egui/src/compose.rs
@@ -20710,7 +20884,7 @@ msgstr "נתקלת בבעיה בדף זה? כניסה לדואר בלבד"
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "Trust this certificate for this account"
-msgstr "תן אמון בתעודה זו עבור חשבון זה"
+msgstr "מתן אמון בתעודה זו עבור חשבון זה"
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -21584,7 +21758,7 @@ msgstr "המארגן הוא שקובע אם היא תתקיים באופן מק�
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Which keys your GnuPG trusts fully, last read: {when}. It is read again when MailCraft comes back to the front, and by Refresh."
-msgstr "המפתחות שבהם GnuPG שלך נותן אמון מלא, נקראו לאחרונה: {when}. הרשימה תיקרא שוב כש־MailCraft יחזור לחזית, ובלחיצה על ״רענן״."
+msgstr "המפתחות שבהם GnuPG שלך נותן אמון מלא, נקראו לאחרונה: {when}. הרשימה תיקרא שוב כש־MailCraft יחזור לחזית, ובלחיצה על ״רענון״."
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
@@ -27742,6 +27916,12 @@ msgstr "דף ההתחברות של {provider} פתוח בדפדפן שלך"
 #, fuzzy
 msgid "{read} of {total} MB"
 msgstr "{read} מתוך {total} MB"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "{reason} Using the account's usual signature instead."
+msgstr "{reason} נעשה שימוש בחתימה הרגילה של החשבון במקום זאת."
 
 #. interface
 #: crates/ui-egui/src/sync_panel.rs
