@@ -16,9 +16,25 @@ use mailcraft_model::{Address, FlagStatus, Importance};
 
 use crate::error::{Error, ResponseCode};
 use crate::folder::valid_id;
-use crate::reply::Reply;
+use crate::reply::{Message, Reply};
 use crate::soap::{Element, MESSAGES, TYPES};
 use crate::xml::Node;
+
+/// One refusal that answers a request made for several items (the target folder is gone, say): it
+/// is each item's, as it would have been had they gone one by one. A busy server is the whole
+/// request's. Nothing else is told by this: an answer with a message short of one for each, that
+/// isn't a refusal, is a truncated one.
+fn refusal_for_all(messages: &[Message<'_>], items: usize) -> Option<Result<ResponseCode, Error>> {
+    let [message] = messages else { return None };
+    if items < 2 {
+        return None;
+    }
+    match message.ok() {
+        Ok(_) => None,
+        Err(Error::Server(code)) => Some(Ok(code)),
+        Err(other) => Some(Err(other)),
+    }
+}
 
 /// What a delete does.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -341,6 +357,10 @@ impl MoveItem {
     /// request's.
     pub fn answers(&self, reply: &Reply) -> Result<Vec<Result<Saved, ResponseCode>>, Error> {
         let messages = reply.messages(if self.copy { "CopyItem" } else { "MoveItem" })?;
+        if let Some(refusal) = refusal_for_all(&messages, self.ids.len()) {
+            let code = refusal?;
+            return Ok(self.ids.iter().map(|_| Err(code.clone())).collect());
+        }
         if messages.len() != self.ids.len() {
             return Err(Error::Unexpected);
         }
@@ -391,6 +411,10 @@ impl DeleteItem {
     /// request's.
     pub fn answers(&self, reply: &Reply) -> Result<Vec<Result<(), ResponseCode>>, Error> {
         let messages = reply.messages("DeleteItem")?;
+        if let Some(refusal) = refusal_for_all(&messages, self.ids.len()) {
+            let code = refusal?;
+            return Ok(self.ids.iter().map(|_| Err(code.clone())).collect());
+        }
         if messages.len() != self.ids.len() {
             return Err(Error::Unexpected);
         }

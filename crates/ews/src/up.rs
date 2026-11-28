@@ -807,7 +807,7 @@ fn settle(error: Asked) -> Result<Option<MessageOutcome>, Asked> {
     match error {
         Asked::Code(ResponseCode::ItemNotFound) => Ok(Some(MessageOutcome::Gone)),
         Asked::Code(code) => {
-            log::warn!("ews up: the server refused a message change with {code:?}");
+            log::warn!("ews up: the server refused a message change with {code}");
             Ok(Some(MessageOutcome::Refused { status: refused_status(&code) }))
         }
         Asked::Bad | Asked::Unreadable => {

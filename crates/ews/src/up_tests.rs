@@ -240,6 +240,110 @@ fn deletes_go_up_in_one_request_and_each_is_answered() {
     assert!(state.items.is_empty());
 }
 
+/// Answers every request for `operation` with `answer`, the server having done nothing.
+struct Answering<'a> {
+    inner: &'a StandIn,
+    operation: &'static str,
+    answer: HttpResponse,
+}
+
+impl HttpExchange for Answering<'_> {
+    fn exchange(&self, request: &HttpRequest) -> impl Future<Output = Result<HttpResponse, TransportError>> {
+        let body = String::from_utf8_lossy(request.body()).into_owned();
+        let hit = body.contains(&format!("<m:{} ", self.operation)) || body.contains(&format!("<m:{}>", self.operation));
+        std::future::ready(if hit { Ok(self.answer.clone()) } else { block_on(self.inner.exchange(request)).unwrap() })
+    }
+}
+
+/// The answer to `operation` made of these response messages.
+fn answer_of(operation: &str, messages: &str) -> HttpResponse {
+    let xml = format!(
+        "<?xml version=\"1.0\"?><s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body>\
+         <m:{operation}Response xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">\
+         <m:ResponseMessages>{messages}</m:ResponseMessages></m:{operation}Response></s:Body></s:Envelope>"
+    );
+    HttpResponse::new(200, xml.into_bytes())
+}
+
+fn message_of(operation: &str, class: &str, code: &str) -> String {
+    format!(
+        "<m:{operation}ResponseMessage ResponseClass=\"{class}\"><m:ResponseCode>{code}</m:ResponseCode><m:DescriptiveLinkKey>0</m:DescriptiveLinkKey></m:{operation}ResponseMessage>"
+    )
+}
+
+/// The target folder is gone: the server answers the batch with one refusal for the whole request
+/// (the stand-in does), and each message is refused and put back, as when they went one by one.
+#[test]
+fn moves_into_a_folder_the_server_no_longer_has_are_each_refused() {
+    let standin = StandIn::new();
+    let ids: Vec<String> = ["One", "Two", "Three"].iter().map(|subject| mail(&standin, subject)).collect();
+    let archive = standin.state().add_folder("Archive");
+    standin.state().folders.retain(|folder| folder.id != archive);
+    let changes: Vec<MessageChange> =
+        ids.iter().zip(1..).map(|(id, message)| MessageChange::Move { message, id: id.clone(), to: archive.clone(), to_folder: None }).collect();
+    let result = run(&standin, &EwsMailRequest { messages: changes, ..base() });
+    for at in 0..3 {
+        assert!(matches!(done(&result, at), MessageOutcome::Refused { .. }), "{at}: {:?}", done(&result, at));
+    }
+    let state = standin.state();
+    assert_eq!(state.requests.iter().filter(|r| r.operation == "MoveItem").count(), 1);
+    assert!(ids.iter().all(|id| state.item(id).is_some()), "nothing moved");
+}
+
+/// One refusal for a whole delete request is each message's; a refusal of one item leaves the others done.
+#[test]
+fn a_refusal_for_the_whole_request_is_each_ones_and_one_for_an_item_is_its_own() {
+    let standin = StandIn::new();
+    let ids: Vec<String> = ["One", "Two", "Three"].iter().map(|subject| mail(&standin, subject)).collect();
+    let changes = |ids: &[String]| -> Vec<MessageChange> { ids.iter().map(|id| MessageChange::Delete { id: id.clone() }).collect() };
+    let whole = Answering { inner: &standin, operation: "DeleteItem", answer: fault_answer("DeleteItem", "ErrorAccessDenied") };
+    let (pieces, _) = run_with(&whole, &EwsMailRequest { messages: changes(&ids), ..base() });
+    let mut result = EwsMailResult::default();
+    pieces.into_iter().for_each(|piece| result.absorb(piece));
+    for at in 0..3 {
+        assert!(matches!(done(&result, at), MessageOutcome::Refused { .. }), "{at}: {:?}", done(&result, at));
+    }
+    // An answer for each: the first was done, the second refused with access denied.
+    let each = answer_of("DeleteItem", &(message_of("DeleteItem", "Success", "NoError") + &message_of("DeleteItem", "Error", "ErrorAccessDenied")));
+    let refusing = Answering { inner: &standin, operation: "DeleteItem", answer: each };
+    let (pieces, _) = run_with(&refusing, &EwsMailRequest { messages: changes(&ids[..2]), ..base() });
+    let mut result = EwsMailResult::default();
+    pieces.into_iter().for_each(|piece| result.absorb(piece));
+    assert!(matches!(done(&result, 0), MessageOutcome::Done { .. }), "{:?}", done(&result, 0));
+    assert!(matches!(done(&result, 1), MessageOutcome::Refused { .. }), "{:?}", done(&result, 1));
+}
+
+/// A short answer is not a refusal: one message that is not an error for several items is a
+/// truncated answer, and says so. A warning counts as done, as it does for a single item (the
+/// service only sends one for `ResolveNames`).
+#[test]
+fn a_short_answer_is_still_not_the_answer_and_a_warning_is_done() {
+    let standin = StandIn::new();
+    let two = changes::DeleteItem::many(&["a", "b"], DeleteMode::SoftDelete);
+    let short =
+        Answering { inner: &standin, operation: "DeleteItem", answer: answer_of("DeleteItem", &message_of("DeleteItem", "Success", "NoError")) };
+    let reply = block_on(client().call(&short, &two.element())).unwrap().unwrap();
+    assert!(matches!(two.answers(&reply), Err(crate::error::Error::Unexpected)));
+    let one = changes::DeleteItem::many(&["a"], DeleteMode::SoftDelete);
+    let warned =
+        Answering { inner: &standin, operation: "DeleteItem", answer: answer_of("DeleteItem", &message_of("DeleteItem", "Warning", "NoError")) };
+    let reply = block_on(client().call(&warned, &one.element())).unwrap().unwrap();
+    assert!(matches!(one.answers(&reply).unwrap().as_slice(), [Ok(())]));
+}
+
+/// No request carries more than 25 items.
+#[test]
+fn twenty_six_deletes_go_up_in_two_requests() {
+    let standin = StandIn::new();
+    let ids: Vec<String> = (0..26).map(|n| mail(&standin, &format!("Mail {n}"))).collect();
+    let changes: Vec<MessageChange> = ids.iter().map(|id| MessageChange::Delete { id: id.clone() }).collect();
+    let result = run(&standin, &EwsMailRequest { messages: changes, ..base() });
+    assert!((0..26).all(|at| matches!(done(&result, at), MessageOutcome::Done { .. })));
+    let state = standin.state();
+    assert_eq!(state.requests.iter().filter(|r| r.operation == "DeleteItem").count(), 2);
+    assert!(state.items.is_empty());
+}
+
 #[test]
 fn delete_item_to_the_deleted_items_folder_moves_it_there() {
     let standin = StandIn::new();
