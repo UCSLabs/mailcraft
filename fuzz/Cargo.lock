@@ -1496,6 +1496,7 @@ dependencies = [
  "log",
  "mailcraft-charset",
  "mailcraft-i18n",
+ "serde_json",
 ]
 
 [[package]]

@@ -927,6 +927,8 @@ const WRITTEN_PARAMS: &[&str] = &[
     "token",
     "clientId",
     "tenant",
+    "scopes",
+    "baseScopes",
     "session",
     "remember",
     "showAs",
