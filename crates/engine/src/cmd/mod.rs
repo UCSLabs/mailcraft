@@ -10,6 +10,8 @@ mod account_name_tests;
 #[cfg(test)]
 mod account_order_tests;
 #[cfg(test)]
+mod after_removal_tests;
+#[cfg(test)]
 mod agent_leaves_compose_tests;
 #[cfg(test)]
 mod agent_owners_message_tests;
@@ -353,7 +355,9 @@ fn named_or_selected(s: &Session, named: Option<Vec<Id>>) -> Result<Vec<Id>, Cmd
 }
 
 /// After messages left the list (deleted, moved): select the row that took the place of the
-/// first one, as mail programs do, so Delete, Delete, Delete walks down the list.
+/// first one, as mail programs do, so Delete, Delete, Delete walks down the list. When the owner
+/// chose to go up (`afterRemoval`, #1604), the nearest row still listed above the first one, or
+/// the first row when none is left above it, so the list is walked up.
 pub(crate) fn select_after_removal(s: &mut Session, before: &[Row], removed: &[Id]) {
     let gone: HashSet<Id> = removed.iter().copied().collect();
     if !s.sel.messages.iter().any(|id| gone.contains(id)) {
@@ -404,19 +408,16 @@ pub(crate) fn select_after_removal(s: &mut Session, before: &[Row], removed: &[I
             }
         }
     }
-    // The first row from its place down that is still listed: a conversation's row with messages
-    // left shows the newest of those now; one under a conversation that closed is gone with it
-    // (#503).
-    let next = first.map(|i| {
-        before
-            .iter()
-            .skip(i)
-            .find_map(|r| match r.under {
-                Some(_) => now.get(&(r.id, true)).copied(),
-                None => r.members.iter().filter(|m| !gone.contains(m)).find_map(|m| now.get(&(*m, false)).copied()),
-            })
-            .and_then(|j| rows.get(j))
-            .or_else(|| rows.last())
+    // The first row from its place down (or up) that is still listed: a conversation's row with
+    // messages left shows the newest of those now; one under a conversation that closed is gone
+    // with it (#503).
+    let listed = |r: &Row| match r.under {
+        Some(_) => now.get(&(r.id, true)).copied(),
+        None => r.members.iter().filter(|m| !gone.contains(m)).find_map(|m| now.get(&(*m, false)).copied()),
+    };
+    let next = first.map(|i| match s.prefs.after_removal {
+        crate::session::AfterRemoval::Below => before.iter().skip(i).find_map(listed).and_then(|j| rows.get(j)).or_else(|| rows.last()),
+        crate::session::AfterRemoval::Above => before.iter().take(i).rev().find_map(listed).and_then(|j| rows.get(j)).or_else(|| rows.first()),
     });
     if let Some(row) = next.flatten() {
         s.sel.messages = vec![row.id];

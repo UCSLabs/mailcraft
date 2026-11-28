@@ -209,6 +209,18 @@ pub enum Pane {
     Off,
 }
 
+/// Which message is selected after the one selected leaves the list (Archive, Delete, Move…;
+/// File › Options › Mail, #1604): the list's rows, whatever it is sorted by.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum AfterRemoval {
+    /// The row that takes its place, the one below.
+    #[default]
+    Below,
+    /// The nearest row above it.
+    Above,
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum CalView {
@@ -921,6 +933,8 @@ pub struct Prefs {
     pub work_end: u8,
     /// Opening a message in the reading pane marks it read.
     pub mark_read_on_open: bool,
+    /// Which message is selected after the selected one is archived, deleted or moved (#1604).
+    pub after_removal: AfterRemoval,
     /// Reminder a new appointment gets, in minutes before it starts.
     pub default_reminder: Option<u32>,
     /// Put the original message under a reply.
@@ -1016,6 +1030,7 @@ impl Default for Prefs {
             work_start: 8,
             work_end: 17,
             mark_read_on_open: true,
+            after_removal: AfterRemoval::Below,
             default_reminder: Some(15),
             quote_on_reply: true,
             auto_lists: true,

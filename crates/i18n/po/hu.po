@@ -1393,6 +1393,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "A Küldés után az üzenet ennyi ideig vár a Postázandó üzenetek között, és megjelenik a Visszavonás. Kikapcsolva a következő Küldés/Fogadással megy."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "Áthelyezés vagy törlés után"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -6975,6 +6981,18 @@ msgstr "Mappa"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "Menj a mappába"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "Ugrás a fölötte lévő üzenetre"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "Ugrás az alatta lévő üzenetre"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs

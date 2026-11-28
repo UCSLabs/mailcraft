@@ -1361,6 +1361,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "Na Verzenden wacht een bericht zo lang in het Postvak UIT en toont Ongedaan maken. Uit verstuurt het bij de volgende Verzenden/Ontvangen."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "Na het verplaatsen of verwijderen"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -6723,6 +6729,18 @@ msgstr "Naar map gaan"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "Naar de map gaan"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "Naar het bericht erboven"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "Naar het bericht eronder"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs

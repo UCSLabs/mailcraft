@@ -36,7 +36,7 @@ pub fn specs() -> Vec<CommandSpec> {
         CommandSpec::new("file.exportContacts", "Export Contacts", "File › Open & Export", export_contacts).pure().params(r#"{"ids"?: [number], "path"?: string} — .vcf"#),
         CommandSpec::new("file.info", "Info", "File › Info", info).pure(),
         CommandSpec::new("file.options", "Options", "File", options).pure().params(
-            r#"{"clock"?: "auto" (the interface language's) | "12" | "24" (independent of the language), "twelveHour"?: bool, "weekStart"?: "sun"|"mon"|…, "workDays"?: ["mon",…], "workStart"?: 0-23, "workEnd"?: 1-24, "markReadOnOpen"?: bool, "defaultReminder"?: minutes | null, "quoteOnReply"?: bool, "autoLists"?: bool, "previewLines"?: 0-3, "syncLimit"?: number, "syncMinutes"?: 0-1440 (0: only when asked)}"#,
+            r#"{"clock"?: "auto" (the interface language's) | "12" | "24" (independent of the language), "twelveHour"?: bool, "weekStart"?: "sun"|"mon"|…, "workDays"?: ["mon",…], "workStart"?: 0-23, "workEnd"?: 1-24, "markReadOnOpen"?: bool, "afterRemoval"?: "below" | "above" (which message is selected after the selected one is archived, deleted or moved), "defaultReminder"?: minutes | null, "quoteOnReply"?: bool, "autoLists"?: bool, "previewLines"?: 0-3, "syncLimit"?: number, "syncMinutes"?: 0-1440 (0: only when asked)}"#,
         ),
     ]
 }
@@ -525,6 +525,12 @@ fn options(s: &mut Session, v: &Value) -> CmdResult {
     }
     if let Some(b) = p::bool(v, "markReadOnOpen") {
         prefs.mark_read_on_open = b;
+    }
+    match v.get("afterRemoval") {
+        None => {}
+        Some(Value::String(w)) if w == "below" => prefs.after_removal = crate::session::AfterRemoval::Below,
+        Some(Value::String(w)) if w == "above" => prefs.after_removal = crate::session::AfterRemoval::Above,
+        Some(_) => return Err(bad("`afterRemoval` is \"below\" or \"above\"")),
     }
     match v.get("defaultReminder") {
         Some(Value::Null) => prefs.default_reminder = None,

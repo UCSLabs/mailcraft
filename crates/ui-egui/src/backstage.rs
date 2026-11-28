@@ -919,6 +919,26 @@ fn options(app: &mut MailApp, ui: &mut Ui, t: &Tokens) {
     if ui.checkbox(&mut mark, tl!("Mark a message as read when it is opened in the reading pane")).changed() {
         set(app, json!({"markReadOnOpen": mark}));
     }
+    row(ui, tl!("After moving or deleting"), |ui| {
+        use mailcraft_engine::AfterRemoval;
+        let label = |w: AfterRemoval| match w {
+            AfterRemoval::Below => tl!("Go to the message below"),
+            AfterRemoval::Above => tl!("Go to the message above"),
+        };
+        let current = prefs.after_removal;
+        let combo = egui::ComboBox::from_id_salt("opt_after_removal").selected_text(label(current)).show_ui(ui, |ui| {
+            for (w, code) in [(AfterRemoval::Below, "below"), (AfterRemoval::Above, "above")] {
+                if ui.selectable_label(w == current, label(w)).clicked() {
+                    set(app, json!({"afterRemoval": code}));
+                }
+            }
+        });
+        combo.response.widget_info(|| {
+            let mut info = egui::WidgetInfo::labeled(egui::Role::ComboBox, true, tl!("After moving or deleting"));
+            info.current_text_value = Some(label(current).to_string());
+            info
+        });
+    });
     let mut quote = prefs.quote_on_reply;
     if ui.checkbox(&mut quote, tl!("Include the original message when replying")).changed() {
         set(app, json!({"quoteOnReply": quote}));

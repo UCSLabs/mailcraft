@@ -1392,6 +1392,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "Po pošiljanju sporočilo toliko časa čaka v mapi Odpošlji in pokaže Razveljavi. Izklopljeno ga pošlje ob naslednjem Pošlji/prejmi."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "Po premiku ali brisanju"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -7026,6 +7032,18 @@ msgstr "Pojdi v mapo"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "Pojdi v mapo"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "Pojdi na sporočilo zgoraj"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "Pojdi na sporočilo spodaj"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs
