@@ -142,6 +142,12 @@ msgid "\"{title}\" is cancelled, so it can't be added to the selection."
 msgstr "„{title}” jest odwołane, więc nie można go dodać do zaznaczenia."
 
 #. what a command says
+#: crates/engine/src/undo.rs
+#, fuzzy
+msgid "'{subject}' isn't moved: its mail server has moved or removed it since, or the folder it was to go to is gone or won't take it."
+msgstr "„{subject}” nie zostanie przeniesiona: serwer poczty przeniósł ją lub usunął w międzyczasie albo folder docelowy już nie istnieje lub jej nie przyjmuje."
+
+#. what a command says
 #: crates/engine/src/cmd/graph_send.rs
 #, fuzzy
 msgid "'{subject}' may have been sent, even if its copy in Sent (or Drafts) is still marked as a draft. It is held in the Outbox."
@@ -27523,6 +27529,15 @@ msgstr[0] "{n} wiadomość już tu jest i została pominięta"
 msgstr[1] "{n} wiadomości już tu są i zostały pominięte"
 msgstr[2] "{n} wiadomości już tu jest i zostało pominiętych"
 
+#. what a command says
+#: crates/engine/src/undo.rs
+#, fuzzy
+msgid "{n} message isn't moved: its mail server has moved or removed it since, or the folder it was to go to is gone or won't take it."
+msgid_plural "{n} messages aren't moved: their mail server has moved or removed them since, or the folders they were to go to are gone or won't take them."
+msgstr[0] "{n} wiadomość nie zostanie przeniesiona: serwer poczty przeniósł ją lub usunął w międzyczasie albo folder docelowy już nie istnieje lub jej nie przyjmuje."
+msgstr[1] "{n} wiadomości nie zostaną przeniesione: serwer poczty przeniósł je lub usunął w międzyczasie albo foldery docelowe już nie istnieją lub ich nie przyjmują."
+msgstr[2] "{n} wiadomości nie zostanie przeniesionych: serwer poczty przeniósł je lub usunął w międzyczasie albo foldery docelowe już nie istnieją lub ich nie przyjmują."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListScreen.kt
 #, fuzzy
@@ -28392,9 +28407,9 @@ msgstr "• do {to}, temat „{subject}”"
 #, fuzzy
 msgid "…and {n} more — type to narrow it"
 msgid_plural "…and {n} more — type to narrow it"
-msgstr[0] "…and {n} more — type to narrow it"
-msgstr[1] "…and {n} more — type to narrow it"
-msgstr[2] ""
+msgstr[0] "…i {n} więcej — wpisz, aby zawęzić"
+msgstr[1] "…i {n} więcej — wpisz, aby zawęzić"
+msgstr[2] "…i {n} więcej — wpisz, aby zawęzić"
 
 #. interface
 #: crates/ui-egui/src/credits.rs
