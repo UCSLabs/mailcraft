@@ -325,6 +325,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. Másolja ki az alábbi üzenetet, és küldje el a szervezete rendszergazdájának."
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. Kapcsolja be a Google-fiókjában a kétlépéses azonosítást, ha még nincs bekapcsolva: a Google csak ekkor kínál alkalmazásjelszavakat."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -372,6 +378,12 @@ msgstr "2 hét"
 msgid "2 years"
 msgstr "2 év"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. Nyissa meg a Google Alkalmazásjelszavak oldalát, jelentkezzen be a hozzáadni kívánt fiókba, adjon meg egy nevet, például MailCraft, és nyomja meg a Létrehozás gombot."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -401,6 +413,12 @@ msgstr "3 nap"
 #, fuzzy
 msgid "3 months"
 msgstr "3 hónap"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. Másolja ki a Google által csak egyszer megjelenített 16 betűs jelszót, és illessze be ide."
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -894,8 +912,9 @@ msgstr "Kiemelőszín"
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
+#, fuzzy
 msgid "Accent colour as hex"
-msgstr ""
+msgstr "Kiemelőszín hexadecimális kódként"
 
 #. android, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarScreen.kt crates/ui-egui/src/ribbon.rs
@@ -1387,8 +1406,9 @@ msgstr "Napirend"
 
 #. command label
 #: crates/engine/src/cmd/format.rs
+#, fuzzy
 msgid "Align Text"
-msgstr ""
+msgstr "Szöveg igazítása"
 
 #. android, interface, name
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListModel.kt crates/engine/src/session.rs crates/model/src/offline.rs crates/ui-egui/src/advanced_search.rs crates/ui-egui/src/backstage.rs crates/ui-egui/src/keep_offline.rs
@@ -1677,6 +1697,12 @@ msgstr "Egy cím, amelyről ez a fiók küldhet"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "Tartomány nélküli cím."
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "Ezt a névjegyet egy ügynök hozta létre vagy adott hozzá címet. Amíg nem szerkeszti a névjegyet, a címeiről érkező levelek képei nem töltődnek le automatikusan."
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3736,8 +3762,9 @@ msgstr "Vágólap"
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
+#, fuzzy
 msgid "Clock"
-msgstr ""
+msgstr "Óra"
 
 #. android, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/IncomingLayers.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/find_replace.rs crates/ui-egui/src/folder_properties.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/import_pst.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/meeting_dialogs/share.rs crates/ui-egui/src/merge_contacts.rs crates/ui-egui/src/reminders.rs crates/ui-egui/src/report_problem.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/symbol.rs crates/ui-egui/src/sync_panel.rs crates/ui-egui/src/tasks_view.rs crates/ui-egui/src/view_source.rs
@@ -4473,8 +4500,9 @@ msgstr "Jelenlegi nézet"
 
 #. interface, name
 #: crates/ui-egui/src/backstage.rs crates/ui-egui/src/theme/accent.rs
+#, fuzzy
 msgid "Custom color"
-msgstr ""
+msgstr "Egyéni szín"
 
 #. command label, interface, name, ribbon
 #: crates/engine/src/cmd/format.rs crates/ui-egui/src/calendar_view.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/ribbon.rs
@@ -5199,6 +5227,12 @@ msgstr "Képek letöltése"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "Névjegyek képeinek letöltése"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "Képek letöltése az All Mail-ben"
 
@@ -5207,6 +5241,18 @@ msgstr "Képek letöltése az All Mail-ben"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "Képek automatikus letöltése a Mail-ben"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "Képek letöltése a névjegyekről érkező levelekben"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "Letöltés névjegyektől"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5243,6 +5289,12 @@ msgstr "Minden üzenet képeit megkérdezés nélkül letölti, a Levélszemét 
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "Képek automatikus letöltése"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "Képek letöltése a névjegyzékemben szereplő személyek leveleiben"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -7351,6 +7403,12 @@ msgid "Horizontal Line"
 msgstr "Vízszintes vonal"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "Hogyan készítek alkalmazásjelszót?"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7397,6 +7455,12 @@ msgstr "Ikonok"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "Ha a Google azt mondja, hogy az alkalmazás tesztelés alatt áll, kérje meg a fejlesztőt, hogy tesztfelhasználóként adja hozzá e-mailjét. Ha szervezete blokkolja a MailCraft-t, kérdezze meg a Workspace-kezelőjét. Ezek az oldalak nem térhetnek vissza ide: töröljék, majd újra próbálkozzanak, ha a hozzáférés engedélyezett, vagy ha engedélyezett, használja az alkalmazás jelszavát."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "Ha a Google oldala szerint a beállítás nem érhető el, vagy a kétlépéses azonosítás ki van kapcsolva, vagy a fiók nem engedélyezi az alkalmazásjelszavakat (egyes munkahelyi vagy iskolai fiókok, a Speciális védelmet használó fiókok, és azok a fiókok, amelyek kétlépéses azonosítása csak biztonsági kulcsokat használ)."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -10798,8 +10862,9 @@ msgstr "Következő események"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MessageSwipe.kt
+#, fuzzy
 msgid "Next message"
-msgstr ""
+msgstr "Következő üzenet"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12216,6 +12281,12 @@ msgid "Open Draft Attachment"
 msgstr "Piszkozat mellékletének megnyitása"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "A Google Alkalmazásjelszavak oldalának megnyitása"
+
+#. interface
 #: crates/ui-egui/src/data_removal.rs
 #, fuzzy
 msgid "Open MailCraft's data folder"
@@ -12959,6 +13030,12 @@ msgstr "A képek nem szerepelnek az egyszerű szöveges üzenetekben. Váltson H
 msgid "Pictures in mail"
 msgstr "Képek az üzenetekben"
 
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "A névjegyzékben szereplő címről kapott levelek képei kérdés nélkül letöltődnek, ha a cím pontosan egyezik, és a levelezőkiszolgáló igazolja a feladó tartományát. Magát a címet a kiszolgáló nem tudja igazolni. A levélszemétre ez soha nem vonatkozik. Az ilyen feladók kiszolgálója megtudja, hogy megnyitotta a levelet, mikor és milyen internetcímről. Az ügynök által létrehozott vagy címmel kiegészített névjegy csak az Ön módosítása után számít."
+
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
 #, fuzzy
@@ -12982,6 +13059,12 @@ msgstr "A weben található képek nem kerülnek letöltésre olyan üzenethez, 
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "Az interneten található képek minden egyes megnyitott üzenetben le lesznek töltve. Minden küldő szervere akkor tanulja meg, amikor megnyitja az üzenetet, és melyik internetcímről."
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "A névjegyzékben szereplő személyektől érkező levelekben az interneten tárolt képek letöltődnek. Kiszolgálóik megtudják, mikor és milyen internetcímről nyitotta meg a levelet."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13167,8 +13250,9 @@ msgstr "Előző oldal"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MessageSwipe.kt
+#, fuzzy
 msgid "Previous message"
-msgstr ""
+msgstr "Előző üzenet"
 
 #. interface
 #: crates/ui-egui/src/nav.rs
@@ -14718,8 +14802,9 @@ msgstr "Az üzenet mentve ide: {name}"
 
 #. interface
 #: crates/ui-egui/src/files.rs
+#, fuzzy
 msgid "Saved the message to {name}, written from what this computer keeps of it: not byte for byte as it was received"
-msgstr ""
+msgstr "Az üzenet mentve ide: {name}, abból összeállítva, amit ez a számítógép tárol róla: nem bájtról bájtra úgy, ahogyan megérkezett"
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/ui-egui/src/compose.rs
@@ -15687,15 +15772,19 @@ msgstr "Több szöveg: válassza el őket pontosvesszővel (;). Bármelyik elég
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Shade\n"
 "Rows"
 msgstr ""
+"Sorok\n"
+"árnyékolása"
 
 #. command label
 #: crates/engine/src/cmd/view/display.rs
+#, fuzzy
 msgid "Shade Alternate Rows"
-msgstr ""
+msgstr "Váltakozó sorok árnyékolása"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
@@ -19179,8 +19268,9 @@ msgstr "Az aláírás megváltozott, miközben az aláírásfájl-választó nyi
 
 #. interface
 #: crates/ui-egui/src/lib.rs
+#, fuzzy
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
-msgstr ""
+msgstr "Az aláírást nem sikerült menteni: {why}. Zárja be újra, hogy mentetlenül maradjon."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
@@ -21997,6 +22087,12 @@ msgid "You don't have access to {address}. If access was just given, try again i
 msgstr "Ehhez a címhez nincs hozzáférése: {address}. Ha most kapott hozzáférést, próbálkozzon újra egy óra múlva."
 
 #. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "A névjegyeitől származó képeket letölti, de a levelezőkiszolgáló nem igazolta, hogy ez a levél ettől a névjegytől érkezett. Ezért a letöltés előtt megerősítést kérünk."
+
+#. interface
 #: crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "You edited the signature by hand, so the details no longer change it."
@@ -23837,8 +23933,9 @@ msgstr "nincs ilyen bekezdés"
 
 #. what a command says
 #: crates/model/src/rich.rs
+#, fuzzy
 msgid "no such signature"
-msgstr ""
+msgstr "nincs ilyen aláírás"
 
 #. what a command says
 #: crates/engine/src/cmd/tasks.rs crates/engine/src/cmd/tasks/status.rs
@@ -24010,8 +24107,9 @@ msgstr "a(z) „{subject}” üzenetnek csak a fejléce van letöltve, ezért az
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "only the headers of “{subject}” are here, so it can't be saved as a message"
-msgstr ""
+msgstr "„{subject}” esetében csak a fejlécek vannak meg, ezért nem menthető üzenetként"
 
 #. what a command says
 #: crates/engine/src/cmd/calendar/share.rs
@@ -24361,8 +24459,9 @@ msgstr "a postafiók egy másik MailCraft-ablakban van nyitva. Előbb zárja be 
 
 #. what a command says
 #: crates/engine/src/cmd/graph_send.rs
+#, fuzzy
 msgid "that message is a draft: open it and send it"
-msgstr ""
+msgstr "ez az üzenet piszkozat: nyissa meg, és küldje el"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
@@ -25422,8 +25521,9 @@ msgstr "a(z) „{subject}” üzenet szövege ezen a számítógépen nem olvash
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "the text of “{subject}” can't be read on this computer, so it can't be saved as a message"
-msgstr ""
+msgstr "„{subject}” szövege nem olvasható ezen a számítógépen, ezért nem menthető üzenetként"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -28041,8 +28141,9 @@ msgstr "a(z) „{subject}” üzenet még nincs letöltve. Nyissa meg internetka
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "“{subject}” isn't downloaded yet: open it once you're online, then save it"
-msgstr ""
+msgstr "„{subject}” még nincs letöltve: nyissa meg, ha online van, majd mentse"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
@@ -28052,8 +28153,9 @@ msgstr "a(z) „{subject}” üzenet túl nagy a letöltéshez, ezért csak a fe
 
 #. what a command says
 #: crates/engine/src/cmd/file.rs crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "“{subject}” was too large to download: only its header is here, so it can't be saved as a message"
-msgstr ""
+msgstr "„{subject}” túl nagy volt a letöltéshez: csak a fejléce van meg, ezért nem menthető üzenetként"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs

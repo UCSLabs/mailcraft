@@ -322,6 +322,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. Kopirajte spodnje sporočilo in ga pošljite skrbniku vaše organizacije."
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. V svojem računu Google vklopite dvostopenjsko preverjanje, če še ni vklopljeno: Google ponuja gesla za aplikacije šele takrat."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -369,6 +375,12 @@ msgstr "2 tedna"
 msgid "2 years"
 msgstr "2 leti"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. Odprite Googlovo stran Gesla za aplikacije, se prijavite v račun, ki ga dodajate, vnesite ime, na primer MailCraft, in pritisnite Ustvari."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -398,6 +410,12 @@ msgstr "3 dnevi"
 #, fuzzy
 msgid "3 months"
 msgstr "3 meseci"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. Kopirajte 16-črkovno geslo, ki ga Google pokaže samo enkrat, in ga prilepite sem."
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -821,8 +839,9 @@ msgstr "Kratka opomba s povezavo do te strani, za lepljenje v pošto ali klepet.
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "A text signature file is at most 10,000 characters."
-msgstr ""
+msgstr "Datoteka z besedilnim podpisom ima lahko največ 10.000 znakov."
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -1626,8 +1645,9 @@ msgstr "Strežnik Exchange ali IMAP?"
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "An HTML signature file is at most 64 KB."
-msgstr ""
+msgstr "Datoteka s podpisom HTML je lahko velika največ 64 KB."
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -1676,6 +1696,12 @@ msgstr "Naslov, s katerega lahko ta račun pošilja"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "Naslov brez domene."
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "Ta stik je ustvaril ali mu dodal naslov agent. Dokler ga ne uredite, njegovi naslovi ne prinašajo slik v pošti od vaših stikov."
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3547,8 +3573,9 @@ msgstr "Izberite prijavo z Google ali namesto tega izberite Uporabi geslo aplika
 
 #. command label
 #: crates/ui-egui/src/lib.rs
+#, fuzzy
 msgid "Choose Signature File"
-msgstr ""
+msgstr "Izberi datoteko s podpisom"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -3576,18 +3603,21 @@ msgstr "Izberi mapo"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
+#, fuzzy
 msgid "Choose a signature file"
-msgstr ""
+msgstr "Izberite datoteko s podpisom"
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
-msgstr ""
+msgstr "Izberite besedilno datoteko, datoteko HTML, PNG, JPEG ali GIF s podpisom."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "Choose an absolute local path for the signature file."
-msgstr ""
+msgstr "Za datoteko s podpisom izberite absolutno lokalno pot."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -3621,8 +3651,9 @@ msgstr "Izberite, od koga se to pošlje"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
+#, fuzzy
 msgid "Choose…"
-msgstr ""
+msgstr "Izberi…"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -5213,6 +5244,12 @@ msgstr "Prenesi slike"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "Prenašaj slike od stikov"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "Prenašaj slike v vsej pošti"
 
@@ -5221,6 +5258,18 @@ msgstr "Prenašaj slike v vsej pošti"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "Samodejno prenašaj slike v pošti"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "Prenašaj slike v pošti od stikov"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "Prenašaj od stikov"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5257,6 +5306,12 @@ msgstr "Slike se prenesejo v vsakem sporočilu brez vprašanja, razen v Neželen
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "Samodejno prenašaj slike v pošti"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "Prenašaj slike v pošti od ljudi v mojih stikih"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -5300,8 +5355,9 @@ msgstr "Prenašanje slik…"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Downloading the address book stopped unexpectedly"
-msgstr ""
+msgstr "Prenos adresnega imenika se je nepričakovano ustavil"
 
 #. interface
 #: crates/ui-egui/src/graph_fetch.rs
@@ -5317,8 +5373,9 @@ msgstr "Najprej prenašanje sporočil…"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Downloading the organisation's address book…"
-msgstr ""
+msgstr "Prenašanje adresnega imenika organizacije…"
 
 #. interface
 #: crates/ui-egui/src/reading.rs
@@ -6094,8 +6151,9 @@ msgstr "Pogovorna okna datotek tukaj niso na voljo"
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "File signature"
-msgstr ""
+msgstr "Podpis iz datoteke"
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -6697,8 +6755,9 @@ msgstr "Zunaj vaše organizacije."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
-msgstr ""
+msgstr "Iz adresnega imenika organizacije računa {account}, ki je v pomnilniku, dokler MailCraft teče, in se nikoli ne shrani: Dodaj med stike obdrži kopijo v tem računalniku."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -7395,6 +7454,12 @@ msgid "Horizontal Line"
 msgstr "Vodoravna črta"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "Kako ustvarim geslo za aplikacijo?"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7441,6 +7506,12 @@ msgstr "Ikone"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "Če Google sporoči, da je aplikacija v preizkusnem načinu, prosite razvijalca, naj vaš e-poštni naslov doda kot preizkusnega uporabnika. Če vaša organizacija blokira MailCraft, se obrnite na njenega skrbnika Workspace. Te strani se morda ne vrnejo sem: pritisnite Prekliči, nato poskusite znova, ko je dostop odobren, ali uporabite geslo aplikacije, če je dovoljeno."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "Če Googlova stran pravi, da nastavitev ni na voljo, je dvostopenjsko preverjanje izklopljeno ali pa račun gesel za aplikacije ne dovoljuje (nekateri delovni ali šolski računi, računi z Napredno zaščito in računi, katerih dvostopenjsko preverjanje uporablja samo varnostne ključe)."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -7832,8 +7903,9 @@ msgstr "V tem koledarju:"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "In your contacts"
-msgstr ""
+msgstr "Med vašimi stiki"
 
 #. interface
 #: crates/ui-egui/src/import_pst.rs
@@ -11353,8 +11425,9 @@ msgstr "Drug termin ni bil predlagan."
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Nobody in the address book matches"
-msgstr ""
+msgstr "V adresnem imeniku nihče ne ustreza"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -11538,8 +11611,9 @@ msgstr "Vsega ni bilo mogoče odstraniti. Nekaj je še vedno tukaj. Poskusite zn
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
-msgstr ""
+msgstr "Ni za pošto ali pa je organa: Dodaj med stike ga izpusti."
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12243,8 +12317,9 @@ msgstr "Odpri koledar"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Open Contact"
-msgstr ""
+msgstr "Odpri stik"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -12269,6 +12344,12 @@ msgstr "Odpri osnutek"
 #, fuzzy
 msgid "Open Draft Attachment"
 msgstr "Odpri prilogo osnutka"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "Odpri Googlovo stran Gesla za aplikacije"
 
 #. interface
 #: crates/ui-egui/src/data_removal.rs
@@ -13004,14 +13085,21 @@ msgstr "Slike se vedno prenesejo od ({n}):"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
+#, fuzzy
 msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
-msgstr ""
+msgstr "Slike niso vključene v sporočila z navadnim besedilom. Preklopite na HTML, da jih vključite."
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Pictures in mail"
 msgstr "Slike v pošti"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "Slike v pošti z naslova v vaših stikih se prenesejo brez vprašanja: natanko s tega naslova, samo kadar vaš poštni strežnik potrdi, da je sporočilo prišlo z domene tega naslova (samega naslova ne more potrditi), in nikoli v mapi Neželena e-pošta. Strežnik vsakega takega pošiljatelja izve, da ste sporočilo odprli, kdaj in s katerega internetnega naslova. Stik, ki ga je ustvaril ali mu dodal naslov agent, ne šteje, dokler ga ne uredite."
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
@@ -13036,6 +13124,12 @@ msgstr "Slike na spletu se ne prenesejo za sporočilo, ki ni v vašem nabiralnik
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "Slike na spletu se bodo prenesle v vsakem sporočilu, ki ga odprete. Strežnik vsakega pošiljatelja takrat izve, kdaj ste sporočilo odprli in s katerega internetnega naslova."
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "Slike na spletu se bodo prenesle v pošti od ljudi v vaših stikih. Njihovi strežniki tedaj izvejo, kdaj ste odprli sporočilo in s katerega internetnega naslova."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13461,8 +13555,9 @@ msgstr "Preberi povabilo"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
+#, fuzzy
 msgid "Read again for each new message. If unavailable, the usual signature is used."
-msgstr ""
+msgstr "Znova prebrano za vsako novo sporočilo. Če ni na voljo, se uporabi običajni podpis."
 
 #. interface
 #: crates/ui-egui/src/advanced_search.rs
@@ -13690,8 +13785,9 @@ msgstr "Osveži"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
+#, fuzzy
 msgid "Refresh Preview"
-msgstr ""
+msgstr "Osveži predogled"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -16429,13 +16525,15 @@ msgstr "Datoteka podpisa:"
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "Signature files can only be configured by the owner in the desktop app."
-msgstr ""
+msgstr "Datoteke s podpisom lahko nastavi samo lastnik v namizni aplikaciji."
 
 #. command label
 #: crates/ui-egui/src/lib.rs
+#, fuzzy
 msgid "Signature from File"
-msgstr ""
+msgstr "Podpis iz datoteke"
 
 #. android, command label, interface, ribbon location
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/signatures.rs
@@ -17093,8 +17191,9 @@ msgstr "Preklopi na prijavo z Googlom"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
+#, fuzzy
 msgid "Switch to HTML"
-msgstr ""
+msgstr "Preklopi na HTML"
 
 #. command label, interface
 #: crates/engine/src/cmd/graph_switch.rs crates/ui-egui/src/graph_switch.rs crates/ui-egui/src/lib.rs
@@ -18640,8 +18739,9 @@ msgstr "Tisti, ki je priložen tej gradnji"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "The organisation's address book is empty"
-msgstr ""
+msgstr "Adresni imenik organizacije je prazen"
 
 #. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
@@ -19029,8 +19129,9 @@ msgstr "Strežnik ali organizacija ni dala svojih nastavitev. Prosite skrbnika z
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "The server sent no address book"
-msgstr ""
+msgstr "Strežnik ni poslal adresnega imenika"
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -19262,8 +19363,9 @@ msgstr "Prijava je bila zavrnjena."
 
 #. interface
 #: crates/ui-egui/src/files.rs
+#, fuzzy
 msgid "The signature changed while the signature file picker was open."
-msgstr ""
+msgstr "Podpis se je spremenil, medtem ko je bil izbirnik datoteke s podpisom odprt."
 
 #. interface
 #: crates/ui-egui/src/lib.rs
@@ -19273,28 +19375,33 @@ msgstr "Podpisa ni bilo mogoče shraniti: {why}. Zaprite znova, da ostane neshra
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "The signature file could not be read."
-msgstr ""
+msgstr "Datoteke s podpisom ni bilo mogoče prebrati."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "The signature file is too large."
-msgstr ""
+msgstr "Datoteka s podpisom je prevelika."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "The signature file must be a regular file of at most 256 KB."
-msgstr ""
+msgstr "Datoteka s podpisom mora biti navadna datoteka velika največ 256 KB."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "The signature file must contain UTF-8 text."
-msgstr ""
+msgstr "Datoteka s podpisom mora vsebovati besedilo UTF-8."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "The signature image could not be decoded."
-msgstr ""
+msgstr "Slike podpisa ni bilo mogoče dekodirati."
 
 #. interface
 #: crates/ui-egui/src/compose.rs
@@ -22115,6 +22222,12 @@ msgstr "Nimate dostopa do koledarja {address}. Deliti ga mora z vami; če se je 
 #, fuzzy
 msgid "You don't have access to {address}. If access was just given, try again in an hour."
 msgstr "Nimate dostopa do {address}. Če je bil dostop pravkar dodeljen, poskusite znova čez eno uro."
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "Slike od svojih stikov prenašate, vendar poštni strežnik ni potrdil, da je to sporočilo prišlo od tega stika, zato je najprej vprašano."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -25247,7 +25360,7 @@ msgstr "strežnik ne more prikazati namizne opozorila"
 #: crates/net/src/sync.rs
 #, fuzzy
 msgid "the server changed its password authentication methods; try again later"
-msgstr "strežnik je spremenil načine preverjanja pristnosti z geslom; poskusite znova pozneje"
+msgstr "strežnik je spremenil načine overjanja z geslom; poskusite znova pozneje"
 
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs crates/proto/src/line.rs
@@ -28259,8 +28372,9 @@ msgstr "{read} od {total} MB"
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
+#, fuzzy
 msgid "{reason} Using the account's usual signature instead."
-msgstr ""
+msgstr "{reason} Namesto tega se uporabi običajni podpis računa."
 
 #. interface
 #: crates/ui-egui/src/sync_panel.rs
