@@ -77,7 +77,7 @@ How far each side of MailCraft has come against Outlook (estimated, [how](#metho
 | File formats | 60% |
 | Performance at scale (200,000 messages) | 80% |
 | Platforms and signed builds | 60% |
-| Languages (one complete, eleven previews) | 20% |
+| Languages (one complete, twelve previews) | 20% |
 | Privacy and safety by default | 100% |
 | Agent control | 100% |
 
@@ -238,7 +238,7 @@ follows:
 | M4 | **Schedules** | Invitations by mail, answers from the reading pane, time zones, reminders that fire | Done for Microsoft 365, desktop alerts included (R7.1); what is left is in gaps 9–11 |
 | M5 | **Scales** | A large mailbox stays quick | Became R6, for 200,000 messages (B8): met on the reference machine; every message's headers are still held in memory (gap 8) |
 | M6 | **Beyond IMAP** | JMAP and Microsoft Graph over HTTPS, which also gives the browser build a server connection | Graph for Microsoft accounts done (R3); JMAP accounts read in the browser build (#226), the marks, moves and deletions made in them go up and their mail is sent (#1074) |
-| M7 | **Switchers** | `.pst`/`.msg` import, languages, printing, Action Shortcuts and the long tail of the catalog | After beta (items 3, 4, 12 and 15 above); languages partly done: eleven preview languages |
+| M7 | **Switchers** | `.pst`/`.msg` import, languages, printing, Action Shortcuts and the long tail of the catalog | After beta (items 3, 4, 12 and 15 above); languages partly done: twelve preview languages |
 
 ## Progress log
 
@@ -722,7 +722,7 @@ follows:
 | 2026-11-16 | #544: Red unread-mail badge for Inboxes of the owner’s own server accounts on the optional system tray icon (progress log) |
 | 2026-11-16 | Headline numbers gain the essentials, mainstream and full-target estimates with hours left, and the catalog row is named feature breadth (251 / 316); a By dimension table; the areas gain Ready and Hours columns; Parity themes is headed Upcoming |
 | 2026-11-16 | Server calendars: the account settings and command skeleton for CalDAV and CardDAV are in, switched off (#209 D4). |
-| 2026-11-16 | Languages: Czech is in as a preview language, and the row counts eleven previews. |
+| 2026-11-16 | Languages: Czech is in as a preview language, and the row counts twelve previews. |
 | 2026-11-15 | MB3.14: progress log: Settings on Android (storage cap, Remove local data, notification privacy switch) |
 | 2026-11-15 | Headline numbers recomputed (parity 247 / 315, 344 commands, 27 crates, 8,413 tests, twenty-two releases to v0.13.0); beta checklist rows B2, B4, B6, B9 and steps R2, R7 brought to what testers reported; after-beta items 1, 2, 3, 6, 7 and 13 brought to the code |
 | 2026-11-15 | Languages: Polish is in as a preview language, and the row counts nine previews (#1357). |

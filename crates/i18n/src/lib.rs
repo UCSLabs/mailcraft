@@ -39,6 +39,8 @@ mod chinese_tests;
 #[cfg(test)]
 mod czech_tests;
 #[cfg(test)]
+mod nb_tests;
+#[cfg(test)]
 mod polish_tests;
 #[cfg(test)]
 mod said_tests;
