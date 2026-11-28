@@ -819,6 +819,17 @@ pub fn global_shortcuts(app: &mut MailApp, ctx: &egui::Context) {
             ctx.request_repaint();
             continue;
         }
+        // Space and Shift+Space page the reading pane from the list too, so a message is read
+        // without a click in it first; the arrows stay the list's (#2022).
+        if key == Key::Space
+            && !typing
+            && let Some(scroll) = crate::reading::scroll_of(key, modifiers)
+            && let Some(place) = app.text_selection.pane_shown(ctx.viewport_id(), crate::reading::images::frame(ctx))
+        {
+            app.text_selection.scroll(place, scroll);
+            ctx.request_repaint();
+            continue;
+        }
         let Some(name) = key_name(key) else { continue };
         let function = name.len() > 1 && name.starts_with('F') && name[1..].chars().all(|c| c.is_ascii_digit());
         if typing {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! The keyboard scrolls the reading pane once the pointer went down in it (#1739): the arrows,
 //! Page Up and Down, Space and Home and End move the message, not the selection in the list.
+//! Space and Shift+Space page it from the list too, without a click in it (#2022).
 
 use egui::{Key, Modifiers, Pos2};
 use mailcraft_engine::Session;
@@ -82,4 +83,31 @@ fn without_a_click_in_the_message_the_keys_are_the_lists() {
     let (mut harness, id) = long_message();
     press(&mut harness, Key::ArrowDown);
     assert_ne!(selected(&harness), vec![id], "Down moves to the next message");
+}
+
+#[test]
+fn without_a_click_in_the_message_space_pages_the_reading_pane() {
+    let (mut harness, id) = long_message();
+    let start = top(&harness, id);
+    press(&mut harness, Key::Space);
+    let page = start - top(&harness, id);
+    assert!(page > 300.0, "Space pages down: {page}");
+    assert_eq!(selected(&harness), vec![id], "the list's selection stays");
+    harness.key_press_modifiers(Modifiers::SHIFT, Key::Space);
+    harness.run_steps(3);
+    assert!((top(&harness, id) - start).abs() < 0.5, "Shift+Space pages back up");
+    press(&mut harness, Key::ArrowDown);
+    assert_ne!(selected(&harness), vec![id], "Down still moves in the list");
+}
+
+#[test]
+fn space_in_a_text_field_is_typed_not_a_scroll() {
+    let (mut harness, id) = long_message();
+    let start = top(&harness, id);
+    harness.state_mut().search_text.clear();
+    let _ = harness.state_mut().run("ui.focusSearch", json!({}));
+    harness.run_steps(2);
+    harness.event(egui::Event::Text(" ".into()));
+    press(&mut harness, Key::Space);
+    assert!((top(&harness, id) - start).abs() < 0.5, "the message didn't move");
 }

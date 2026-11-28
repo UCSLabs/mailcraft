@@ -807,6 +807,11 @@ impl Selections {
         self.live(viewport, frame).any(|s| s.place == focus).then_some(focus)
     }
 
+    /// The main window's reading pane, when it shows a message.
+    pub(crate) fn pane_shown(&self, viewport: egui::ViewportId, frame: u64) -> Option<Place> {
+        (viewport == egui::ViewportId::ROOT && self.live(viewport, frame).any(|s| s.place == Place::Pane)).then_some(Place::Pane)
+    }
+
     /// Scroll the message in `place` as `scroll` says, when its body is next shown.
     pub(crate) fn scroll(&mut self, place: Place, scroll: Scroll) {
         self.scroll = Some((place, scroll));
