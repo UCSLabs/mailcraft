@@ -722,7 +722,7 @@ follows:
 | 2026-11-16 | #544: Red unread-mail badge for Inboxes of the owner’s own server accounts on the optional system tray icon (progress log) |
 | 2026-11-16 | Headline numbers gain the essentials, mainstream and full-target estimates with hours left, and the catalog row is named feature breadth (251 / 316); a By dimension table; the areas gain Ready and Hours columns; Parity themes is headed Upcoming |
 | 2026-11-16 | Server calendars: the account settings and command skeleton for CalDAV and CardDAV are in, switched off (#209 D4). |
-| 2026-11-16 | Languages: Czech is in as a preview language, and the row counts eleven previews. |
+| 2026-11-16 | Languages: Czech is in as a preview language, and the row counts twelve previews. |
 | 2026-11-15 | MB3.14: progress log: Settings on Android (storage cap, Remove local data, notification privacy switch) |
 | 2026-11-15 | Headline numbers recomputed (parity 247 / 315, 344 commands, 27 crates, 8,413 tests, twenty-two releases to v0.13.0); beta checklist rows B2, B4, B6, B9 and steps R2, R7 brought to what testers reported; after-beta items 1, 2, 3, 6, 7 and 13 brought to the code |
 | 2026-11-15 | Languages: Polish is in as a preview language, and the row counts nine previews (#1357). |
