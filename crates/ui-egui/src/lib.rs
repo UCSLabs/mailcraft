@@ -124,6 +124,9 @@ mod drag_pointer_tests;
 #[cfg(test)]
 mod ews_info_tests;
 pub mod ews_mail;
+mod ews_push_lane;
+#[cfg(test)]
+mod ews_push_lane_tests;
 pub mod ews_setup;
 pub mod favorites_sync;
 #[cfg(test)]
@@ -1868,6 +1871,11 @@ pub struct MailApp {
     /// bringing mail down (unknown until then), whether it was called off to let more out, and
     /// whether nobody asked for it (it comes back as it was).
     sync_run: Option<(Id, Option<usize>, bool, bool)>,
+    /// The runs of Exchange server accounts beside the run in flight ([`ews_push_lane`]), and when
+    /// the accounts were last looked at for what waits to go and the runs for what was done meanwhile.
+    ews_extra: Vec<ews_push_lane::ExtraRun>,
+    ews_push_checked: f64,
+    ews_extra_checked: f64,
     /// A piece of the run in flight said the server refused the sign-in.
     sync_refused: bool,
     /// The password the run in flight went with, until the system is asked to remember it: once
@@ -2167,6 +2175,9 @@ impl MailApp {
             sync_rx: None,
             sync_totals: Default::default(),
             sync_run: None,
+            ews_extra: Vec::new(),
+            ews_push_checked: 0.0,
+            ews_extra_checked: 0.0,
             sync_refused: false,
             sync_password: None,
             jmap_refused: Default::default(),
@@ -3241,6 +3252,7 @@ impl MailApp {
                 // The run stops at the next safe place; what it brought stays. The rest of a
                 // round that was under way is called off with it.
                 self.services.sync_cancel.store(true, std::sync::atomic::Ordering::Relaxed);
+                self.stop_ews_extras();
                 self.pause_fetch();
                 self.session.driver.round.queue.clear();
                 self.session.driver.round.inbox_queue.clear();
@@ -3871,7 +3883,8 @@ impl MailApp {
         }
         // The Inbox checked by itself gives way to a run (#276).
         self.give_up_inbox_check();
-        if self.sync_rx.is_some() || self.graph_rx.is_some() {
+        // (A run that only goes up and waits for its marks to be written holds the one send gate.)
+        if self.sync_rx.is_some() || self.graph_rx.is_some() || self.ews_extra_syncing() || self.send_gate.is_some() {
             return Err(tl!("Send/Receive is already running").to_string());
         }
         let cant_connect = || {
@@ -4271,6 +4284,8 @@ impl MailApp {
             self.sync_run = Some((whose, Some(baseline), true, quiet));
             self.session.sync_status = tl!("Sending your changes…").to_string();
         }
+        // What was done to another Exchange account goes up beside a long read, not after it.
+        self.ews_extra_runs();
         let busy = self.sync_rx.is_some() || self.graph_rx.is_some() || self.signing_in.is_some() || self.approving();
         // (Working offline, nothing starts by itself either: mail waits in the Outbox.)
         if !self.services.can_sync() || busy || self.dialog.is_some() || self.offline() {
@@ -4283,8 +4298,14 @@ impl MailApp {
         }
         use mailcraft_engine::sync_driver::{Next, Waiting};
         let next = {
-            // (The line is the engine's; whether an account's calendar job is at work is the window's.)
-            let front_busy = self.session.driver.round.queue.front().is_some_and(|(account, _)| self.calendar_job_for(*account));
+            // (The line is the engine's; whether an account's calendar job is at work is the window's,
+            // and so is whether what was done to it is going up beside the run: it waits for that.)
+            // (It waits, too, while whole runs of other Exchange accounts are under way, as it waits for
+            // the first run: start_sync turns a start down then, and the account would be left out.
+            // And while a run waits for its marks to be written: that run holds the one send gate.)
+            let front_busy = self.session.driver.round.queue.front().is_some_and(|(account, _)| {
+                self.calendar_job_for(*account) || self.ews_extra_for(*account) || self.ews_extra_syncing() || self.send_gate.is_some()
+            });
             self.session.driver.round.next(|_| front_busy)
         };
         match next {
@@ -4970,7 +4991,7 @@ impl MailApp {
     /// Whether a Send/Receive is running.
     pub fn syncing(&self) -> bool {
         // (The Inbox checked by itself is not one: it is quiet, #276.)
-        self.sync_rx.is_some() || (self.graph_pieces.is_some() && !self.inbox_check.under_way())
+        self.sync_rx.is_some() || self.ews_extra_syncing() || (self.graph_pieces.is_some() && !self.inbox_check.under_way())
     }
 
     /// The server let `account`'s run in flight in: the password it went with is worth
@@ -4987,12 +5008,18 @@ impl MailApp {
             return;
         }
         let Some(sent) = self.sync_password.take() else { return };
-        if self.passwords.get(&account) != Some(&sent) {
+        self.keep_password_sent(account, &sent);
+    }
+
+    /// [`Self::keep_accepted_password`] for the password `sent` that a run of `account` went with
+    /// (also a run beside the first, [`crate::ews_push_lane`]).
+    pub(crate) fn keep_password_sent(&mut self, account: Id, sent: &str) {
+        if self.passwords.get(&account).map(String::as_str) != Some(sent) {
             return;
         }
         let Some(key) = self.session.mailbox.account(account).map(|a| Self::secret_key("password", a)) else { return };
-        if self.secret_cache.get(&key) != Some(&sent) {
-            self.remember("password", account, &sent);
+        if self.secret_cache.get(&key).map(String::as_str) != Some(sent) {
+            self.remember("password", account, sent);
         }
     }
 
@@ -5006,6 +5033,8 @@ impl MailApp {
         let started = mailcraft_time::Stopwatch::start();
         let mut first = true;
         while std::mem::take(&mut first) || started.so_far() < SYNC_FRAME_BUDGET {
+            // (The runs beside the first have their own pieces: [`ews_push_lane`].)
+            self.poll_ews_extras();
             // (A JMAP account's run has pieces of its own: [`jmap_mail`].)
             if matches!(self.sync_rx, Some(MailRun::Jmap { .. })) {
                 return self.poll_jmap();

@@ -15530,7 +15530,7 @@ msgid "Send/Receive couldn't start. Try again."
 msgstr "„გაგზავნა/მიღება“ ვერ დაიწყო. კიდევ სცადეთ."
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/ews_mail.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Send/Receive is already running"
 msgstr "გაგზავნა/მიღება უკვე მიმდინარეობს"
@@ -24899,6 +24899,12 @@ msgstr "საქაღალდე, რომელშიც ეს წერ�
 #, fuzzy
 msgid "the folder was numbered anew while it was being read"
 msgstr "საქაღალდის წერილები კითხვისას თავიდან გადაინომრა"
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "the folders of this account haven't been read yet"
+msgstr "ამ ანგარიშის საქაღალდეები ჯერ არ წაკითხულა"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

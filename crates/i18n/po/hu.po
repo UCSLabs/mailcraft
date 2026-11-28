@@ -15499,7 +15499,7 @@ msgid "Send/Receive couldn't start. Try again."
 msgstr "A Küldés/fogadás nem tudott elindulni. Próbálja újra."
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/ews_mail.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Send/Receive is already running"
 msgstr "Küldés/fogadás már fut"
@@ -24858,6 +24858,12 @@ msgstr "A mappa, amiben ez az üzenet van, már nincs ezen a számítógépen."
 #, fuzzy
 msgid "the folder was numbered anew while it was being read"
 msgstr "a mappa számozása megváltozott olvasás közben"
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "the folders of this account haven't been read yet"
+msgstr "ennek a fióknak a mappáit még nem olvastuk be"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

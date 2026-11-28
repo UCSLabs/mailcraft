@@ -15437,7 +15437,7 @@ msgid "Send/Receive couldn't start. Try again."
 msgstr "Envoyer/Recevoir n'a pas pu démarrer. Réessayez."
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/ews_mail.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Send/Receive is already running"
 msgstr "Envoyer/Recevoir est déjà en cours"
@@ -24766,6 +24766,12 @@ msgstr "le dossier contenant ce message n'est plus sur cet ordinateur"
 #, fuzzy
 msgid "the folder was numbered anew while it was being read"
 msgstr "le dossier a été renuméroté pendant sa lecture"
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "the folders of this account haven't been read yet"
+msgstr "les dossiers de ce compte n'ont pas encore été lus"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs
