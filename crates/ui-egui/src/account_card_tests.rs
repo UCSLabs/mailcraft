@@ -21,6 +21,7 @@ fn drawn(shapes: &[Shape], text: &str, out: &mut Vec<(Rect, usize)>) {
 
 #[test]
 fn an_account_cards_buttons_fit_their_labels() {
+    let _language = crate::i18n::RestoreLanguage::hold();
     let mut w = testing::window("view.mail");
     w.state_mut().execute("ui.language", json!({"language": "ka"})).unwrap();
     w.state_mut().execute("ui.backstage", json!({"value": true, "page": "info"})).unwrap();
@@ -64,4 +65,12 @@ fn a_card_button_is_as_wide_as_its_label_needs() {
     assert_eq!(capped, 120.0, "a label past the cap is cut at it");
     assert_eq!(narrow, 50.0, "the cap wins over the least on a narrow card");
     assert_eq!(nan, 0.0, "a cap that is no number gives no width, not a panic");
+}
+
+/// A test that shows the window in Georgian gives the previous language back when it ends (#2070).
+#[test]
+fn a_georgian_account_card_puts_the_language_back() {
+    let before = crate::i18n::current();
+    an_account_cards_buttons_fit_their_labels();
+    assert_eq!(crate::i18n::current(), before, "the Georgian test left its language on");
 }

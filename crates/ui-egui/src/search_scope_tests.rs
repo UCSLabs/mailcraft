@@ -21,6 +21,7 @@ fn arrow_text(shapes: &[Shape], out: &mut Vec<Rect>) {
 
 #[test]
 fn a_long_scope_name_stays_in_its_button_beside_the_edit_area() {
+    let _language = crate::i18n::RestoreLanguage::hold();
     let mut w = testing::window("view.mail");
     // Georgian's "Current Folder" is the longest of the four, and wider than the old 104 points.
     w.state_mut().execute("ui.language", json!({"language": "ka"})).unwrap();
@@ -37,6 +38,9 @@ fn a_long_scope_name_stays_in_its_button_beside_the_edit_area() {
 
 #[test]
 fn the_scope_button_is_capped_at_two_fifths_of_a_narrow_box() {
+    // The names are measured in English, whatever language a test running alongside has set (fonts without Georgian are used here).
+    let _language = crate::i18n::RestoreLanguage::hold();
+    crate::i18n::set_current(crate::i18n::Lang::English);
     let widths = std::cell::RefCell::new(Vec::new());
     let mut h = egui_kittest::Harness::builder().with_accessibility_check(false).build_ui(|ui| {
         // (The interface's fonts have the arrow; they take hold from the pass after they are set.)
@@ -55,4 +59,12 @@ fn the_scope_button_is_capped_at_two_fifths_of_a_narrow_box() {
     assert!((104.0..=400.0).contains(&wide), "{wide}");
     assert_eq!(narrow, 104.0, "the least wins in a tiny box");
     assert!(mid <= 160.0 + f32::EPSILON, "two fifths of 400 is the most: {mid}");
+}
+
+/// A test that shows the window in Georgian gives the previous language back when it ends (#2070).
+#[test]
+fn a_georgian_scope_window_puts_the_language_back() {
+    let before = crate::i18n::current();
+    a_long_scope_name_stays_in_its_button_beside_the_edit_area();
+    assert_eq!(crate::i18n::current(), before, "the Georgian test left its language on");
 }
