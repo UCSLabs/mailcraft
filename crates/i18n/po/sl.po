@@ -790,6 +790,11 @@ msgid "A save of the mailbox is still running: try again in a moment"
 msgstr "Shranjevanje nabiralnika še poteka: poskusite znova čez trenutek"
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "A secure connection to the server couldn't be set up. Check the address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "A secure connection to the server couldn't be set up. Type the server's address in Server settings."
@@ -806,6 +811,11 @@ msgstr "Poimenovana sta serija in eden njenih dni; nič ni bilo spremenjeno."
 #, fuzzy
 msgid "A series that the account's server keeps can't be moved to another calendar from here: the server has no way of moving one, and days of it that were changed on their own could be lost in making it again."
 msgstr "Niza, ki ga hrani strežnik računa, od tod ni mogoče premakniti v drug koledar: strežnik nima načina za premik, dnevi, ki so bili spremenjeni posebej, pa bi se pri ponovnem ustvarjanju lahko izgubili."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "A server asked for a password without saying it keeps calendars or contacts, so none was sent. Type the server's address."
+msgstr ""
 
 #. what a command says
 #: crates/engine/src/cmd/auto_replies.rs
@@ -2948,6 +2958,26 @@ msgid "Calendar and contacts need your permission: File › Info › Connect cal
 msgstr "Koledar in stiki potrebujejo vaše dovoljenje: Datoteka › Informacije › Poveži koledar in stike"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and Contacts"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and contacts: not set up"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and contacts: {server}"
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Calendars on the web (an .ics address) kept up to date here, read-only. Calendar › Open Calendar › From Internet… subscribes to one."
@@ -3358,7 +3388,7 @@ msgid "Changes to calendars and contacts on a server are not sent yet in this ve
 msgstr "Spremembe koledarjev in stikov na strežniku se v tej različici še ne pošiljajo."
 
 #. interface
-#: crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "Change…"
 msgstr "Spremeni…"
@@ -4050,7 +4080,7 @@ msgid "Contact Changes to Send"
 msgstr "Spremembe stikov za pošiljanje"
 
 #. interface
-#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "Contacts"
 msgstr "Stiki"
@@ -5140,7 +5170,7 @@ msgid "Don't Save"
 msgstr "Ne shrani"
 
 #. interface
-#: crates/ui-egui/src/agent_gate.rs
+#: crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "Don't Send"
 msgstr "Ne pošlji"
@@ -6208,7 +6238,7 @@ msgid "Filter Tasks"
 msgstr "Filtriraj opravila"
 
 #. command label, interface, ribbon, ribbon location
-#: crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/edit.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/ribbon.rs
+#: crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/edit.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Find"
 msgstr "Najdi"
@@ -6242,6 +6272,11 @@ msgstr "Najdi termin"
 #, fuzzy
 msgid "Find a font"
 msgstr "Poišči pisavo"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Find asks the typed addresses, or else public name servers and the usual places for your address's domain. The password goes only to a server of yours that asks for it, or one you agree to."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/spelling.rs
@@ -6591,6 +6626,11 @@ msgstr "Pozabi zaupanja vredno potrdilo"
 msgid "Forget the pictures that are kept; they are downloaded again when you ask."
 msgstr "Pozabite shranjene slike; znova se prenesejo, ko jih zahtevate."
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Forget these addresses and what was read from them. The calendars and contacts on the servers stay as they are."
+msgstr ""
+
 #. ribbon, ribbon location
 #: crates/engine/src/cmd/format.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -6688,6 +6728,11 @@ msgstr "Najdeno v DNS vaše domene. Vaša prijava gre na strežnik zunaj vaše d
 #, fuzzy
 msgid "Found in {path}. Nothing is imported until you press Import."
 msgstr "Najdeno v {path}. Nič se ne uvozi, dokler ne pritisnete Uvozi."
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Found {calendars} and {books}. Save keeps them."
+msgstr ""
 
 #. what a command says
 #: crates/model/src/sync/progress.rs
@@ -6912,6 +6957,11 @@ msgstr "Stran GitHuba je odprta: preverite jo, nato pošljite. MailCraft ni posl
 #, fuzzy
 msgid "Give it a title first"
 msgstr "Najprej mu dajte naslov"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Give the password first."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/dav_password_ask.rs
@@ -8758,6 +8808,11 @@ msgid "Leave it empty to look for the server from your address. It must begin wi
 msgstr "Pustite prazno, da se strežnik poišče iz vašega naslova. Začeti se mora s https://."
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Leave it empty to sign in with the account's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Leave it not verified"
@@ -8960,6 +9015,11 @@ msgstr "Oglejte si potrdilo, ki ga strežnik zdaj pokaže. Dokler se odločate, 
 #, fuzzy
 msgid "Look for This Meeting on the Calendar"
 msgstr "Poišči to srečanje v koledarju"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Look for the servers now."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -9346,7 +9406,7 @@ msgid "MailCraft keeps at most {n} keys imported here, and has that many: remove
 msgstr "MailCraft hrani največ {n} tukaj uvoženih ključev in jih ima toliko: odstranite enega, ki ga ne uporabljate, nato uvozite tega."
 
 #. interface
-#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dialogs.rs
+#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs
 #, fuzzy
 msgid "MailCraft keeps it in memory until you close the app. It is never written to disk."
 msgstr "MailCraft to hrani v pomnilniku, dokler programa ne zaprete. Na disk se nikoli ne zapiše."
@@ -11088,6 +11148,11 @@ msgid "No buttons"
 msgstr "Brez gumbov"
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "No calendar or contacts server was found for this address. Type the server's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "No categories yet"
@@ -11356,6 +11421,11 @@ msgstr "Še ni pravil. Pravilo pošto ob prihodu razvrsti v mapo, označi z zast
 #, fuzzy
 msgid "No senders are remembered. \"Always download pictures from\" above a message adds its sender or its sender's domain here."
 msgstr "Zapomnjen ni noben pošiljatelj. „Vedno prenesi slike od“ nad sporočilom tukaj doda njegovega pošiljatelja ali domeno pošiljatelja."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "No server answered at the usual places for this address. Check the connection, or type the server's address."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -12102,7 +12172,7 @@ msgid "Once it has worked, your system's credential store keeps it for next time
 msgstr "Ko uspe, shramba poverilnic sistema to obdrži za naslednjič. V nabiralnik se nikoli ne zapiše."
 
 #. interface
-#: crates/ui-egui/src/dav_password_ask.rs
+#: crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "Once the server has taken it, MailCraft keeps it in your system's credential store, as File › Options lets it."
 msgstr "Ko ga strežnik sprejme, ga MailCraft hrani v shrambi poverilnic sistema, kot to dovoli Datoteka › Možnosti."
@@ -12928,7 +12998,7 @@ msgid "Part of your mailbox is damaged"
 msgstr "Del vašega nabiralnika je poškodovan"
 
 #. interface
-#: crates/ui-egui/src/account_setup.rs
+#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "Password"
 msgstr "Geslo"
@@ -12940,7 +13010,7 @@ msgid "Password for {account}"
 msgstr "Geslo za {account}"
 
 #. interface
-#: crates/ui-egui/src/dav_password_ask.rs
+#: crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "Password for {server}"
 msgstr "Geslo za {server}"
@@ -14716,7 +14786,7 @@ msgid "Saturday"
 msgstr "sobota"
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Save"
 msgstr "Shrani"
@@ -14958,6 +15028,11 @@ msgid "Saving a copy of your mailbox before the switch…"
 msgstr "Shranjevanje kopije vašega nabiralnika pred preklopom…"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Saving sends nothing. MailCraft reads the servers at its next run."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Saving the mailbox…"
@@ -15188,7 +15263,7 @@ msgid "Searching the server…"
 msgstr "Iskanje po strežniku…"
 
 #. interface
-#: crates/ui-egui/src/address_book.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "Searching…"
 msgstr "Iskanje…"
@@ -15354,6 +15429,11 @@ msgstr "Vseeno pošlji"
 #, fuzzy
 msgid "Send Cancellation"
 msgstr "Pošlji preklic"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Send It There"
+msgstr ""
 
 #. command label, interface, name
 #: crates/engine/src/cmd/send_later.rs crates/ui-egui/src/send_later.rs
@@ -15844,6 +15924,11 @@ msgstr "Strežnik: {address}"
 #, fuzzy
 msgid "Set Sender Addresses"
 msgstr "Nastavi naslove pošiljatelja"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Set Up…"
+msgstr ""
 
 #. name
 #: crates/ui-egui/src/forms.rs
@@ -17027,6 +17112,11 @@ msgstr "Ustavi to Pošlji/prejmi; kar je prispelo, ostane"
 msgid "Stop trusting this certificate for this account. If the server shows it again and this computer doesn't trust it, you are asked."
 msgstr "Ne zaupajte več temu potrdilu za ta račun. Če ga strežnik znova pokaže in mu ta računalnik ne zaupa, boste vprašani."
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Stop using these servers"
+msgstr ""
+
 #. interface, what a command says
 #: crates/engine/src/cmd/account.rs crates/ui-egui/src/sync_panel.rs
 #, fuzzy
@@ -17832,6 +17922,11 @@ msgid "The account {address} is opened through is gone."
 msgstr "Računa, prek katerega je odprt {address}, ni več."
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The account's mail password is used, and only for these addresses."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs
 #, fuzzy
 msgid "The account's password is needed first: press Send/Receive and type it"
@@ -17878,6 +17973,11 @@ msgstr "Strežnik računa temu srečanju še ni dal povezave za pridružitev."
 #, fuzzy
 msgid "The account's server makes it when the meeting is sent; the link to join by comes back with it."
 msgstr "Strežnik računa ga ustvari, ko je srečanje poslano; povezava za pridružitev se vrne skupaj z njim."
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The address doesn't lead to calendars or contacts. Check it in Change…."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/check_names.rs
@@ -18235,6 +18335,11 @@ msgstr "Stik {id} je naveden dvakrat."
 msgid "The contact's form was closed: open it again to add the key"
 msgstr "Obrazec stika je bil zaprt: znova ga odprite, da dodate ključ"
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The contacts are on another server: File › Info asks for its password."
+msgstr ""
+
 #. interface, what a command says
 #: crates/engine/src/sync_driver/calendar_plan.rs crates/ui-egui/src/lib.rs
 #, fuzzy
@@ -18450,6 +18555,11 @@ msgid "The greys the dark theme is drawn in: neutral, or tinted blue. The light 
 msgstr "Sivine, v katerih je narisana temna tema: nevtralne ali z modrim odtenkom. Svetla tema ostane, kot je."
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The https:// addresses your provider gives for calendars (CalDAV) and contacts (CardDAV). Either may be left empty."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "The import gave back something that isn't a key's name in the credential store."
@@ -18598,6 +18708,11 @@ msgstr "Poštnega predala na {address} ni mogoče doseči prek Microsoft Graph."
 #, fuzzy
 msgid "The mailbox could not be read."
 msgstr "Poštnega predala ni bilo mogoče prebrati."
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The mailbox holds as much from this server as it may."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
@@ -18990,6 +19105,21 @@ msgid "The search for your Exchange server was sent on to {host}, which isn't in
 msgstr "Iskanje vašega strežnika Exchange je bilo preusmerjeno na {host}, ki ni v lastni domeni vašega naslova."
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search found {host} in your mail domain. It isn't your mail server, and may be a web site rather than a calendar server. Send your password there?"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search was sent to {host}, which isn't one of your servers. Send your password there?"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search went on too long without an end. Type the server's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "The selected message, as .eml"
@@ -19050,6 +19180,11 @@ msgid "The series needs a day to end by"
 msgstr "Niz potrebuje dan, do katerega traja"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server answered some requests with errors. MailCraft asks again later."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server answered without the address of Exchange Web Services. Ask your administrator for it and type it in Server settings."
@@ -19060,6 +19195,11 @@ msgstr "Strežnik je odgovoril brez naslova Exchange Web Services. Prosite skrbn
 #, fuzzy
 msgid "The server answered, but not as an Exchange server does. Check its address in Server settings."
 msgstr "Strežnik je odgovoril, vendar ne tako, kot odgovori strežnik Exchange. Preverite njegov naslov v nastavitvah strežnika."
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server couldn't be reached. MailCraft tries again later."
+msgstr ""
 
 #. what a command says
 #: crates/mobile/src/fetch.rs
@@ -19072,6 +19212,11 @@ msgstr "Strežnika ni bilo mogoče preiskati. Čez nekaj minut poskusite znova."
 #, fuzzy
 msgid "The server didn't accept the user name and password. Check them, or type your user name in Server settings (DOMAIN\\user or you@example.org)."
 msgstr "Strežnik ni sprejel uporabniškega imena in gesla. Preverite ju ali v nastavitve strežnika vnesite uporabniško ime (DOMENA\\uporabnik ali vi@example.org)."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server didn't accept the user name and password. Nothing else was tried."
+msgstr ""
 
 #. what a command says
 #: crates/engine/src/cmd/contacts_remote.rs
@@ -19096,6 +19241,11 @@ msgstr "Strežnik ni izročil {count} sporočil iz „{name}“"
 #, fuzzy
 msgid "The server didn't say when other people are busy"
 msgstr "Strežnik ni povedal, kdaj so drugi zasedeni"
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server didn't say where your calendars or contacts are. Type the server's address."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/graph_fetch.rs
@@ -19170,6 +19320,11 @@ msgstr[2] "Strežnik računa {account} obvesti {n} povabljene osebe, da vedo, da
 msgstr[3] "Strežnik računa {account} obvesti {n} povabljenih oseb, da vedo, da je preklicano."
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server or the organisation wouldn't give its calendars or contacts. Ask your administrator."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server or the organisation wouldn't give its settings. Ask your administrator for the server's address and type it in Server settings."
@@ -19206,6 +19361,16 @@ msgid "The server turned down the sign-in for {name}: sign in again"
 msgstr "Strežnik je zavrnil prijavo za {name}: prijavite se znova"
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server wants a way of signing in that MailCraft can't do yet."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server wouldn't sign in."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server's address must begin with https:// and name the server (https://mail.example.org/EWS/Exchange.asmx)"
@@ -19216,6 +19381,11 @@ msgstr "Naslov strežnika se mora začeti s https:// in imenovati strežnik (htt
 #, fuzzy
 msgid "The server's address or the user name can't be used. Check them in Server settings."
 msgstr "Naslova strežnika ali uporabniškega imena ni mogoče uporabiti. Preverite ju v nastavitvah strežnika."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server's answer couldn't be read, or led somewhere that isn't followed. Type the server's address."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -19246,6 +19416,11 @@ msgstr "Potrdilo strežnika je poteklo, zato se MailCraft nanj ne poveže. Prosi
 #, fuzzy
 msgid "The server's certificate is for another server's name, so MailCraft won't connect to it. Check the address in Server settings."
 msgstr "Potrdilo strežnika je za drugo ime strežnika, zato se MailCraft nanj ne poveže. Preverite naslov v nastavitvah strežnika."
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server's certificate isn't trusted, so nothing was sent to it."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -19726,6 +19901,16 @@ msgstr "Teh stikov tukaj ni mogoče združiti: spremeniti je mogoče manj kot dv
 #, fuzzy
 msgid "These could not be removed. Remove them yourself:"
 msgstr "Teh ni bilo mogoče odstraniti. Odstranite jih sami:"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "These servers have a password of their own"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "These settings can't be used as they are: check the addresses (https://) and the user name."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/task_sync.rs
@@ -20222,6 +20407,16 @@ msgstr "To vabilo ima ID srečanja v vašem koledarju, a ni od njegovega organiz
 #, fuzzy
 msgid "This invitation has the ID of a meeting on your calendar but names another organizer, so it can't change that meeting."
 msgstr "To vabilo ima ID srečanja v vašem koledarju, a navaja drugega organizatorja, zato tega srečanja ne more spremeniti."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "This is a Google address: calendars and contacts from Google aren't read this way. Nothing was sent."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "This is a Microsoft address: its calendars and contacts come with the Microsoft account. Nothing was sent."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/updates.rs
@@ -21566,7 +21761,7 @@ msgid "Use {address}"
 msgstr "Uporabi {address}"
 
 #. interface
-#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs
+#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs crates/ui-egui/src/dav_settings.rs
 #, fuzzy
 msgid "User name"
 msgstr "Uporabniško ime"
@@ -21960,6 +22155,11 @@ msgid "Where"
 msgstr "Kje"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Where the calendars and contacts of {account} are kept"
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Where the card says the key is: MailCraft doesn't fetch it."
@@ -21970,6 +22170,11 @@ msgstr "Kjer kartica pravi, da je ključ: MailCraft ga ne pridobi."
 #, fuzzy
 msgid "Where they differ, the kept contact has:"
 msgstr "Kjer se razlikujejo, ima ohranjeni stik:"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Where this account's calendars and contacts are kept"
+msgstr ""
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs
@@ -22252,6 +22457,11 @@ msgstr "S strani Microsoft ste se vrnili, ne da bi se prijavili: tam ste rekli n
 #, fuzzy
 msgid "You declined this meeting."
 msgstr "To srečanje je zavrnjeno."
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "You didn't agree to send the password to the server the search led to. Type the server's address."
+msgstr ""
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -27085,6 +27295,15 @@ msgstr[2] "{n} računi imajo podpis"
 msgstr[3] "{n} računov ima podpis"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} address book"
+msgid_plural "{n} address books"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "{n} appointment"
@@ -27145,6 +27364,15 @@ msgstr[2] "{n} bajti"
 msgstr[3] "{n} bajtov"
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} calendar"
+msgid_plural "{n} calendars"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#. interface
 #: crates/ui-egui/src/import_pst.rs
 #, fuzzy
 msgid "{n} calendar item"
@@ -27163,6 +27391,15 @@ msgstr[0] "{n} predmet koledarja izbran"
 msgstr[1] "{n} predmeta koledarja izbrana"
 msgstr[2] "{n} predmeti koledarja izbrani"
 msgstr[3] "{n} predmetov koledarja izbranih"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} calendar or address book read"
+msgid_plural "{n} calendars and address books read"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #. what a command says
 #: crates/engine/src/undo.rs
@@ -28027,6 +28264,15 @@ msgstr[0] "{n} odprto opravilo"
 msgstr[1] "{n} odprti opravili"
 msgstr[2] "{n} odprta opravila"
 msgstr[3] "{n} odprtih opravil"
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} other item isn't read (a task list, a plain file)"
+msgid_plural "{n} other items aren't read (task lists, plain files)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #. interface
 #: crates/ui-egui/src/lib.rs

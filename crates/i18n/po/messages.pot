@@ -659,6 +659,11 @@ msgid "A save of the mailbox is still running: try again in a moment"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "A secure connection to the server couldn't be set up. Check the address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "A secure connection to the server couldn't be set up. Type the server's address in Server settings."
 msgstr ""
@@ -671,6 +676,11 @@ msgstr ""
 #. what a command says
 #: crates/engine/src/cmd/calendar/meeting.rs
 msgid "A series that the account's server keeps can't be moved to another calendar from here: the server has no way of moving one, and days of it that were changed on their own could be lost in making it again."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "A server asked for a password without saying it keeps calendars or contacts, so none was sent. Type the server's address."
 msgstr ""
 
 #. what a command says
@@ -2444,6 +2454,26 @@ msgid "Calendar and contacts need your permission: File › Info › Connect cal
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and Contacts"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and contacts: not set up"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Calendars and contacts: {server}"
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 msgid "Calendars on the web (an .ics address) kept up to date here, read-only. Calendar › Open Calendar › From Internet… subscribes to one."
 msgstr ""
@@ -2783,7 +2813,7 @@ msgid "Changes to calendars and contacts on a server are not sent yet in this ve
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/forms.rs
 msgid "Change…"
 msgstr ""
 
@@ -3357,7 +3387,7 @@ msgid "Contact Changes to Send"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/forms.rs
 msgid "Contacts"
 msgstr ""
 
@@ -4260,7 +4290,7 @@ msgid "Don't Save"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/agent_gate.rs
+#: crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/dav_settings.rs
 msgid "Don't Send"
 msgstr ""
 
@@ -5130,7 +5160,7 @@ msgid "Filter Tasks"
 msgstr ""
 
 #. command label, interface, ribbon, ribbon location
-#: crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/edit.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/ribbon.rs
+#: crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/edit.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/ribbon.rs
 msgid "Find"
 msgstr ""
 
@@ -5157,6 +5187,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/ribbon.rs
 msgid "Find a font"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Find asks the typed addresses, or else public name servers and the usual places for your address's domain. The password goes only to a server of yours that asks for it, or one you agree to."
 msgstr ""
 
 #. interface
@@ -5445,6 +5480,11 @@ msgstr ""
 msgid "Forget the pictures that are kept; they are downloaded again when you ask."
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Forget these addresses and what was read from them. The calendars and contacts on the servers stay as they are."
+msgstr ""
+
 #. ribbon, ribbon location
 #: crates/engine/src/cmd/format.rs crates/ui-egui/src/ribbon.rs
 msgid "Format"
@@ -5522,6 +5562,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/import_tree.rs
 msgid "Found in {path}. Nothing is imported until you press Import."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Found {calendars} and {books}. Save keeps them."
 msgstr ""
 
 #. what a command says
@@ -5706,6 +5751,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/forms.rs
 msgid "Give it a title first"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Give the password first."
 msgstr ""
 
 #. interface
@@ -7227,6 +7277,11 @@ msgid "Leave it empty to look for the server from your address. It must begin wi
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Leave it empty to sign in with the account's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 msgid "Leave it not verified"
 msgstr ""
@@ -7394,6 +7449,11 @@ msgstr ""
 #. command label
 #: crates/ui-egui/src/lib.rs
 msgid "Look for This Meeting on the Calendar"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Look for the servers now."
 msgstr ""
 
 #. interface
@@ -7717,7 +7777,7 @@ msgid "MailCraft keeps at most {n} keys imported here, and has that many: remove
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dialogs.rs
+#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs
 msgid "MailCraft keeps it in memory until you close the app. It is never written to disk."
 msgstr ""
 
@@ -9146,6 +9206,11 @@ msgid "No buttons"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "No calendar or contacts server was found for this address. Type the server's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/forms.rs
 msgid "No categories yet"
 msgstr ""
@@ -9368,6 +9433,11 @@ msgstr ""
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesSettings.kt crates/ui-egui/src/reading/remote.rs
 msgid "No senders are remembered. \"Always download pictures from\" above a message adds its sender or its sender's domain here."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "No server answered at the usual places for this address. Check the connection, or type the server's address."
 msgstr ""
 
 #. interface
@@ -9991,7 +10061,7 @@ msgid "Once it has worked, your system's credential store keeps it for next time
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/dav_password_ask.rs
+#: crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs
 msgid "Once the server has taken it, MailCraft keeps it in your system's credential store, as File › Options lets it."
 msgstr ""
 
@@ -10688,7 +10758,7 @@ msgid "Password for {account}"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/dav_password_ask.rs
+#: crates/ui-egui/src/dav_password_ask.rs crates/ui-egui/src/dav_settings.rs
 msgid "Password for {server}"
 msgstr ""
 
@@ -12148,7 +12218,7 @@ msgid "Saturday"
 msgstr ""
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dav_settings.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/signatures.rs
 msgid "Save"
 msgstr ""
 
@@ -12343,6 +12413,11 @@ msgid "Saving a copy of your mailbox before the switch…"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Saving sends nothing. MailCraft reads the servers at its next run."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 msgid "Saving the mailbox…"
 msgstr ""
@@ -12532,7 +12607,7 @@ msgid "Searching the server…"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/address_book.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/dav_settings.rs
 msgid "Searching…"
 msgstr ""
 
@@ -12669,6 +12744,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 msgid "Send Cancellation"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Send It There"
 msgstr ""
 
 #. command label, interface, name
@@ -13072,6 +13152,11 @@ msgstr ""
 #. command label
 #: crates/engine/src/cmd/senders.rs
 msgid "Set Sender Addresses"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Set Up…"
 msgstr ""
 
 #. name
@@ -14051,6 +14136,11 @@ msgstr ""
 msgid "Stop trusting this certificate for this account. If the server shows it again and this computer doesn't trust it, you are asked."
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Stop using these servers"
+msgstr ""
+
 #. interface, what a command says
 #: crates/engine/src/cmd/account.rs crates/ui-egui/src/sync_panel.rs
 msgid "Stopped"
@@ -14722,6 +14812,11 @@ msgid "The account {address} is opened through is gone."
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The account's mail password is used, and only for these addresses."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/check_names.rs
 msgid "The account's password is needed first: press Send/Receive and type it"
 msgstr ""
@@ -14759,6 +14854,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/forms.rs
 msgid "The account's server makes it when the meeting is sent; the link to join by comes back with it."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The address doesn't lead to calendars or contacts. Check it in Change…."
 msgstr ""
 
 #. interface
@@ -15051,6 +15151,11 @@ msgstr ""
 msgid "The contact's form was closed: open it again to add the key"
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The contacts are on another server: File › Info asks for its password."
+msgstr ""
+
 #. interface, what a command says
 #: crates/engine/src/sync_driver/calendar_plan.rs crates/ui-egui/src/lib.rs
 msgid "The contacts couldn't be taken in: {error}"
@@ -15229,6 +15334,11 @@ msgid "The greys the dark theme is drawn in: neutral, or tinted blue. The light 
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The https:// addresses your provider gives for calendars (CalDAV) and contacts (CardDAV). Either may be left empty."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 msgid "The import gave back something that isn't a key's name in the credential store."
 msgstr ""
@@ -15351,6 +15461,11 @@ msgstr ""
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListScreen.kt
 msgid "The mailbox could not be read."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The mailbox holds as much from this server as it may."
 msgstr ""
 
 #. interface
@@ -15679,6 +15794,21 @@ msgid "The search for your Exchange server was sent on to {host}, which isn't in
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search found {host} in your mail domain. It isn't your mail server, and may be a web site rather than a calendar server. Send your password there?"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search was sent to {host}, which isn't one of your servers. Send your password there?"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The search went on too long without an end. Type the server's address."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 msgid "The selected message, as .eml"
 msgstr ""
@@ -15729,6 +15859,11 @@ msgid "The series needs a day to end by"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server answered some requests with errors. MailCraft asks again later."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server answered without the address of Exchange Web Services. Ask your administrator for it and type it in Server settings."
 msgstr ""
@@ -15736,6 +15871,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server answered, but not as an Exchange server does. Check its address in Server settings."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server couldn't be reached. MailCraft tries again later."
 msgstr ""
 
 #. what a command says
@@ -15746,6 +15886,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server didn't accept the user name and password. Check them, or type your user name in Server settings (DOMAIN\\user or you@example.org)."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server didn't accept the user name and password. Nothing else was tried."
 msgstr ""
 
 #. what a command says
@@ -15766,6 +15911,11 @@ msgstr ""
 #. what a command says
 #: crates/engine/src/sync_driver/free_busy.rs
 msgid "The server didn't say when other people are busy"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server didn't say where your calendars or contacts are. Type the server's address."
 msgstr ""
 
 #. interface
@@ -15825,6 +15975,11 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server or the organisation wouldn't give its calendars or contacts. Ask your administrator."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server or the organisation wouldn't give its settings. Ask your administrator for the server's address and type it in Server settings."
 msgstr ""
@@ -15855,6 +16010,16 @@ msgid "The server turned down the sign-in for {name}: sign in again"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server wants a way of signing in that MailCraft can't do yet."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server wouldn't sign in."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server's address must begin with https:// and name the server (https://mail.example.org/EWS/Exchange.asmx)"
 msgstr ""
@@ -15862,6 +16027,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server's address or the user name can't be used. Check them in Server settings."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "The server's answer couldn't be read, or led somewhere that isn't followed. Type the server's address."
 msgstr ""
 
 #. interface
@@ -15887,6 +16057,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 msgid "The server's certificate is for another server's name, so MailCraft won't connect to it. Check the address in Server settings."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "The server's certificate isn't trusted, so nothing was sent to it."
 msgstr ""
 
 #. interface
@@ -16283,6 +16458,16 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/data_removal.rs
 msgid "These could not be removed. Remove them yourself:"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "These servers have a password of their own"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "These settings can't be used as they are: check the addresses (https://) and the user name."
 msgstr ""
 
 #. interface
@@ -16687,6 +16872,16 @@ msgstr ""
 #. what a command says
 #: crates/engine/src/cmd/calendar/invitation.rs
 msgid "This invitation has the ID of a meeting on your calendar but names another organizer, so it can't change that meeting."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "This is a Google address: calendars and contacts from Google aren't read this way. Nothing was sent."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "This is a Microsoft address: its calendars and contacts come with the Microsoft account. Nothing was sent."
 msgstr ""
 
 #. interface
@@ -17783,7 +17978,7 @@ msgid "Use {address}"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs
+#: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs crates/ui-egui/src/dav_settings.rs
 msgid "User name"
 msgstr ""
 
@@ -18110,6 +18305,11 @@ msgid "Where"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Where the calendars and contacts of {account} are kept"
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/security.rs
 msgid "Where the card says the key is: MailCraft doesn't fetch it."
 msgstr ""
@@ -18117,6 +18317,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/merge_contacts.rs
 msgid "Where they differ, the kept contact has:"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "Where this account's calendars and contacts are kept"
 msgstr ""
 
 #. what a command says
@@ -18348,6 +18553,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/reading/invitation.rs
 msgid "You declined this meeting."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/dav_find.rs
+msgid "You didn't agree to send the password to the server the search led to. Type the server's address."
 msgstr ""
 
 #. interface
@@ -22366,6 +22576,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} address book"
+msgid_plural "{n} address books"
+msgstr[0] ""
+msgstr[1] ""
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 msgid "{n} appointment"
 msgid_plural "{n} appointments"
@@ -22408,6 +22625,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} calendar"
+msgid_plural "{n} calendars"
+msgstr[0] ""
+msgstr[1] ""
+
+#. interface
 #: crates/ui-egui/src/import_pst.rs
 msgid "{n} calendar item"
 msgid_plural "{n} calendar items"
@@ -22418,6 +22642,13 @@ msgstr[1] ""
 #: crates/ui-egui/src/lib.rs
 msgid "{n} calendar item selected"
 msgid_plural "{n} calendar items selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} calendar or address book read"
+msgid_plural "{n} calendars and address books read"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -23026,6 +23257,13 @@ msgstr[1] ""
 #: crates/ui-egui/src/chrome.rs
 msgid "{n} open task"
 msgid_plural "{n} open tasks"
+msgstr[0] ""
+msgstr[1] ""
+
+#. interface
+#: crates/ui-egui/src/dav_settings.rs
+msgid "{n} other item isn't read (a task list, a plain file)"
+msgid_plural "{n} other items aren't read (task lists, plain files)"
 msgstr[0] ""
 msgstr[1] ""
 
