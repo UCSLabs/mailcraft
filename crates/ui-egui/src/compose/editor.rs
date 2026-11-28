@@ -701,7 +701,10 @@ fn align_rows(galley: &mut Arc<Galley>, align: Align, room: f32, ppp: f32, reach
     let wrapped = g.rows.len().saturating_sub(1);
     let mut shifts = Vec::with_capacity(g.rows.len());
     for (i, row) in g.rows.iter_mut().enumerate() {
-        // A row that wraps ends with the space it was broken at, which is not counted.
+        // A row that wraps ends with the space it was broken at, which is not counted. The last
+        // row's spaces are counted on purpose: a paragraph's last space, and a space after
+        // another, are sent as `&nbsp;` (`mailcraft_mime_model::rich`), which a reader's
+        // `text-align` counts, so the line is drawn where the recipient will see it.
         let last = row.glyphs.iter().rev().find(|c| !c.chr.is_whitespace());
         let glyphs = match last {
             Some(c) if i < wrapped => c.max_x(),
