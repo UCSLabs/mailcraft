@@ -934,6 +934,9 @@ pub struct UiState {
     /// Desktop: the close button hides the window while mail and reminders keep running.
     #[serde(deserialize_with = "theme::lenient_bool")]
     pub close_to_tray: bool,
+    /// Desktop: the window starts hidden in the system tray while mail and reminders keep running.
+    #[serde(deserialize_with = "theme::lenient_bool")]
+    pub start_to_tray: bool,
     /// The owner has seen where the window goes on its first close to the tray (#544).
     #[serde(deserialize_with = "theme::lenient_bool")]
     pub close_to_tray_notice_seen: bool,
@@ -1088,6 +1091,7 @@ impl Default for UiState {
             high_contrast: false,
             animations: motion::Motion::default(),
             close_to_tray: false,
+            start_to_tray: false,
             close_to_tray_notice_seen: false,
             accent: theme::Accent::default(),
             custom_accent: None,
@@ -1423,6 +1427,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
     ("ui.googleClientId", "Google Desktop Application ID", "File › Options", r#"{"value": string (empty: the build's own)}"#),
     ("ui.rememberSignIn", "Remember Passwords and Sign-Ins", "File › Options", r#"{"value"?: bool (default: toggle)}"#),
     ("ui.closeToTray", "Close to system tray", "File › Options › General", r#"{"value"?: bool (default: toggle)}"#),
+    ("ui.startToTray", "Start hidden in system tray", "File › Options › General", r#"{"value"?: bool (default: toggle)}"#),
     (
         "ui.importPrivateKey",
         "Import Your Certificate or Key",
@@ -3134,6 +3139,20 @@ impl MailApp {
                     Some(_) => return Some(Err("value must be a boolean".into())),
                 };
                 self.ui.close_to_tray = value;
+                Ok(json!({"value": value}))
+            }
+            "ui.startToTray" => {
+                let value = match p.get("value") {
+                    None => !self.ui.start_to_tray,
+                    Some(Value::Bool(value)) => *value,
+                    Some(_) => return Some(Err("value must be a boolean".into())),
+                };
+                self.ui.start_to_tray = value;
+                // Starting hidden needs a tray icon to restore the window from, so switching
+                // "Start hidden in tray" on also switches "Close to system tray" on.
+                if value {
+                    self.ui.close_to_tray = true;
+                }
                 Ok(json!({"value": value}))
             }
             "ui.rememberSignIn" => {

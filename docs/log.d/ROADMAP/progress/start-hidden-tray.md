@@ -1,0 +1,1 @@
+| 2026-11-28 | minor: File › Options › General gains "Start hidden in system tray" (off by default): MailCraft starts with no visible window, only its tray icon, while mail and reminders keep syncing in the background; Linux/FreeBSD needs a reachable X11/XWayland, Windows needs no probe (#1373, [#2042](https://github.com/UCSLabs/mailcraft/pull/2042)). |

@@ -160,6 +160,7 @@ pub fn object(id: &str) -> Option<Object> {
         | "ui.senderImages"
         | "ui.desktopAlerts"
         | "ui.closeToTray"
+        | "ui.startToTray"
         | "ui.repliesInWindow"
         | "ui.attachmentPictures"
         | "ui.swipeAction"
