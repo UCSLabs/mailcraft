@@ -591,9 +591,50 @@ pub struct Account {
     /// or another language makes no second one. `None` until the first message is snoozed.
     #[serde(skip_serializing_if = "Option::is_none", deserialize_with = "crate::sync::lenient")]
     pub snoozed_folder: Option<Id>,
+    /// For an IMAP account whose server keeps Sieve scripts (#2057): the SHA-256 digest, in
+    /// lower-case hexadecimal, of the script MailCraft last wrote there (`mailcraft_net::sieve`).
+    /// Only the digest, never the script: it tells MailCraft's own script from one changed
+    /// elsewhere, which is never written over. Empty when MailCraft never wrote one; a value that
+    /// isn't a digest is read as none.
+    #[serde(skip_serializing_if = "String::is_empty", deserialize_with = "crate::sync::lenient_or_default")]
+    pub sieve_written: String,
+    /// For an IMAP account: the ManageSieve server the owner named in Account Settings, when it
+    /// isn't the IMAP server's host (#2057); empty: the IMAP host. A host named here is the
+    /// owner's own choice of where the sign-in goes, as the IMAP host is.
+    #[serde(skip_serializing_if = "String::is_empty", deserialize_with = "crate::sync::lenient_or_default")]
+    pub sieve_host: String,
+    /// Its port; 0: ManageSieve's own, 4190.
+    #[serde(skip_serializing_if = "crate::is_zero_u16", deserialize_with = "crate::sync::lenient_or_default")]
+    pub sieve_port: u16,
+    /// What the account's ManageSieve server last said its scripts may use (`vacation`,
+    /// `fileinto`, …), lower-cased; empty while it never said, or has no ManageSieve (#2057).
+    /// Kept so that which of the owner's rules its server can keep is known before it is asked
+    /// again ([`Mailbox::keeps_sieve_rules`]).
+    #[serde(skip_serializing_if = "Vec::is_empty", deserialize_with = "crate::sync::lenient_list")]
+    pub sieve_offers: Vec<String>,
 }
 
 impl Account {
+    /// Whether the account's Automatic Replies and rules may be kept in a Sieve script on its
+    /// server (#2057): an IMAP account of its own (not a shared mailbox) that doesn't sign in with
+    /// Microsoft or Google, whose servers keep none.
+    pub fn keeps_sieve(&self) -> bool {
+        let big = self.oauth.as_ref().is_some_and(|o| matches!(o.provider, OAuthProvider::Microsoft | OAuthProvider::Google));
+        self.kind == AccountKind::Imap && self.incoming.is_some() && !self.is_shared() && !big
+    }
+
+    /// Whether its ManageSieve server last said its scripts may use `extension`.
+    pub fn sieve_offers(&self, extension: &str) -> bool {
+        self.sieve_offers.iter().any(|e| e.eq_ignore_ascii_case(extension))
+    }
+
+    /// The digest of the Sieve script MailCraft last wrote on the account's server
+    /// ([`Account::sieve_written`]), when it is one.
+    pub fn sieve_digest(&self) -> Option<&str> {
+        let d = self.sieve_written.as_str();
+        (d.len() == 64 && d.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))).then_some(d)
+    }
+
     /// The name the folder pane gives an account the owner hasn't named (#1017): its address, or
     /// `Mailbox` for one without an address.
     pub fn name_by_default(&self) -> String {
@@ -3335,6 +3376,12 @@ impl Mailbox {
         self.account(account).is_some_and(|a| a.kind == AccountKind::Microsoft && !a.is_shared())
     }
 
+    /// Whether `account`'s rules may be kept in MailCraft's Sieve script on its server (#2057):
+    /// an IMAP account whose ManageSieve server said its scripts may file mail into folders.
+    pub fn keeps_sieve_rules(&self, account: Id) -> bool {
+        self.account(account).is_some_and(|a| a.keeps_sieve() && a.sieve_offers("fileinto"))
+    }
+
     /// Whether a rule for `account`'s mail (its own or every account's, switched on or off, kept
     /// here or on its server) looks for words in the header (#566): only then is a message's header
     /// kept as it came ([`crate::Message::read_header`], up to 64 KB a message), so that the
@@ -3353,7 +3400,8 @@ impl Mailbox {
     /// kept on its account's server does, there and here, as the server does
     /// ([`crate::Matching::addresses_only`]). One kept on this computer reads names too.
     pub fn rule_reads_addresses(&self, rule: &Rule) -> bool {
-        rule.account != 0 && rule.keep == crate::Keep::Server && self.keeps_rules(rule.account)
+        // (An IMAP account's server keeps them in a Sieve script that reads addresses alone too, #2057.)
+        rule.account != 0 && rule.keep == crate::Keep::Server && (self.keeps_rules(rule.account) || self.keeps_sieve_rules(rule.account))
     }
 
     /// Whether the rules for the mail of `then`'s account read `then` and `now` (the same message,

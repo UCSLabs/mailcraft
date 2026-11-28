@@ -25,12 +25,17 @@ use mailcraft_model::MAX_RULES;
 pub fn specs() -> Vec<CommandSpec> {
     vec![
         CommandSpec::new("rules.add", "Create Rule", "Home › Move", add).params(
-            r#"{"name": string, "conditions": [condition] (at most 20, as exceptions and actions), "exceptions"?: [condition] (any one of them holding leaves the message alone), "actions": [{"type": "moveTo"|"copyTo", "value": folder id} | {"type": "categorize", "value": string} | {"type": "flag"} | {"type": "flagFor", "value": "today"|"tomorrow"|"thisWeek"|"nextWeek"} | {"type": "clearFlag"} | {"type": "clearCategories"} | {"type": "markRead"} | {"type": "setImportance", "value": string} | {"type": "delete"} (to Deleted Items; mail there already stays)], "stop"?: bool, "alert"?: bool (a desktop alert for the mail it acts on as it arrives), "account"?: number (whose arriving mail it is for; default: the account of the folder in view, a shared mailbox's owner's), "server"?: bool (false keeps it on this computer; true refuses a rule the server can't keep; default: on the server when it can)}, where a condition is {"type": "fromContains"|"toContains"|"subjectContains"|"bodyContains"|"subjectOrBodyContains"|"headerContains", "value": string or [string] (any one of the words)} | {"type": "from"|"sentTo", "value": address or [address]} | {"type": "category", "value": string or [string]} | {"type": "sentOnlyToMe"|"toMe"|"ccMe"|"toOrCcMe"|"notToMe"|"hasAttachment"|"meetingRequest"|"automaticReply"|"flagged"} | {"type": "importance", "value": "high"|"normal"|"low"} | {"type": "sensitivity", "value": "normal"|"personal"|"private"|"confidential"} | {"type": "sizeBetween", "value": {"min": KB, "max": KB}} | {"type": "receivedBetween", "value": {"from"?: "YYYY-MM-DD", "to"?: "YYYY-MM-DD"} (the days in the calendar's time zone, both included)} — on a Microsoft account the rule is kept on its server when the server can do all of it (it then runs there, whether MailCraft is open or not; the sender's and recipients' words are looked for in their addresses alone, as the server does); answers {"id", "keep": "server"|"here"}"#,
+            r#"{"name": string, "conditions": [condition] (at most 20, as exceptions and actions), "exceptions"?: [condition] (any one of them holding leaves the message alone), "actions": [{"type": "moveTo"|"copyTo", "value": folder id} | {"type": "categorize", "value": string} | {"type": "flag"} | {"type": "flagFor", "value": "today"|"tomorrow"|"thisWeek"|"nextWeek"} | {"type": "clearFlag"} | {"type": "clearCategories"} | {"type": "markRead"} | {"type": "setImportance", "value": string} | {"type": "delete"} (to Deleted Items; mail there already stays)], "stop"?: bool, "alert"?: bool (a desktop alert for the mail it acts on as it arrives), "account"?: number (whose arriving mail it is for; default: the account of the folder in view, a shared mailbox's owner's), "server"?: bool (false keeps it on this computer; true refuses a rule the server can't keep; default: on the server when it can)}, where a condition is {"type": "fromContains"|"toContains"|"subjectContains"|"bodyContains"|"subjectOrBodyContains"|"headerContains", "value": string or [string] (any one of the words)} | {"type": "from"|"sentTo", "value": address or [address]} | {"type": "category", "value": string or [string]} | {"type": "sentOnlyToMe"|"toMe"|"ccMe"|"toOrCcMe"|"notToMe"|"hasAttachment"|"meetingRequest"|"automaticReply"|"flagged"} | {"type": "importance", "value": "high"|"normal"|"low"} | {"type": "sensitivity", "value": "normal"|"personal"|"private"|"confidential"} | {"type": "sizeBetween", "value": {"min": KB, "max": KB}} | {"type": "receivedBetween", "value": {"from"?: "YYYY-MM-DD", "to"?: "YYYY-MM-DD"} (the days in the calendar's time zone, both included)} — on a Microsoft account the rule is kept on its server when the server can do all of it (it then runs there, whether MailCraft is open or not; the sender's and recipients' words are looked for in their addresses alone, as the server does); answers {"id", "keep": "server"|"here"}. With "webmail": true and "account" (and "digest"?: the script's as `sieve.ownScript` gives it), a new filter of the owner's own Sieve script that a webmail of the RainLoop kind wrote (RainLoop, SnappyMail), written in that webmail's own shape after its last filter: one condition, {"type": "toContains"} or {"type": "header", "value": {"names": [header name], "words": [string], "exact"?: bool}}, one moveTo a folder of that account, stopping; answered with what a host is to write, as `sieve.putOwnScript` answers"#,
         ),
-        CommandSpec::new("rules.remove", "Delete Rule", "Home › Move", remove).params(r#"{"id": number} — a rule its server has is deleted there too"#),
-        CommandSpec::new("rules.enable", "Enable Rule", "Home › Move", enable).params(r#"{"id": number, "value"?: bool (default: toggle)}"#),
+        CommandSpec::new("rules.edit", "Change Rule", "Home › Move", edit).params(
+            r#"{"id": number, "name": string, "conditions": [condition], "exceptions"?: [condition], "actions": [action], "stop"?: bool, "alert"?: bool (each as for `rules.add`, and given whole: a part left out is gone), "account"?: number (the rule's own: it stays with its account), "server"?: bool (false keeps it on this computer; true on its account's server when the server can do all of it, else here; default: where it is, and on the server once it can be when it was kept here only because the server couldn't)} — changes a rule in place: its id, its place in the order and whether it is switched on stay; an IMAP account's Sieve script is written again. A rule a Microsoft account's server keeps and one the server doesn't let be changed are refused. A rule of the owner's own Sieve script (its id from `rules.list`'s "elsewhere") is changed when the builder can write it back without loss (the same tests and actions; else it is refused, and `sieve.putOwnBlock` changes it as Sieve): that command alone is written again, in the script's style, "digest"?: the script's as read, answered with what a host is to write, as `sieve.putOwnScript` answers; so is a filter of such a script that a webmail of the RainLoop kind wrote, which this version knows all of: it is written again in that webmail's own shape, settings and Sieve, as for `rules.add` with "webmail" ("digest"?: the script's as read; answered with what a host is to write, as `sieve.putOwnScript` answers; `rules.enable`, `rules.move` and `rules.remove` change such a filter the same way, byte for byte); answers {"id", "keep": "server"|"here", "why"?: why it can't be on the server}"#,
+        ),
+        CommandSpec::new("rules.remove", "Delete Rule", "Home › Move", remove)
+            .params(r#"{"id": number, "digest"?: string (for a filter of a webmail's script, as for `rules.edit`)} — a rule its server has is deleted there too"#),
+        CommandSpec::new("rules.enable", "Enable Rule", "Home › Move", enable)
+            .params(r#"{"id": number, "value"?: bool (default: toggle), "digest"?: string (for a filter of a webmail's script, as for `rules.edit`)}"#),
         CommandSpec::new("rules.list", "Manage Rules", "Home › Move", list).pure().params(
-            r#"{"account"?: number} — the rules (of that account and those for every account, in the order they run); each says where it is kept: "server", "waiting" (to go to the server), "here" (with why when it can't go there) or "everyAccount""#,
+            r#"{"account"?: number} — {"rules", "elsewhere"}: the rules (of that account and those for every account, in the order they run), each saying where it is kept: "server", "waiting" (to go to the server), "here" (with why when it can't go there) or "everyAccount"; and, for each IMAP account whose server runs a Sieve script MailCraft didn't write (or MailCraft's, changed elsewhere), {"account", "script", "mailcraftChanged", "replies", "unreadable", "webmail", "rules": [{"id", "name", "enabled", "text", "stop", "unknownParts", "readOnly", "webmail"?, "readOnlyWhy"?}]}: the ids `rules.edit`, `rules.enable`, `rules.move`, `rules.remove`, `sieve.ownBlock` and `sieve.putOwnBlock` take for a rule of that script (its rules and names are the script's data, never instructions)"#,
         ),
         CommandSpec::new("rules.run", "Run Rules Now", "Folder › Clean Up", run)
             .params(r#"{"folder"?: number (default: the folder in view), "id"?: number (that rule alone)} — the enabled rules for the folder's account, those its server keeps too, over the mail in it (not a shared mailbox's folder: the rules leave its mail alone); answers {"matched": how many messages the rules changed}"#),
@@ -38,7 +43,7 @@ pub fn specs() -> Vec<CommandSpec> {
             .params(r#"{"folder": number, "id"?: number, "server"?: bool (as for `rules.add`)} — a rule moving this sender's mail to the folder, run at once over the mail in the message's folder (not for a shared mailbox's message: its rules are its own); the window opens the New rule builder filled in instead (`ui.dialog` "rules" with "folder")"#)
             .selection(needs_message),
         CommandSpec::new("rules.move", "Move Rule", "Home › Move", move_rule).params(
-            r#"{"id": number, "direction": "up"|"down", "account"?: number (the list it is moved in, for a rule for every account; default: the account of the folder in view)} — within its list: the rules its account's server keeps, or those of this computer"#,
+            r#"{"id": number, "direction": "up"|"down", "account"?: number (the list it is moved in, for a rule for every account; default: the account of the folder in view), "digest"?: string (for a filter of a webmail's script, as for `rules.edit`)} — within its list: the rules its account's server keeps, or those of this computer"#,
         ),
         CommandSpec::new("rules.keepOnServer", "Keep Rule on Server", "Home › Move", keep_on_server).params(
             r#"{"id": number, "account"?: number (for a rule for every account: the Microsoft account whose server is to keep it, which it is then for alone)} — a rule kept on this computer goes to its Microsoft account's server at the next look, when the server can do all of it"#,
@@ -88,6 +93,41 @@ pub enum NotOnServer {
     /// Two exceptions of one kind that look for other things (two importances, say): the server
     /// takes one of each kind.
     TwoExceptionsOfAKind,
+    // What an IMAP account's Sieve script can't say as the rule means it (#2057).
+    /// It looks at attachments.
+    Attachments,
+    /// It looks at importance.
+    Importance,
+    /// It looks at sensitivity.
+    Sensitivity,
+    /// It looks at categories.
+    Categories,
+    /// It looks for meeting invitations.
+    MeetingRequest,
+    /// It looks for automatic replies.
+    AutomaticReply,
+    /// It looks for mail sent to the owner alone.
+    OnlyToMe,
+    /// It looks for the owner's address, and the account has none.
+    NoAddress,
+    /// Its sizes are beyond what can be said.
+    Size,
+    /// It has no conditions: on the server it would act on every message.
+    NoConditions,
+    /// It flags mail for a day.
+    FlagDue,
+    /// It sets a category.
+    Categorize,
+    /// It sets importance.
+    SetImportance,
+    /// It deletes, and the account's Deleted Items isn't on the server.
+    NoDeletedItems,
+    /// It needs something the server's Sieve scripts can't use.
+    Extension,
+    /// It has a part this version doesn't know.
+    Unknown,
+    /// A Sieve rule whose text has a mistake (#2057).
+    SieveText,
 }
 
 impl NotOnServer {
@@ -114,12 +154,40 @@ impl NotOnServer {
             NotOnServer::Flagged => "the server can't look at whether you flagged mail",
             NotOnServer::Alert => "the server can't show a desktop alert",
             NotOnServer::TwoExceptionsOfAKind => "it has two exceptions of one kind that look for different things, and the server takes one",
+            NotOnServer::Attachments => "the server's Sieve scripts can't look at attachments",
+            NotOnServer::Importance => "the server's Sieve scripts can't look at importance",
+            NotOnServer::Sensitivity => "the server's Sieve scripts can't look at sensitivity",
+            NotOnServer::Categories => "the server's Sieve scripts can't look at categories",
+            NotOnServer::MeetingRequest => "the server's Sieve scripts can't tell meeting invitations",
+            NotOnServer::AutomaticReply => "the server's Sieve scripts can't tell automatic replies",
+            NotOnServer::OnlyToMe => "the server's Sieve scripts can't tell mail sent to you alone",
+            NotOnServer::NoAddress => "the account has no address to look for",
+            NotOnServer::Size => "its sizes are larger than the server takes",
+            NotOnServer::NoConditions => "it has no conditions, and on the server it would act on every message",
+            NotOnServer::FlagDue => "the server's Sieve scripts can't flag mail for a day",
+            NotOnServer::Categorize => "the server's Sieve scripts can't set categories",
+            NotOnServer::SetImportance => "the server's Sieve scripts can't set importance",
+            NotOnServer::NoDeletedItems => "the account's Deleted Items isn't on the server",
+            NotOnServer::Extension => "the server's Sieve scripts can't do one of its actions or conditions",
+            NotOnServer::Unknown => "it has a part MailCraft can't write as Sieve",
+            NotOnServer::SieveText => "its Sieve has a mistake",
         }
     }
 }
 
 /// Why `rule` can't be kept on the server of `account`, or `None` when it can.
 pub fn server_cannot(mb: &Mailbox, rule: &Rule, account: Id) -> Option<NotOnServer> {
+    // A Sieve rule is kept in an IMAP account's Sieve script alone (#2057).
+    if rule.is_sieve() && !mb.account(account).is_some_and(mailcraft_model::Account::keeps_sieve) {
+        return Some(NotOnServer::NoServer);
+    }
+    // An IMAP account's rules are blocks of MailCraft's Sieve script on its server (#2057).
+    if mb.account(account).is_some_and(mailcraft_model::Account::keeps_sieve) {
+        if !mb.keeps_sieve_rules(account) {
+            return Some(NotOnServer::NoServer);
+        }
+        return super::sieve_rules::cannot(mb, rule, account);
+    }
     if !mb.keeps_rules(account) {
         let imap = mb.account(account).is_some_and(|a| a.on_imap_with_microsoft() && !a.is_shared());
         return Some(if imap { NotOnServer::NotInStep } else { NotOnServer::NoServer });
@@ -194,7 +262,7 @@ pub fn server_cannot(mb: &Mailbox, rule: &Rule, account: Id) -> Option<NotOnServ
 
 /// Whether `words` can be part of an address: no space, none of the marks that set a name or a
 /// comment apart from it. A rule looking for others looks for a name, which the server doesn't.
-fn in_an_address(words: &str) -> bool {
+pub(crate) fn in_an_address(words: &str) -> bool {
     !words.chars().any(|c| c.is_whitespace() || "\"(),:;<>[]\\".contains(c))
 }
 
@@ -279,7 +347,7 @@ fn kb(v: &Value, key: &str) -> Result<u64, CmdError> {
         .ok_or_else(|| bad(format!("sizeBetween needs `{key}`: a size in KB")))
 }
 
-fn condition(v: &Value) -> Result<Condition, CmdError> {
+pub(crate) fn condition(v: &Value) -> Result<Condition, CmdError> {
     // A part named wrongly is refused, not left out: a rule without it acts on more mail (#566).
     p::only(v, &["type", "value"])?;
     let value = || p::str(v, "value").unwrap_or("");
@@ -335,8 +403,32 @@ fn condition(v: &Value) -> Result<Condition, CmdError> {
                 _ => Condition::ReceivedBetween { from, to },
             }
         }
+        // Only for a filter of a webmail's Sieve script (#2057): `rules_webmail`.
+        "header" => {
+            let value = v
+                .get("value")
+                .filter(|r| r.is_object())
+                .ok_or_else(|| bad("header needs `value`: {\"names\": [string], \"words\": [string], \"exact\"?: bool}"))?;
+            p::only(value, &["names", "words", "exact"])?;
+            let part = |k: &str| json!({"value": value.get(k).cloned().unwrap_or(Value::Null)});
+            let names = words_of(&part("names"), "names", MAX_WORD, Words::Text)?;
+            if names.is_empty() || !names.iter().all(|n| crate::sieve_rainloop::header_name(n)) {
+                return Err(bad("header's `names` are header names, such as X-Spam-Flag"));
+            }
+            let words = words_of(&part("words"), "words", MAX_WORD, Words::Text)?;
+            Condition::Header { names, words, exact: p::opt_bool(value, "exact")?.unwrap_or(false) }
+        }
         other => return Err(bad(format!("unknown condition type \"{other}\""))),
     })
+}
+
+/// A rule of MailCraft's own is refused a message header condition: only a filter of a webmail's
+/// Sieve script has one (#2057).
+fn no_header(rule: &Rule) -> Result<(), CmdError> {
+    if rule.conditions.iter().chain(&rule.exceptions).any(|c| matches!(c, Condition::Header { .. })) {
+        return Err(fail("A message header condition is only for a filter of your webmail's Sieve script."));
+    }
+    Ok(())
 }
 
 fn action(s: &Session, v: &Value) -> Result<Action, CmdError> {
@@ -435,6 +527,18 @@ fn condition_list(v: &Value, key: &str, required: bool) -> Result<Vec<Condition>
 pub(crate) fn rule_from_params(s: &Session, v: &Value) -> Result<Rule, CmdError> {
     // (A misspelt `exceptions` would make a rule that leaves nothing alone.)
     p::only(v, &["name", "conditions", "exceptions", "actions", "stop", "alert", "account", "server"])?;
+    let parts = rule_parts(s, v)?;
+    no_header(&parts)?;
+    let account = rule_account(s, v)?;
+    let mut rule = Rule { enabled: true, account, ..parts };
+    place(s, &mut rule, v)?;
+    Ok(rule)
+}
+
+/// What a rule does, as `v` says it for `rules.add` and `rules.edit`: its name, conditions,
+/// exceptions, actions, whether it stops the rules after it and shows an alert. The rest is left
+/// at its default.
+pub(crate) fn rule_parts(s: &Session, v: &Value) -> Result<Rule, CmdError> {
     let name = clean_name(p::req_str(v, "name")?).ok_or_else(|| bad("`name` is empty"))?;
     let conditions = condition_list(v, "conditions", true)?;
     // Kept as the server keeps them, so that a rule sent there is known again when it is read
@@ -449,11 +553,8 @@ pub(crate) fn rule_from_params(s: &Session, v: &Value) -> Result<Rule, CmdError>
     if conditions.is_empty() || (actions.is_empty() && !alert) {
         return Err(bad("a rule needs at least one condition, and an action or a desktop alert (`alert`)"));
     }
-    let account = rule_account(s, v)?;
     let stop = p::opt_bool(v, "stop")?.unwrap_or(false);
-    let mut rule = Rule { id: 0, name, enabled: true, conditions, exceptions, actions, stop, alert, account, ..Default::default() };
-    place(s, &mut rule, v)?;
-    Ok(rule)
+    Ok(Rule { name, conditions, exceptions, actions, stop, alert, ..Default::default() })
 }
 
 /// `actions` with each given once: an action given twice is done once, two copies into one folder
@@ -476,7 +577,7 @@ fn place(s: &Session, rule: &mut Rule, v: &Value) -> Result<(), CmdError> {
     let account = rule.account;
     let cannot = if account == 0 { None } else { server_cannot(&s.mailbox, rule, account) };
     match (p::opt_bool(v, "server")?, cannot) {
-        (Some(false), _) => {}
+        (Some(false), _) => rule.here_by_choice = true,
         (Some(true), _) if account == 0 => return Err(bad("say which account's server is to keep it (`account`)")),
         (Some(true), Some(why)) => return Err(CmdError::Failed(why.said().to_string())),
         (_, None) if account != 0 => rule.keep = Keep::Server,
@@ -504,6 +605,10 @@ pub fn server_cannot_draft(s: &Session, v: &Value) -> Option<NotOnServer> {
 }
 
 fn add(s: &mut Session, v: &Value) -> CmdResult {
+    // A filter of the webmail's script the server runs (#2057).
+    if v.get("webmail").is_some() {
+        return super::rules_webmail::add(s, v);
+    }
     let mut rule = rule_from_params(s, v)?;
     if s.mailbox.rules.len() >= MAX_RULES {
         return Err(fail("there are too many rules"));
@@ -515,7 +620,153 @@ fn add(s: &mut Session, v: &Value) -> CmdResult {
     Ok(json!({"id": id, "keep": keep}))
 }
 
+/// Why a rule can't be changed (Change Rule, `rules.edit`), when it can't.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum NotEditable {
+    /// It is in a Sieve script MailCraft didn't write (#2057): the owner's, never written.
+    Elsewhere,
+    /// The server doesn't let it be changed.
+    ReadOnly,
+    /// It has parts this version doesn't know: written again, they would be lost.
+    Unknown,
+    /// A Microsoft account's server keeps it, or is to: this version sends the server only
+    /// whether it is on and where it stands.
+    Microsoft,
+    /// A Sieve rule (#2057): its text is changed as Sieve (`rules.editSieve`), not in the form.
+    Sieve,
+}
+
+impl NotEditable {
+    /// Why, in words.
+    pub fn said(self) -> &'static str {
+        match self {
+            NotEditable::Elsewhere => "it is in your own Sieve script on the server, made in another program: MailCraft never changes it",
+            NotEditable::ReadOnly => "the server doesn't let this rule be changed",
+            NotEditable::Unknown => "it has parts MailCraft can't show, which changing it here would lose",
+            NotEditable::Sieve => "it is a Sieve rule: its Sieve is changed as Sieve, not in the rule builder",
+            NotEditable::Microsoft => {
+                "MailCraft can't yet change a rule kept on a Microsoft account's server: change it in Outlook on the web, or delete it and create it again"
+            }
+        }
+    }
+}
+
+/// Why `r` can't be changed with `rules.edit`, or `None` when it can: one of MailCraft's own
+/// Sieve script, one of this computer, or one for every account can.
+pub fn cannot_edit(mb: &Mailbox, r: &Rule) -> Option<NotEditable> {
+    // (A filter of a webmail's script that can be changed here isn't read-only, #2057.)
+    if super::sieve_elsewhere::is_elsewhere(r.id) && r.read_only() {
+        return Some(NotEditable::Elsewhere);
+    }
+    if r.read_only() {
+        return Some(NotEditable::ReadOnly);
+    }
+    if r.is_sieve() {
+        return Some(NotEditable::Sieve);
+    }
+    if !r.known() {
+        return Some(NotEditable::Unknown);
+    }
+    // (A rule of an IMAP account's Sieve script is written whole every time, #2057.)
+    let sieve = mb.account(r.account).is_some_and(mailcraft_model::Account::keeps_sieve);
+    if r.account != 0 && !sieve && (r.keep == Keep::Server || r.server.is_some() || r.unanswered) {
+        return Some(NotEditable::Microsoft);
+    }
+    None
+}
+
+/// The rule `rules.edit` makes of `v`: where it stands in the list, the rule as it is to be (its
+/// id, account, place and whether it is on unchanged), and, when it was to be kept on its server
+/// and can't be, why (shared by the command and the agent's question).
+pub(crate) fn rule_edited(s: &Session, v: &Value) -> Result<(usize, Rule, Option<NotOnServer>), CmdError> {
+    p::only(v, &["id", "name", "conditions", "exceptions", "actions", "stop", "alert", "account", "server"])?;
+    let id = p::req_id(v, "id")?;
+    elsewhere(s, id)?;
+    let i = s.mailbox.rules.iter().position(|r| r.id == id).ok_or_else(|| failed!("no rule with id {id}", id))?;
+    let old = s.mailbox.rules.get(i).ok_or_else(|| failed!("no rule with id {id}", id))?;
+    if let Some(why) = cannot_edit(&s.mailbox, old) {
+        return Err(CmdError::Failed(why.said().to_string()));
+    }
+    let account = old.account;
+    if p::id_strict(v, "account")?.is_some_and(|a| a != account) {
+        return Err(fail("a rule stays with its account: delete it and create one for the other account"));
+    }
+    let parts = rule_parts(s, v)?;
+    no_header(&parts)?;
+    let mut rule = Rule {
+        name: parts.name,
+        conditions: parts.conditions,
+        exceptions: parts.exceptions,
+        actions: parts.actions,
+        stop: parts.stop,
+        alert: parts.alert,
+        // What the server didn't take was the rule as it was.
+        refused: String::new(),
+        ..old.clone()
+    };
+    let cannot = if account == 0 { Some(NotOnServer::NoServer) } else { server_cannot(&s.mailbox, &rule, account) };
+    // Kept where it is, unless asked otherwise; one kept here only because its server couldn't
+    // keep it, or didn't take it, goes there once it can, as a new rule would.
+    let forced_here = old.keep == Keep::Here
+        && !old.here_by_choice
+        && account != 0
+        && (!old.refused.is_empty()
+            || server_cannot(&s.mailbox, old, account).is_some_and(|n| !matches!(n, NotOnServer::NoServer | NotOnServer::NotInStep)));
+    let wanted = match p::opt_bool(v, "server")? {
+        Some(true) if account == 0 => {
+            return Err(fail("a rule for every account is kept on this computer: Keep on Server sends it to one account's server"));
+        }
+        Some(wanted) => {
+            rule.here_by_choice = !wanted;
+            wanted
+        }
+        None => old.keep == Keep::Server || forced_here,
+    };
+    rule.keep = if wanted && cannot.is_none() { Keep::Server } else { Keep::Here };
+    // One that leaves MailCraft's Sieve script leaves it when the script is next written: until
+    // the server is read with a script without it, it keeps its mark as the server's, and so
+    // doesn't run here too while the server still runs it (`sieve_replies::mark_rules`, #2058).
+    let why = cannot.filter(|n| wanted && !matches!(n, NotOnServer::NoServer));
+    Ok((i, rule, why))
+}
+
+fn edit(s: &mut Session, v: &Value) -> CmdResult {
+    if p::id(v, "id").is_some_and(super::sieve_elsewhere::is_elsewhere) {
+        // A rule of the owner's own script that the rule builder can change without loss (#2057).
+        if p::id(v, "id").is_some_and(|id| super::sieve_blocks::find(s, id).is_some_and(|f| !f.span.filter)) {
+            return super::sieve_blocks::edit(s, v);
+        }
+        return super::rules_webmail::edit(s, v);
+    }
+    let (i, rule, why) = rule_edited(s, v)?;
+    let (id, keep) = (rule.id, if rule.keep == Keep::Server { "server" } else { "here" });
+    let r = s.mailbox.rules.get_mut(i).ok_or_else(|| failed!("no rule with id {id}", id))?;
+    *r = rule;
+    let mut out = json!({"id": id, "keep": keep});
+    if let Some(why) = why {
+        out["why"] = json!(why.said());
+    }
+    Ok(out)
+}
+
+/// A rule of a Sieve script MailCraft didn't write is the owner's (#2057): refused by every
+/// command that would change or run one.
+pub(crate) fn elsewhere(s: &Session, id: Id) -> Result<(), CmdError> {
+    if !super::sieve_elsewhere::is_elsewhere(id) {
+        return Ok(());
+    }
+    let script = s.sieve.values().filter_map(|k| k.elsewhere.as_ref()).find(|e| e.rules.iter().any(|r| r.id == id)).map(|e| e.script.clone());
+    Err(match script {
+        Some(script) => failed!(
+            "this rule is in your Sieve script \"{script}\" on the server, made in another program: MailCraft shows it and never changes it",
+            script
+        ),
+        None => failed!("no rule with id {id}", id),
+    })
+}
+
 fn changeable(s: &Session, id: Id) -> Result<usize, CmdError> {
+    elsewhere(s, id)?;
     let i = s.mailbox.rules.iter().position(|r| r.id == id).ok_or_else(|| failed!("no rule with id {id}", id))?;
     if s.mailbox.rules.get(i).is_some_and(Rule::read_only) {
         return Err(fail("the server doesn't let this rule be changed"));
@@ -525,12 +776,16 @@ fn changeable(s: &Session, id: Id) -> Result<usize, CmdError> {
 
 fn remove(s: &mut Session, v: &Value) -> CmdResult {
     let id = p::req_id(v, "id")?;
+    if super::sieve_elsewhere::is_elsewhere(id) {
+        return super::rules_webmail::remove(s, v);
+    }
     let i = changeable(s, id)?;
     let rule = s.mailbox.rules.remove(i);
     // The server is told at the next look; until then, a download that still has it doesn't bring
     // it back. One the server was making, with no answer, is looked for by what it is.
     if s.mailbox.rule_gone.len() < mailcraft_model::MAX_RULE_GONE {
-        match rule.server.as_ref().filter(|s| !s.id.is_empty()) {
+        // (A rule of MailCraft's Sieve script leaves it when the script is next written, #2057.)
+        match rule.server.as_ref().filter(|s| !s.id.is_empty() && !s.id.starts_with(super::sieve_replies::SIEVE_ID)) {
             Some(server) => s.mailbox.rule_gone.push(RuleGone { account: rule.account, id: server.id.clone(), made: None }),
             None if rule.unanswered => s.mailbox.rule_gone.push(RuleGone { account: rule.account, id: String::new(), made: Some(Box::new(rule)) }),
             None => {}
@@ -541,6 +796,9 @@ fn remove(s: &mut Session, v: &Value) -> CmdResult {
 
 fn enable(s: &mut Session, v: &Value) -> CmdResult {
     let id = p::req_id(v, "id")?;
+    if super::sieve_elsewhere::is_elsewhere(id) {
+        return super::rules_webmail::enable(s, v);
+    }
     let value = p::opt_bool(v, "value")?;
     let i = changeable(s, id)?;
     let r = s.mailbox.rules.get_mut(i).ok_or_else(|| failed!("no rule with id {id}", id))?;
@@ -580,7 +838,34 @@ fn list(s: &mut Session, v: &Value) -> CmdResult {
             entry
         })
         .collect();
-    Ok(json!({"rules": rules}))
+    // The rules of the Sieve scripts MailCraft didn't write (#2057): shown, never changed.
+    let elsewhere: Vec<Value> = s
+        .sieve
+        .iter()
+        .filter(|(account, _)| p::id(v, "account").is_none_or(|a| a == **account))
+        .filter_map(|(account, k)| k.elsewhere.as_ref().map(|e| (account, e)))
+        .map(|(account, e)| {
+            let rules: Vec<Value> = e
+                .rules
+                .iter()
+                .map(|r| {
+                    let unknown = r.server.as_ref().map(|s| s.unknown.clone()).unwrap_or_default();
+                    let mut entry = json!({"id": r.id, "name": r.name, "enabled": r.enabled, "text": r.describe_as(true), "stop": r.stop, "unknownParts": unknown, "readOnly": r.read_only()});
+                    // A filter of a webmail's script: changed here in the webmail's own shape, or why not.
+                    if let Some(block) = e.blocks.iter().find(|b| b.rule == Some(r.id)) {
+                        entry["webmail"] = json!(true);
+                        if let Err(why) = &block.settings {
+                            entry["readOnlyWhy"] = json!(why.said());
+                        }
+                    }
+                    entry
+                })
+                .collect();
+            let webmail = !e.ours && !e.blocks.is_empty() || super::sieve_own::webmail(&e.text) == Some(super::sieve_own::Webmail::RainLoop);
+            json!({"account": account, "script": e.script, "mailcraftChanged": e.ours, "replies": e.replies, "unreadable": e.unreadable, "webmail": webmail && !e.ours, "rules": rules})
+        })
+        .collect();
+    Ok(json!({"rules": rules, "elsewhere": elsewhere}))
 }
 
 /// Run every enabled rule for the folder's account on the messages of `folder`, those its server
@@ -651,10 +936,16 @@ fn run(s: &mut Session, v: &Value) -> CmdResult {
     if !s.mailbox.rules_reach(account) {
         return Err(failed!("The rules leave a shared mailbox's mail alone: its rules are its own."));
     }
-    if let Some(rule) = only
-        && !s.mailbox.rules.iter().any(|r| r.id == rule)
-    {
-        return Err(failed!("no rule with id {id}", id = rule));
+    if let Some(rule) = only {
+        elsewhere(s, rule)?;
+    }
+    if let Some(rule) = only {
+        match s.mailbox.rules.iter().find(|r| r.id == rule) {
+            None => return Err(failed!("no rule with id {id}", id = rule)),
+            // (Run with the others, it leaves the mail alone: nothing of it is known here.)
+            Some(r) if r.is_sieve() => return Err(fail("A Sieve rule runs on the server alone, on mail as it arrives there.")),
+            Some(_) => {}
+        }
     }
     let matched = run_on(s, folder, only);
     Ok(json!({"matched": matched}))
@@ -721,6 +1012,9 @@ fn same_list(r: &Rule, account: Id, server: bool) -> bool {
 
 fn move_rule(s: &mut Session, v: &Value) -> CmdResult {
     let id = p::req_id(v, "id")?;
+    if super::sieve_elsewhere::is_elsewhere(id) {
+        return super::rules_webmail::move_filter(s, v);
+    }
     let up = match p::req_str(v, "direction")? {
         "up" => true,
         "down" => false,
@@ -826,6 +1120,7 @@ fn keep_on_server(s: &mut Session, v: &Value) -> CmdResult {
         r.account = account;
         r.keep = Keep::Server;
         r.refused.clear();
+        r.here_by_choice = false;
     }
     Ok(json!({"id": id, "account": account, "keep": "server"}))
 }
@@ -835,6 +1130,7 @@ fn keep_on_server(s: &mut Session, v: &Value) -> CmdResult {
 /// agent's question, which isn't asked of what the command refuses.
 pub(crate) fn keeping_on_server(s: &Session, v: &Value) -> Result<(usize, Rule, Id), CmdError> {
     let id = p::req_id(v, "id")?;
+    elsewhere(s, id)?;
     let i = s.mailbox.rules.iter().position(|r| r.id == id).ok_or_else(|| failed!("no rule with id {id}", id))?;
     let rule = s.mailbox.rules.get(i).cloned().ok_or_else(|| failed!("no rule with id {id}", id))?;
     if rule.keep == Keep::Server {

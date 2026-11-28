@@ -63,6 +63,12 @@ msgstr "„{line}” nu este un răspuns IMAP"
 msgid "\"{line}\" is not an SMTP reply"
 msgstr "„{line}” nu este un răspuns SMTP"
 
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+#, fuzzy
+msgid "\"{name}\" can't be used as a script name"
+msgstr "„{name}” nu poate fi folosit ca nume de script"
+
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
@@ -142,6 +148,12 @@ msgid "\"{title}\" is cancelled, so it can't be added to the selection."
 msgstr "„{title}” este anulată, deci nu poate fi adăugată la selecție."
 
 #. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "\"{value}\" isn't a relation (gt, ge, lt, le, eq or ne)."
+msgstr "„{value}” nu este o relație (gt, ge, lt, le, eq sau ne)."
+
+#. what a command says
 #: crates/engine/src/cmd/graph_send.rs
 #, fuzzy
 msgid "'{subject}' may have been sent, even if its copy in Sent (or Drafts) is still marked as a draft. It is held in the Outbox."
@@ -170,6 +182,12 @@ msgstr "„{subject}” rămâne unde a fost mutat: este semnat digital sau crip
 #, fuzzy
 msgid "(No title)"
 msgstr "(Fără titlu)"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "(Of the text as it was: it has changed since.)"
+msgstr "(Despre textul de atunci: s-a schimbat între timp.)"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -459,6 +477,42 @@ msgstr "6 luni"
 msgid "60 Minutes"
 msgstr "60 minute"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} can't go with :{other}."
+msgstr ":{tag} nu poate merge cu :{other}."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} is given twice."
+msgstr ":{tag} este dat de două ori."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} must come before the other arguments."
+msgstr ":{tag} trebuie să vină înaintea celorlalte argumente."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} needs a number after it."
+msgstr ":{tag} trebuie urmat de un număr."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} needs a string after it."
+msgstr ":{tag} trebuie urmat de un șir."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid ":{tag} needs a string or a list after it."
+msgstr ":{tag} trebuie urmat de un șir sau o listă."
+
 #. interface
 #: crates/ui-egui/src/credits.rs
 #, fuzzy
@@ -482,6 +536,66 @@ msgstr "Se importă un fișier .pst: încercați din nou după ce se termină"
 #, fuzzy
 msgid "A JMAP account's mail can't be snoozed yet."
 msgstr "Mesajele unui cont JMAP nu pot fi amânate încă."
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "A ManageSieve server greets as soon as it is connected to. This port may expect an encrypted connection from the start (on Dovecot, ssl = yes on the sieve listener), which ManageSieve doesn't use: it starts unencrypted and switches to encryption with STARTTLS. Or a proxy in front of the server waits for something MailCraft doesn't send. Check the Sieve server (Automatic Replies) in Account Settings, or ask the server's administrator."
+msgstr "Un server ManageSieve salută imediat ce se face conexiunea. Este posibil ca acest port să aștepte o conexiune criptată de la început (în Dovecot, ssl = yes pe listener-ul sieve), pe care ManageSieve nu o folosește: începe necriptat și trece la criptare cu STARTTLS. Sau un proxy din fața serverului așteaptă ceva ce MailCraft nu trimite. Verificați serverul Sieve (răspunsuri automate) din setările contului sau întrebați administratorul serverului."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A Sieve rule is at most 64 KB."
+msgstr "O regulă Sieve are cel mult 64 KB."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "A Sieve rule is at most {kb} KB."
+msgstr "O regulă Sieve are cel mult {kb} KB."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "A Sieve rule is kept in the Sieve script on an IMAP account's server; this account has none."
+msgstr "O regulă Sieve se păstrează în scriptul Sieve de pe serverul unui cont IMAP; acest cont nu are unul."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A Sieve rule needs a name."
+msgstr "O regulă Sieve are nevoie de un nume."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A Sieve rule needs some Sieve."
+msgstr "O regulă Sieve are nevoie de cod Sieve."
+
+#. what a command says
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "A Sieve rule runs on the server alone, on mail as it arrives there."
+msgstr "O regulă Sieve rulează doar pe server, asupra mesajelor în momentul în care ajung acolo."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A Sieve script is at most 1 MB."
+msgstr "Un script Sieve are cel mult 1 MB."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "A Sieve script is at most {mb} MB."
+msgstr "Un script Sieve are cel mult {mb} MB."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A Sieve script needs some Sieve."
+msgstr "Un script Sieve are nevoie de puțin Sieve."
 
 #. interface
 #: crates/ui-egui/src/reading/warnings.rs
@@ -525,6 +639,24 @@ msgstr "Un punct de cod scris U+2192 sau 2192, ori un număr zecimal după #."
 msgid "A colleague's calendar, by their address, with your work or school account. Kept on this computer only"
 msgstr "Calendarul unui coleg, după adresa lui, cu contul de serviciu sau de școală. Păstrat doar pe acest computer"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A comma or ) was expected here."
+msgstr "Aici se aștepta o virgulă sau )."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A comma or ] was expected here."
+msgstr "Aici se aștepta o virgulă sau ]."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A command was expected here."
+msgstr "Aici se aștepta o comandă."
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -536,6 +668,12 @@ msgstr "O condiție, sau excepțiile de un singur tip luate împreună, pot cău
 #, fuzzy
 msgid "A contact's card keeps at most 32 certificates and keys"
 msgstr "Fișa unei persoane de contact păstrează cel mult 32 de certificate și chei"
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A control character can't be in a Sieve rule."
+msgstr "O regulă Sieve nu poate conține un caracter de control."
 
 #. what a command says
 #: crates/model/src/mailbox.rs
@@ -579,6 +717,35 @@ msgstr "Un fișier"
 msgid "A file dialog is already open."
 msgstr "O fereastră de fișiere este deja deschisă."
 
+#. name
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "A filter of your webmail's has one condition here, on a recipient or a message header, and no exception."
+msgstr "Un filtru al webmailului dvs. are aici o singură condiție, pe un destinatar sau un antet, și nicio excepție."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+msgid "A filter of your webmail's has too much text to look for."
+msgstr ""
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "A filter of your webmail's is kept in your Sieve script on the server."
+msgstr "Un filtru al webmailului dvs. rămâne în scriptul dvs. Sieve de pe server."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "A filter of your webmail's looks for at most {n} things."
+msgstr "Un filtru al webmailului dvs. caută cel mult {n} lucruri."
+
+#. name
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "A filter of your webmail's moves mail to one folder of its account and stops the filters after it, with no desktop alert."
+msgstr "Un filtru al webmailului dvs. mută mesajele într-un dosar al contului său și oprește filtrele de după el, fără alertă pe desktop."
+
 #. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
@@ -614,6 +781,12 @@ msgstr "Un link cu textul {named} duce la {host}."
 #, fuzzy
 msgid "A link whose text is mostly characters that aren't shown goes to {host}."
 msgstr "Un link al cărui text e format în mare parte din caractere invizibile duce la {host}."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A list holds only strings."
+msgstr "O listă conține doar șiruri."
 
 #. interface
 #: crates/ui-egui/src/reading/warnings.rs
@@ -686,6 +859,30 @@ msgstr "O întâlnire care se repetă și sare peste unele zile nu poate fi pus�
 #, fuzzy
 msgid "A message asking to unsubscribe goes from {from} to {to}, through your Outbox."
 msgstr "Un mesaj care cere dezabonarea pleacă de la {from} către {to}, prin Mesaje de trimis."
+
+#. what a command says
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "A message header condition is only for a filter of your webmail's Sieve script."
+msgstr "O condiție pe antet este doar pentru un filtru al scriptului Sieve al webmailului dvs."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "A message header condition needs the names of its header lines, such as X-Spam-Flag."
+msgstr "O condiție pe antet are nevoie de numele liniilor sale de antet, cum ar fi X-Spam-Flag."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A name must follow the colon."
+msgstr "După două puncte trebuie să urmeze un nume."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "A new filter in your webmail's Sieve script, in the format your webmail uses"
+msgstr "Un filtru nou în scriptul Sieve al webmailului dvs., în formatul webmailului dvs."
 
 #. interface
 #: crates/ui-egui/src/updates.rs
@@ -765,6 +962,12 @@ msgstr "Previzualizarea poate omite o parte din conținutul fișierului original
 msgid "A report is written beside your mailbox."
 msgstr "Un raport este scris lângă cutia poștală."
 
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "A rule kept on the server can't show a desktop alert."
+msgstr "O regulă păstrată pe server nu poate afișa o alertă pe desktop."
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -772,16 +975,40 @@ msgid "A rule needs a name, and something to look for."
 msgstr "O regulă are nevoie de un nume și de ceva de căutat."
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "A rule needs some Sieve."
+msgstr "O regulă are nevoie de Sieve."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "A rule needs some Sieve: a command, not only comments."
+msgstr "O regulă are nevoie de Sieve: o comandă, nu doar comentarii."
+
+#. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "A rule needs something to do: an action, or a desktop alert."
 msgstr "O regulă are nevoie de ceva de făcut: o acțiune sau o alertă pe desktop."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "A rule of your own Sieve script is kept in that script on the server."
+msgstr "O regulă a propriului script Sieve este păstrată în acel script pe server."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt
 #, fuzzy
 msgid "A rule this editor doesn't show; it is kept as it is."
 msgstr "O regulă pe care acest editor nu o afișează; este păstrată așa cum este."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "A rule written in Sieve, run by the server"
+msgstr "O regulă scrisă în Sieve, rulată de server"
 
 #. interface
 #: crates/ui-egui/src/data_removal.rs
@@ -794,6 +1021,12 @@ msgstr "O salvare a cutiei poștale încă rulează: încercați din nou peste u
 #, fuzzy
 msgid "A secure connection to the server couldn't be set up. Type the server's address in Server settings."
 msgstr "Nu s-a putut stabili o conexiune securizată cu serverul. Scrieți adresa serverului în Setări server."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A semicolon is missing here."
+msgstr "Aici lipsește un punct și virgulă."
 
 #. what a command says
 #: crates/engine/src/cmd/calendar/selection.rs
@@ -836,6 +1069,12 @@ msgstr "O cutie poștală partajată, citită cu autentificarea contului {accoun
 #, fuzzy
 msgid "A short note with the link to that page, to paste into mail or chat. MailCraft sends nothing itself."
 msgstr "O scurtă notă cu linkul către acea pagină, de lipit într-un e-mail sau într-un chat. MailCraft nu trimite nimic singur."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "A test was expected here."
+msgstr "Aici se aștepta un test."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
@@ -1060,7 +1299,7 @@ msgid "Add Reminder…"
 msgstr "Adaugă memento…"
 
 #. interface
-#: crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/forms/rules_editors.rs
 #, fuzzy
 msgid "Add Rule"
 msgstr "Adăugare regulă"
@@ -1364,6 +1603,12 @@ msgstr "Căutare avansată"
 #, fuzzy
 msgid "Advanced options"
 msgstr "Opțiuni avansate"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Advanced…"
+msgstr "Avansat…"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -1954,6 +2199,12 @@ msgid "Apply Downloaded Rules"
 msgstr "Aplicare reguli descărcate"
 
 #. command label
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "Apply Downloaded Sieve Scripts"
+msgstr "Aplică scripturile Sieve descărcate"
+
+#. command label
 #: crates/engine/src/cmd/tasks_remote.rs
 #, fuzzy
 msgid "Apply Downloaded To-dos"
@@ -2245,6 +2496,24 @@ msgstr "Cereți acum serverului contului calendarul din jurul acestei întâlnir
 msgid "Ask the list to stop sending you its mail. MailCraft asks first and says how."
 msgstr "Cereți listei să nu vă mai trimită mesaje. MailCraft întreabă înainte și spune cum."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Ask the server for your automatic replies again."
+msgstr "Cereți din nou serverului răspunsurile automate."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Ask the server whether it takes this rule; nothing is changed there"
+msgstr "Întreabă serverul dacă acceptă această regulă; acolo nu se schimbă nimic"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Ask the server whether it takes this script; nothing is changed there"
+msgstr "Întreabă serverul dacă acceptă acest script; acolo nu se schimbă nimic"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -2270,7 +2539,7 @@ msgid "Asking the server when everybody is free…"
 msgstr "Se întreabă serverul când sunt toți liberi…"
 
 #. interface
-#: crates/ui-egui/src/scheduling.rs
+#: crates/ui-egui/src/scheduling.rs crates/ui-egui/src/sieve_editor.rs
 #, fuzzy
 msgid "Asking the server…"
 msgstr "Se întreabă serverul…"
@@ -2519,23 +2788,23 @@ msgstr "Se trimit răspunsuri automate pentru {address}"
 #. what a command says
 #: crates/engine/src/cmd/auto_replies.rs
 #, fuzzy
-msgid "Automatic replies are kept on the mail server, and MailCraft can set them only for accounts that sign in with Microsoft so far: IMAP has no standard way to set them (Sieve vacation replies may come later)"
-msgstr "Răspunsurile automate se păstrează pe serverul de e-mail, iar MailCraft le poate seta deocamdată doar pentru conturile care se conectează cu Microsoft: IMAP nu are o metodă standard pentru ele (răspunsurile de concediu Sieve pot veni mai târziu)"
+msgid "Automatic replies are kept on the mail server: MailCraft sets them for accounts that sign in with Microsoft, and for IMAP accounts whose server keeps Sieve scripts (ManageSieve)"
+msgstr "Răspunsurile automate se păstrează pe serverul de e-mail: MailCraft le setează pentru conturile care se conectează cu Microsoft și pentru conturile IMAP al căror server păstrează scripturi Sieve (ManageSieve)"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies are off"
 msgstr "Răspunsurile automate sunt oprite"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies are on"
 msgstr "Răspunsurile automate sunt pornite"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies are set for the time range you chose"
 msgstr "Răspunsurile automate sunt setate pentru intervalul ales"
@@ -2551,6 +2820,12 @@ msgstr "Răspunsuri automate: MailCraft are voie să le modifice"
 #, fuzzy
 msgid "Automatic replies: MailCraft needs you to sign in again to read them"
 msgstr "Răspunsuri automate: MailCraft are nevoie să vă conectați din nou ca să le citească"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: MailCraft's Sieve script was changed elsewhere, and is left as it is"
+msgstr "Răspunsuri automate: scriptul Sieve al MailCraft a fost modificat în altă parte și este lăsat așa cum este"
 
 #. interface
 #: crates/ui-egui/src/auto_replies.rs
@@ -2577,7 +2852,7 @@ msgid "Automatic replies: changing them waits for your permission"
 msgstr "Răspunsuri automate: modificarea așteaptă permisiunea dvs."
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies: couldn't be read ({why})"
 msgstr "Răspunsuri automate: nu au putut fi citite ({why})"
@@ -2595,7 +2870,25 @@ msgid "Automatic replies: from {start} to {end}"
 msgstr "Răspunsuri automate: de la {start} până la {end}"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: not available ({why})"
+msgstr "Răspunsuri automate: indisponibile ({why})"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: not available, this server doesn't offer Sieve scripts (ManageSieve)"
+msgstr "Răspunsuri automate: indisponibile, acest server nu oferă scripturi Sieve (ManageSieve)"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: not available, this server's Sieve scripts can't send them"
+msgstr "Răspunsuri automate: indisponibile, scripturile Sieve ale acestui server nu le pot trimite"
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies: not read yet"
 msgstr "Răspunsuri automate: încă necitite"
@@ -2613,10 +2906,22 @@ msgid "Automatic replies: on, until you turn them off"
 msgstr "Răspunsuri automate: pornite, până le opriți"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Automatic replies: reading…"
 msgstr "Răspunsuri automate: se citesc…"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: set by your Sieve script \"{name}\", which runs on the server"
+msgstr "Răspunsuri automate: setate de scriptul dvs. Sieve „{name}”, care rulează pe server"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Automatic replies: the server didn't take your sign-in"
+msgstr "Răspunsuri automate: serverul nu v-a acceptat conectarea"
 
 #. interface
 #: crates/ui-egui/src/auto_replies.rs
@@ -3021,7 +3326,7 @@ msgid "Can't sign"
 msgstr "Nu se poate semna"
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountDialogs.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MovePerson.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ReadingScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/help.rs crates/ui-egui/src/chrome.rs crates/ui-egui/src/close_to_tray.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/import_pst.rs crates/ui-egui/src/import_tree.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/report_problem.rs crates/ui-egui/src/security.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountDialogs.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MovePerson.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ReadingScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/help.rs crates/ui-egui/src/chrome.rs crates/ui-egui/src/close_to_tray.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/import_pst.rs crates/ui-egui/src/import_tree.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/report_problem.rs crates/ui-egui/src/security.rs crates/ui-egui/src/sieve_editor.rs
 #, fuzzy
 msgid "Cancel"
 msgstr "Anulare"
@@ -3268,11 +3573,29 @@ msgstr "Modificare răspunsuri automate"
 msgid "Change Recurring Item"
 msgstr "Modificare element recurent"
 
+#. command label
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "Change Rule"
+msgstr "Modificare regulă"
+
 #. command label, interface, name
 #: crates/engine/src/cmd/send_later.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
 msgid "Change Send Time"
 msgstr "Schimbă ora trimiterii"
+
+#. command label
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "Change Sieve Rule"
+msgstr "Modificare regulă Sieve"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Change Sieve rule"
+msgstr "Modifică regula Sieve"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -3305,6 +3628,12 @@ msgid "Change email address"
 msgstr "Modificare adresă de e-mail"
 
 #. interface
+#: crates/ui-egui/src/forms/rules_editors.rs
+#, fuzzy
+msgid "Change rule"
+msgstr "Modificare regulă"
+
+#. interface
 #: crates/ui-egui/src/widgets.rs
 #, fuzzy
 msgid "Change the colour"
@@ -3317,6 +3646,12 @@ msgid "Change the name the folder pane shows for this shared mailbox, and its co
 msgstr "Schimbați numele afișat în panoul de foldere pentru această cutie poștală partajată și culoarea ei"
 
 #. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Change the whole script as Sieve text; it is written back exactly as you leave it"
+msgstr "Modifică întregul script ca text Sieve; este scris înapoi exact cum îl lași"
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Change this account's name, servers and sign-in"
@@ -3327,6 +3662,24 @@ msgstr "Modificați numele, serverele și conectarea acestui cont"
 #, fuzzy
 msgid "Change this account's name, sign-in and mail to keep offline"
 msgstr "Modificați numele, conectarea și e-mailul păstrat offline pentru acest cont"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Change this rule"
+msgstr "Modificați această regulă"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Change this rule as Sieve text"
+msgstr "Modificați această regulă ca text Sieve"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Change this rule as Sieve text: {why}"
+msgstr "Modificați această regulă ca text Sieve: {why}"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -3371,7 +3724,7 @@ msgid "Changing your automatic replies wasn't allowed ({why}). Press OK to ask a
 msgstr "Modificarea răspunsurilor automate nu a fost permisă ({why}). Apăsați OK ca să cereți din nou: pagina Microsoft se deschide în browser."
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Changing your automatic replies…"
 msgstr "Se modifică răspunsurile automate…"
@@ -3399,6 +3752,12 @@ msgstr "Caractere (cu spații)"
 #, fuzzy
 msgid "Chart"
 msgstr "Diagramă"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Check"
+msgstr "Verifică"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
@@ -3488,6 +3847,18 @@ msgstr "Verificare versiuni noi"
 msgid "Check spelling with a local dictionary"
 msgstr "Verifică ortografia cu un dicționar local"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "Check the Sieve server (Automatic Replies) in Account Settings, and that your mail server has ManageSieve switched on."
+msgstr "Verificați serverul Sieve (răspunsuri automate) din setările contului și dacă serverul de e-mail are ManageSieve activat."
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "Check the Sieve server (Automatic Replies) in Account Settings: ManageSieve is usually on port 4190 of the incoming mail server."
+msgstr "Verificați serverul Sieve (răspunsuri automate) din setările contului: ManageSieve este de obicei pe portul 4190 al serverului de e-mail primit."
+
 #. interface
 #: crates/ui-egui/src/account_setup.rs
 #, fuzzy
@@ -3549,7 +3920,7 @@ msgid "Checking: the report comes in a moment…"
 msgstr "Se verifică: raportul vine imediat…"
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Accounts.kt crates/ui-egui/src/updates.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Accounts.kt crates/ui-egui/src/sieve_editor.rs crates/ui-egui/src/updates.rs
 #, fuzzy
 msgid "Checking…"
 msgstr "Se verifică…"
@@ -4221,6 +4592,12 @@ msgstr "Copiere în dosar"
 #, fuzzy
 msgid "Copy to folder"
 msgstr "Copiere în dosar"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Correct the mistakes first."
+msgstr "Corectați mai întâi greșelile."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -5559,6 +5936,12 @@ msgid "Edit Message"
 msgstr "Editare mesaj"
 
 #. command label
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Edit Rule as Sieve"
+msgstr "Editați regula ca Sieve"
+
+#. command label
 #: crates/engine/src/cmd/signature.rs
 #, fuzzy
 msgid "Edit Signature"
@@ -5576,6 +5959,18 @@ msgstr "Editare semnătură ca text"
 msgid "Edit Task"
 msgstr "Editare sarcină"
 
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Edit Your Sieve Script…"
+msgstr "Editează scriptul tău Sieve…"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Edit as Sieve…"
+msgstr "Editați ca Sieve…"
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Reply.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/RowActionsSheet.kt
 #, fuzzy
@@ -5589,6 +5984,12 @@ msgid "Edit event"
 msgstr "Editare eveniment"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Edit rule as Sieve"
+msgstr "Editați regula ca Sieve"
+
+#. interface
 #: crates/ui-egui/src/compose.rs
 #, fuzzy
 msgid "Edit signature as text"
@@ -5599,6 +6000,18 @@ msgstr "Editare semnătură ca text"
 #, fuzzy
 msgid "Edit task"
 msgstr "Editează sarcina"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Edit your Sieve script \"{name}\"…"
+msgstr "Editează scriptul tău Sieve „{name}”…"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Edited here in the format your webmail uses"
+msgstr "Editat aici în formatul webmailului dvs."
 
 #. ribbon, ribbon location
 #: crates/engine/src/cmd/edit.rs crates/ui-egui/src/ribbon.rs
@@ -7008,6 +7421,12 @@ msgid "Go to the folder"
 msgstr "Salt la dosar"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Go to this place in the text"
+msgstr "Mergi la acest loc din text"
+
+#. interface
 #: crates/ui-egui/src/reading/view.rs
 #, fuzzy
 msgid "Goes to {host}"
@@ -7236,6 +7655,12 @@ msgid "Header contains"
 msgstr "Antetul conține"
 
 #. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Header name"
+msgstr "Numele antetului"
+
+#. interface
 #: crates/ui-egui/src/compose/picture_size.rs
 #, fuzzy
 msgid "Height"
@@ -7422,7 +7847,7 @@ msgid "Hold Unsent Mail"
 msgstr "Reținere e-mail netrimis"
 
 #. interface, ribbon location
-#: crates/engine/src/cmd/calendar.rs crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/category.rs crates/engine/src/cmd/compose.rs crates/engine/src/cmd/contacts_move.rs crates/engine/src/cmd/followup.rs crates/engine/src/cmd/gmail_move.rs crates/engine/src/cmd/junk.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/people_merge.rs crates/engine/src/cmd/react.rs crates/engine/src/cmd/rules.rs crates/engine/src/cmd/snooze.rs crates/engine/src/cmd/tasks.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/forms.rs
+#: crates/engine/src/cmd/calendar.rs crates/engine/src/cmd/calendar/share.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/category.rs crates/engine/src/cmd/compose.rs crates/engine/src/cmd/contacts_move.rs crates/engine/src/cmd/followup.rs crates/engine/src/cmd/gmail_move.rs crates/engine/src/cmd/junk.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/people.rs crates/engine/src/cmd/people_merge.rs crates/engine/src/cmd/react.rs crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_sieve.rs crates/engine/src/cmd/sieve_blocks.rs crates/engine/src/cmd/sieve_own.rs crates/engine/src/cmd/snooze.rs crates/engine/src/cmd/tasks.rs crates/engine/src/cmd/view.rs crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "Home"
 msgstr "Pornire"
@@ -7814,6 +8239,12 @@ msgstr "Se importă… {messages} din {total}"
 msgid "In Junk E-mail, preview an attachment from its menu."
 msgstr "În E-mail nedorit, previzualizați un atașament din meniul lui."
 
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "In MailCraft's Sieve script, as it was changed elsewhere"
+msgstr "În scriptul Sieve al MailCraft, așa cum a fost modificat în altă parte"
+
 #. what a command says
 #: crates/engine/src/cmd/tasks/status.rs
 #, fuzzy
@@ -7879,6 +8310,12 @@ msgstr "În selecție"
 #, fuzzy
 msgid "In this calendar:"
 msgstr "În acest calendar:"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "In your Sieve script \"{name}\""
+msgstr "În scriptul dvs. Sieve „{name}”"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -8107,6 +8544,18 @@ msgstr "Emis de:"
 #, fuzzy
 msgid "Issued to"
 msgstr "Emis pentru"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "It also sends automatic replies of its own."
+msgstr "Trimite și răspunsuri automate proprii."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "It changed on the server since you opened it: reload it first."
+msgstr "S-a schimbat pe server de când l-ai deschis: reîncarcă-l mai întâi."
 
 #. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
@@ -8508,6 +8957,12 @@ msgid "Keep this rule on the server of {address}: it then runs there whether Mai
 msgstr "Păstrați această regulă pe serverul lui {address}: va rula acolo indiferent dacă MailCraft e deschis sau nu, pentru e-mailurile acelui cont"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Keep this rule; it goes to the server with your other rules"
+msgstr "Păstrează această regulă; merge pe server cu celelalte reguli"
+
+#. interface
 #: crates/ui-egui/src/updates.rs
 #, fuzzy
 msgid "Keep this version"
@@ -8802,6 +9257,60 @@ msgid "Line delta"
 msgstr "Diferență de linii"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Line {line} of the rule: {said}"
+msgstr "Linia {line} a regulii: {said}"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Line {line} of your script, outside this rule: {what}"
+msgstr "Linia {line} din script, în afara acestei reguli: {what}"
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "Line {line}, column {column} of the Sieve rule: a control character can't be in it."
+msgstr "Rândul {line}, coloana {column} din regula Sieve: nu poate conține un caracter de control."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "Line {line}, column {column} of the Sieve rule: {what}"
+msgstr "Rândul {line}, coloana {column} din regula Sieve: {what}"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Line {line}, column {column} of the rule: {what}"
+msgstr "Linia {line}, coloana {column} a regulii: {what}"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "Line {line}, column {column} of your Sieve script: a control character can't be in it."
+msgstr "Rândul {line}, coloana {column} din scriptul tău Sieve: nu poate conține un caracter de control."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "Line {line}, column {column} of your Sieve script: {what}"
+msgstr "Rândul {line}, coloana {column} din scriptul tău Sieve: {what}"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Line {line}, column {column}: {what}"
+msgstr "Linia {line}, coloana {column}: {what}"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Line {line}: {said}"
+msgstr "Rândul {line}: {said}"
+
+#. interface
 #: crates/ui-egui/src/credits.rs
 #, fuzzy
 msgid "Lines added"
@@ -9029,6 +9538,24 @@ msgstr "Realizat de contribuitorii săi:"
 msgid "Made in another program or on the web, with parts MailCraft can't show"
 msgstr "Creat în alt program sau pe web, cu părți pe care MailCraft nu le poate afișa"
 
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Made in another program: MailCraft changes a rule of it only as you edit it, in the rule builder when that loses nothing, else as Sieve text"
+msgstr "Creat în alt program: MailCraft modifică o regulă a lui doar cum o editați, în editorul de reguli când nu se pierde nimic, altfel ca text Sieve"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Made in another program: MailCraft never changes this rule"
+msgstr "Creată în alt program: MailCraft nu modifică niciodată această regulă"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Made in another program: MailCraft shows these rules and never changes them"
+msgstr "Create în alt program: MailCraft afișează aceste reguli și nu le modifică niciodată"
+
 #. android, command label, interface, name, ribbon location
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MainActivity.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/compose.rs crates/engine/src/cmd/graph_send.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/send_later.rs crates/engine/src/cmd/view.rs crates/engine/src/session.rs crates/ui-egui/src/backstage.rs crates/ui-egui/src/lib.rs
 #, fuzzy
@@ -9173,11 +9700,23 @@ msgstr "E-mail, calendar, persoane și sarcini, scris de la zero în Rust. Rulea
 msgid "MailCraft can now keep {account} in step with Microsoft through Microsoft Graph, the way Outlook on the web does, instead of IMAP. Your folders, flags, categories and drafts then match what you see in Outlook, and your mail keeps coming even where your organisation has turned IMAP off."
 msgstr "MailCraft poate acum să sincronizeze {account} cu Microsoft prin Microsoft Graph, așa cum face Outlook pe web, în loc de IMAP. Dosarele, marcajele, categoriile și ciornele se vor potrivi cu ce vedeți în Outlook, iar e-mailurile vor continua să vină chiar și acolo unde organizația a dezactivat IMAP."
 
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "MailCraft can't keep automatic replies on this account's server: {why}. {advice}"
+msgstr "MailCraft nu poate păstra răspunsurile automate pe serverul acestui cont: {why}. {advice}"
+
 #. name
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
 msgid "MailCraft can't keep this account's rules on its server"
 msgstr "MailCraft nu poate păstra regulile acestui cont pe serverul lui"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft can't keep this account's rules on its server, so they run on this computer: {why}. {advice}"
+msgstr "MailCraft nu poate păstra regulile acestui cont pe serverul său, așa că rulează pe acest computer: {why}. {advice}"
 
 #. interface
 #: crates/ui-egui/src/attachment_open.rs
@@ -9186,16 +9725,34 @@ msgid "MailCraft can't open {name} because of its file type."
 msgstr "MailCraft nu poate deschide {name} din cauza tipului de fișier."
 
 #. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "MailCraft can't read the rules of this script."
+msgstr "MailCraft nu poate citi regulile acestui script."
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "MailCraft can't sign in to this server this way yet (it wants Kerberos). Ask your administrator whether it can take a user name and password over an encrypted connection."
 msgstr "MailCraft nu se poate conecta încă la acest server în acest fel (cere Kerberos). Întrebați administratorul dacă poate accepta un nume de utilizator și o parolă printr-o conexiune criptată."
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "MailCraft can't yet change a rule kept on a Microsoft account's server: change it in Outlook on the web, or delete it and create it again"
+msgstr "MailCraft nu poate încă modifica o regulă păstrată pe serverul unui cont Microsoft: modificați-o în Outlook pe web sau ștergeți-o și creați-o din nou"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AboutPages.kt
 #, fuzzy
 msgid "MailCraft carries the software below. The Rust libraries of its core are listed with their versions in the source repository."
 msgstr "MailCraft include software-ul de mai jos. Bibliotecile Rust ale nucleului său sunt listate, cu versiunile lor, în depozitul codului sursă."
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "MailCraft connected to {at}, but the server said nothing"
+msgstr "MailCraft s-a conectat la {at}, dar serverul nu a spus nimic"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Accounts.kt
@@ -9233,6 +9790,12 @@ msgstr "MailCraft nu a putut pune deoparte cutia poștală salvată pe care nu a
 msgid "MailCraft doesn't delete a JMAP account's folders yet: the next Send/Receive would bring them back"
 msgstr "MailCraft nu șterge încă folderele unui cont JMAP: următoarea Trimitere/primire le-ar readuce"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "MailCraft doesn't know the extension {ext}; what it adds isn't checked."
+msgstr "MailCraft nu cunoaște extensia {ext}; ce adaugă ea nu este verificat."
+
 #. interface
 #: crates/ui-egui/src/account_setup.rs
 #, fuzzy
@@ -9250,6 +9813,12 @@ msgstr "MailCraft nu redenumește și nu mută încă dosarele unui cont JMAP: s
 #, fuzzy
 msgid "MailCraft doesn't support POP yet. Use your provider's IMAP server instead (usually imap.<your domain>, port 993)."
 msgstr "MailCraft nu acceptă încă POP. Folosiți în schimb serverul IMAP al furnizorului (de obicei imap.<domeniul dvs.>, portul 993)."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "MailCraft finds no mistakes in it."
+msgstr "MailCraft nu găsește greșeli în ea."
 
 #. interface
 #: crates/ui-egui/src/dav_job.rs
@@ -9365,6 +9934,12 @@ msgstr "MailCraft citește cheia fără fraza de acces și păstrează fișierul
 msgid "MailCraft sends {host} the address this list gave for unsubscribing, which may identify you to it, and nothing else: no cookies, no sign-in. Like any connection, it also shows your internet address."
 msgstr "MailCraft trimite către {host} adresa pe care lista a dat-o pentru dezabonare, care vă poate identifica în fața ei, și nimic altceva: niciun cookie, nicio autentificare. Ca orice conexiune, arată și adresa dvs. de internet."
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "MailCraft signs in only over an encrypted connection, so it didn't sign in there: your password would cross the network unencrypted. Ask the server's administrator to turn on TLS for ManageSieve."
+msgstr "MailCraft se autentifică doar printr-o conexiune criptată, așa că nu s-a autentificat acolo: parola ar traversa rețeaua necriptată. Cereți administratorului serverului să activeze TLS pentru ManageSieve."
+
 #. interface
 #: crates/ui-egui/src/opening.rs
 #, fuzzy
@@ -9388,6 +9963,12 @@ msgstr "MailCraft a oprit citirea fișierului .pst înainte de final: ce a intra
 #, fuzzy
 msgid "MailCraft tries the usual places for your address."
 msgstr "MailCraft încearcă locurile obișnuite pentru adresa dvs."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft waits for you to confirm this mailbox's servers (File › Info)."
+msgstr "MailCraft așteaptă să confirmați serverele acestei cutii poștale (Fișier › Informații)."
 
 #. interface
 #: crates/ui-egui/src/lib.rs
@@ -9470,6 +10051,41 @@ msgstr "MailCraft {version} nu a fost instalat: aici a rămas tot această versi
 msgid "MailCraft's Google Desktop registration is not yet configured for this build."
 msgstr "Înregistrarea Google Desktop a MailCraft nu este încă configurată pentru această versiune."
 
+#. what a command says
+#: crates/engine/src/cmd/sieve_replies.rs
+msgid "MailCraft's Sieve script on the server changed again since you chose to replace it: look at it again before replacing it."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft's Sieve script on the server was changed elsewhere"
+msgstr "scriptul Sieve al MailCraft de pe server a fost modificat în altă parte"
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "MailCraft's Sieve script on the server was changed elsewhere since MailCraft wrote it, so MailCraft leaves it as it is. To set your automatic replies here, replace it with MailCraft's: what was changed in it elsewhere is lost."
+msgstr "Scriptul Sieve al MailCraft de pe server a fost modificat în altă parte de când l-a scris MailCraft, așa că MailCraft îl lasă așa cum este. Pentru a seta aici răspunsurile automate, înlocuiți-l cu cel al MailCraft: ce s-a modificat în el în altă parte se pierde."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft's Sieve script on the server was changed elsewhere, so MailCraft leaves it as it is, and these rules run on this computer. Replace it with MailCraft's to keep them on the server: what was changed in it elsewhere is lost."
+msgstr "Scriptul Sieve al MailCraft de pe server a fost modificat în altă parte, așa că MailCraft îl lasă așa cum este, iar aceste reguli rulează pe acest computer. Înlocuiți-l cu cel al MailCraft pentru a le păstra pe server: ce s-a modificat în el în altă parte se pierde."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft's Sieve script on the server was changed elsewhere."
+msgstr "scriptul Sieve al MailCraft de pe server a fost modificat în altă parte."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "MailCraft's Sieve script on the server was changed or removed elsewhere since MailCraft wrote it, and is left as it is"
+msgstr "Scriptul Sieve al MailCraft de pe server a fost modificat sau șters în altă parte de când l-a scris MailCraft și este lăsat așa cum este"
+
 #. interface
 #: crates/ui-egui/src/data_removal.rs
 #, fuzzy
@@ -9547,6 +10163,17 @@ msgstr "Gestionare reguli…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "Gestionare sarcină"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+msgid "ManageSieve is made secure with STARTTLS, not encrypted from the first byte"
+msgstr ""
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "ManageSieve starts unencrypted and switches to encryption with STARTTLS, so MailCraft doesn't sign in there. On Dovecot, set ssl = no on the sieve listener (the connection is still encrypted, by STARTTLS), or name another port in Account Settings › Sieve server (Automatic Replies)."
+msgstr "ManageSieve începe necriptat și trece la criptare cu STARTTLS, așa că MailCraft nu se autentifică acolo. În Dovecot, setați ssl = no pe listener-ul sieve (conexiunea rămâne criptată, prin STARTTLS) sau indicați alt port în Setări cont › Server Sieve (răspunsuri automate)."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -9752,6 +10379,18 @@ msgstr ""
 #, fuzzy
 msgid "Message Preview"
 msgstr "Previzualizare mesaj"
+
+#. name
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Message header contains"
+msgstr "Antetul conține"
+
+#. name
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Message header is"
+msgstr "Antetul este"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ReadingToolbar.kt
@@ -10149,6 +10788,18 @@ msgstr "Momentan nu se pot cere mai multe rezultate de pe server"
 msgid "More than one person matches \"{name}\". Choose one:"
 msgstr "Mai multe persoane corespund cu „{name}”. Alegeți una:"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "More than {n} arguments or tests."
+msgstr "Peste {n} argumente sau teste."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "More than {n} commands."
+msgstr "Peste {n} comenzi."
+
 #. interface
 #: crates/ui-egui/src/reading/warnings.rs
 #, fuzzy
@@ -10156,7 +10807,7 @@ msgid "Most of the sender's name is characters that aren't shown, and the messag
 msgstr "Numele expeditorului e format în mare parte din caractere invizibile, iar mesajul a venit de la {real}."
 
 #. interface, ribbon, ribbon location
-#: crates/engine/src/cmd/gmail_move.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/rules.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/mail_view.rs crates/ui-egui/src/move_contacts.rs crates/ui-egui/src/ribbon.rs
+#: crates/engine/src/cmd/gmail_move.rs crates/engine/src/cmd/mail.rs crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_sieve.rs crates/engine/src/cmd/sieve_blocks.rs crates/engine/src/cmd/sieve_own.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/mail_view.rs crates/ui-egui/src/move_contacts.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Move"
 msgstr "Mutare"
@@ -10475,7 +11126,7 @@ msgid "NBSP"
 msgstr "NBSP"
 
 #. interface, name
-#: crates/engine/src/session.rs crates/ui-egui/src/credits.rs crates/ui-egui/src/folder_properties.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs/share.rs crates/ui-egui/src/signatures.rs
+#: crates/engine/src/session.rs crates/ui-egui/src/credits.rs crates/ui-egui/src/folder_properties.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs/share.rs crates/ui-egui/src/sieve_editor.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Name"
 msgstr "Nume"
@@ -10573,6 +11224,12 @@ msgstr "Necesită Verificare versiuni noi."
 #, fuzzy
 msgid "Needs Google sign-in"
 msgstr "Necesită conectare Google"
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "Nested more than {n} levels deep."
+msgstr "Imbricat pe mai mult de {n} niveluri."
 
 #. name
 #: crates/ui-egui/src/theme/blue.rs
@@ -10722,6 +11379,12 @@ msgstr "Contact nou"
 msgid "New Email"
 msgstr "E-mail nou"
 
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "New Filter…"
+msgstr "Filtru nou…"
+
 #. command label, interface
 #: crates/engine/src/cmd/folder.rs crates/ui-egui/src/dialogs.rs
 #, fuzzy
@@ -10751,6 +11414,30 @@ msgstr "Cutie poștală nouă"
 #, fuzzy
 msgid "New Meeting"
 msgstr "Întâlnire nouă"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "New Rule…"
+msgstr "Regulă nouă…"
+
+#. command label
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "New Sieve Rule"
+msgstr "Regulă Sieve nouă"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "New Sieve rule"
+msgstr "Regulă Sieve nouă"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "New Sieve rule…"
+msgstr "Regulă Sieve nouă…"
 
 #. command label, interface
 #: crates/engine/src/cmd/tasks.rs crates/ui-egui/src/forms.rs
@@ -10819,7 +11506,7 @@ msgid "New person"
 msgstr "Persoană nouă"
 
 #. interface
-#: crates/ui-egui/src/forms.rs
+#: crates/ui-egui/src/forms/rules_editors.rs
 #, fuzzy
 msgid "New rule"
 msgstr "Regulă nouă"
@@ -10965,6 +11652,12 @@ msgstr "Fără memento"
 #, fuzzy
 msgid "No Send/Receive is running"
 msgstr "Nu rulează nicio Trimitere/primire"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "No Sieve script of your own runs on this account's server, as MailCraft last read it."
+msgstr "Pe serverul acestui cont nu rulează niciun script Sieve al tău, după ultima citire a MailCraft."
 
 #. what a command says
 #: crates/engine/src/cmd/calendar/invitation.rs
@@ -11284,6 +11977,12 @@ msgstr "Nu este scadent niciun memento."
 msgid "No reply yet"
 msgstr "Încă fără răspuns"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "No require here: MailCraft writes it at the top of its script."
+msgstr "Fără require aici: MailCraft îl scrie la începutul scriptului său."
+
 #. interface, name
 #: crates/model/src/calendar.rs crates/ui-egui/src/meeting_dialogs/share.rs
 #, fuzzy
@@ -11475,6 +12174,12 @@ msgstr "Niciunul dintre aceste mesaje nu mai este în această căsuță poștal
 #, fuzzy
 msgid "None yet."
 msgstr "Încă nimic."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "None."
+msgstr "Niciuna."
 
 #. interface, what a command says
 #: crates/engine/src/cmd/tasks/status.rs crates/ui-egui/src/advanced_search.rs crates/ui-egui/src/forms.rs
@@ -11711,6 +12416,12 @@ msgid "Nothing has been sent or received yet."
 msgstr "Încă nu s-a trimis sau primit nimic."
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Nothing has changed yet."
+msgstr "Încă nu s-a schimbat nimic."
+
+#. interface
 #: crates/ui-egui/src/mail_view.rs
 #, fuzzy
 msgid "Nothing here yet."
@@ -11829,6 +12540,12 @@ msgstr "Nu s-a făcut nimic: ceea ce vi s-a cerut s-a schimbat între timp. Înc
 #, fuzzy
 msgid "Nothing was sent to Microsoft, and your password isn't kept."
 msgstr "Nu s-a trimis nimic către Microsoft, iar parola dvs. nu este păstrată."
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "Nothing was sent to it. Check the Sieve server (Automatic Replies) in Account Settings, or ask the server's administrator about its certificate."
+msgstr "Nu i s-a trimis nimic. Verificați serverul Sieve (răspunsuri automate) din setările contului sau întrebați administratorul serverului despre certificatul acestuia."
 
 #. interface
 #: crates/ui-egui/src/sending.rs
@@ -11965,6 +12682,18 @@ msgstr "Pe server · Se caută…"
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
+msgid "On the server, changed elsewhere: Replace with MailCraft's would remove it"
+msgstr "Pe server, modificată în altă parte: Înlocuiește cu cel al MailCraft ar elimina-o"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "On the server, made in another program: changed only as you edit it here"
+msgstr "Pe server, creat în alt program: modificat doar cum îl editați aici"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
 msgid "On the server, still as it was: your change waits for permission (File › Info)"
 msgstr "Pe server, încă neschimbat: modificarea dvs. așteaptă permisiunea (Fișier › Informații)"
 
@@ -12052,6 +12781,12 @@ msgstr "După ce un administrator a aprobat, încercați din nou: conectarea va 
 msgid "Once it has worked, your system's credential store keeps it for next time. It is never written to the mailbox."
 msgstr "După ce a funcționat, depozitul de acreditări al sistemului o păstrează pentru data viitoare. Nu este scrisă niciodată în cutia poștală."
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "One block of Sieve (RFC 5228), run by the server in its place among your rules. MailCraft writes the require for it at the top of its script."
+msgstr "Un bloc Sieve (RFC 5228), rulat de server la locul lui între reguli. MailCraft scrie require-ul pentru el la începutul scriptului său."
+
 #. what a command says
 #: crates/engine/src/cmd/calendar/meeting.rs
 #, fuzzy
@@ -12100,11 +12835,29 @@ msgstr "Întâlnire online"
 msgid "Only a Microsoft account signs in on the phone for now."
 msgstr "Deocamdată, pe telefon se poate autentifica doar un cont Microsoft."
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "Only a comment may follow text: on its line."
+msgstr "După text: pe același rând poate urma doar un comentariu."
+
 #. interface
 #: crates/ui-egui/src/windows.rs
 #, fuzzy
 msgid "Only a meeting you organize has Find a Time"
 msgstr "Doar o întâlnire pe care o organizați are Găsire oră"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Only a rule kept in the Sieve script on an IMAP account's server can become a Sieve rule; this one has no Sieve."
+msgstr "Doar o regulă păstrată în scriptul Sieve de pe serverul unui cont IMAP poate deveni regulă Sieve; aceasta nu are Sieve."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Only a rule kept on the server can become a Sieve rule; this one is kept on this computer."
+msgstr "Doar o regulă păstrată pe server poate deveni regulă Sieve; aceasta este păstrată pe acest computer."
 
 #. what a command says
 #: crates/engine/src/cmd/unsubscribe.rs
@@ -13552,6 +14305,12 @@ msgstr "Citiți acum din nou Favoritele din Outlook"
 msgid "Read with {owner}'s sign-in, for as long as you keep it: the person has to have shared their calendar with you. It is kept on this computer only: it won't appear in Outlook or on your other devices. Microsoft asks you once to let MailCraft read other people's calendars."
 msgstr "Citit cu conectarea lui {owner}, cât timp îl păstrați: persoana trebuie să-și fi partajat calendarul cu dvs. Se păstrează doar pe acest computer: nu va apărea în Outlook sau pe celelalte dispozitive. Microsoft vă întreabă o dată dacă permiteți ca MailCraft să citească calendarele altor persoane."
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Read your script from the server again, in place of the text here"
+msgstr "Recitește scriptul de pe server, în locul textului de aici"
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt
 #, fuzzy
@@ -13599,7 +14358,7 @@ msgid "Reading shared mailboxes needs your permission: use Send/Receive"
 msgstr "Citirea cutiilor poștale partajate are nevoie de permisiunea dvs.: folosiți Trimitere/primire"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Reading the automatic replies stopped unexpectedly"
 msgstr "Citirea răspunsurilor automate s-a oprit neașteptat"
@@ -13775,6 +14534,12 @@ msgstr "Reîmprospătare certificate și chei"
 #, fuzzy
 msgid "Related"
 msgstr "Asociate"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Reload"
+msgstr "Reîncarcă"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -14199,6 +14964,12 @@ msgid "Replace with"
 msgstr "Înlocuire cu"
 
 #. interface
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Replace with MailCraft's"
+msgstr "Înlocuiește cu cel al MailCraft"
+
+#. interface
 #: crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Replies and forwards"
@@ -14500,6 +15271,12 @@ msgstr "În dreapta"
 msgid "Right before or after: {items}"
 msgstr "Imediat înainte sau după: {items}"
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Rule \"{rule}\" of your Sieve script \"{name}\""
+msgstr "Regula „{rule}” din scriptul Sieve „{name}”"
+
 #. command label
 #: crates/engine/src/cmd/rules_remote.rs
 #, fuzzy
@@ -14655,7 +15432,7 @@ msgid "Saturday"
 msgstr "sâmbătă"
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PersonEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/forms/rules_editors.rs crates/ui-egui/src/sieve_editor.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Save"
 msgstr "Salvare"
@@ -14774,6 +15551,18 @@ msgstr "Salvare fișier mesaj ca"
 msgid "Save Signature"
 msgstr "Salvare semnătură"
 
+#. command label
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Save Your Sieve Rule"
+msgstr "Salvați regula Sieve"
+
+#. command label
+#: crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "Save Your Sieve Script"
+msgstr "Salvează scriptul tău Sieve"
+
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
@@ -14833,6 +15622,12 @@ msgstr "Salvează în Fișiere"
 #, fuzzy
 msgid "Saved Text"
 msgstr "Text salvat"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Saved in your own Sieve script, in its place: the comment lines above it and the rest of the script stay as they are."
+msgstr "Salvată în propriul script Sieve, la locul ei: liniile de comentariu de deasupra și restul scriptului rămân cum sunt."
 
 #. interface
 #: crates/ui-egui/src/calendar_sync.rs
@@ -14911,6 +15706,18 @@ msgstr "Se salvează cutia poștală… se scriu {done} din {total} corpuri și 
 #, fuzzy
 msgid "Saving the mailbox… {done} of {total} messages"
 msgstr "Se salvează cutia poștală… {done} din {total} mesaje"
+
+#. interface
+#: crates/ui-egui/src/forms.rs crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Saving your Sieve script…"
+msgstr "Se salvează scriptul tău Sieve…"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Saving…"
+msgstr "Se salvează…"
 
 #. interface
 #: crates/ui-egui/src/lib.rs
@@ -15269,7 +16076,7 @@ msgid "Send & Receive"
 msgstr "Trimitere și primire"
 
 #. ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/categories_remote.rs crates/engine/src/cmd/contacts_remote.rs crates/engine/src/cmd/dav_sync.rs crates/engine/src/cmd/ews_mail.rs crates/engine/src/cmd/followup.rs crates/engine/src/cmd/graph_mail.rs crates/engine/src/cmd/graph_send.rs crates/engine/src/cmd/jmap_mail.rs crates/engine/src/cmd/remote.rs crates/engine/src/cmd/rules_remote.rs crates/engine/src/cmd/send_later.rs crates/engine/src/cmd/send_receive.rs crates/engine/src/cmd/snooze.rs crates/engine/src/cmd/sync_progress.rs crates/engine/src/cmd/tasks_remote.rs crates/ui-egui/src/lib.rs
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/categories_remote.rs crates/engine/src/cmd/contacts_remote.rs crates/engine/src/cmd/dav_sync.rs crates/engine/src/cmd/ews_mail.rs crates/engine/src/cmd/followup.rs crates/engine/src/cmd/graph_mail.rs crates/engine/src/cmd/graph_send.rs crates/engine/src/cmd/jmap_mail.rs crates/engine/src/cmd/remote.rs crates/engine/src/cmd/rules_remote.rs crates/engine/src/cmd/send_later.rs crates/engine/src/cmd/send_receive.rs crates/engine/src/cmd/sieve_replies.rs crates/engine/src/cmd/snooze.rs crates/engine/src/cmd/sync_progress.rs crates/engine/src/cmd/tasks_remote.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Send / Receive"
 msgstr "Trimitere / primire"
@@ -15819,6 +16626,12 @@ msgstr "Mai multe adrese: separați-le cu punct și virgulă (;). Oricare dintre
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
+msgid "Several header lines: set their names apart with a semicolon (;). Any one of them is enough."
+msgstr "Mai multe linii de antet: separați-le numele cu punct și virgulă (;). Oricare dintre ele este suficientă."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
 msgid "Several texts: set them apart with a semicolon (;). Any one of them is enough."
 msgstr "Mai multe texte: separați-le cu punct și virgulă (;). Oricare dintre ele este suficient."
 
@@ -16320,6 +17133,30 @@ msgstr ""
 msgid "Side-by-Side"
 msgstr "Unul lângă altul"
 
+#. command label
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "Sieve Script to Send"
+msgstr "Script Sieve de trimis"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Sieve rule, run on the server"
+msgstr "Regulă Sieve, rulată pe server"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "Sieve scripts are only read from and written to the account's own mail server"
+msgstr "Scripturile Sieve sunt citite și scrise doar pe serverul de e-mail al contului"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Sieve server (Automatic Replies)"
+msgstr "Server Sieve (răspunsuri automate)"
+
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
@@ -16465,10 +17302,16 @@ msgid "Sign in with Microsoft once more to let MailCraft read the folders you ke
 msgstr "Conectați-vă încă o dată cu Microsoft ca MailCraft să poată citi dosarele pe care le țineți la Favorite în Outlook. Sunt doar citite, niciodată modificate, iar restul rămâne cum este."
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Sign in with Send/Receive first, then change your automatic replies."
 msgstr "Conectați-vă întâi cu Trimitere/primire, apoi modificați răspunsurile automate."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Sign in with Send/Receive first."
+msgstr "Conectați-vă mai întâi cu Trimitere/Primire."
 
 #. interface
 #: crates/ui-egui/src/scheduling.rs
@@ -17706,6 +18549,30 @@ msgstr "Semnătura digitală a expirat."
 msgid "The Entire Series"
 msgstr "Toată seria"
 
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "The Sieve of a filter of your webmail's can't have the webmail's own marks in it (BEGIN:FILTER, END:FILTER)."
+msgstr "Sieve-ul unui filtru al webmailului nu poate conține marcajele proprii ale webmailului (BEGIN:FILTER, END:FILTER)."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "The Sieve rule has a mistake."
+msgstr "Regula Sieve conține o greșeală."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "The Sieve script can't be read."
+msgstr "Scriptul Sieve nu poate fi citit."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "The Sieve server is a host name, with a port after a colon if it isn't 4190"
+msgstr "Serverul Sieve este un nume de gazdă, cu un port după două puncte dacă nu este 4190"
+
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
@@ -17753,6 +18620,12 @@ msgstr "Contul trebuie autentificat din nou."
 #, fuzzy
 msgid "The account is gone"
 msgstr "Contul nu mai există"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "The account isn't there any more."
+msgstr "Contul nu mai există."
 
 #. interface
 #: crates/ui-egui/src/approval.rs
@@ -18121,6 +18994,12 @@ msgid "The certificate wasn't issued by a certification authority this computer 
 msgstr "Certificatul nu a fost emis de o autoritate de certificare în care are încredere acest computer."
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "The check stopped unexpectedly"
+msgstr "Verificarea s-a oprit neașteptat"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs
 #, fuzzy
 msgid "The connection test only checks that this server answers. If it does want a sign-in, the first message you send says so."
@@ -18392,6 +19271,12 @@ msgstr "Importul s-a oprit fără răspuns. Încercați din nou."
 #, fuzzy
 msgid "The incoming mail server isn't a host name (letters, digits, dots and dashes)"
 msgstr "Serverul de e-mail de intrare nu este un nume de gazdă (litere, cifre, puncte și cratime)"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "The incoming server, port 4190"
+msgstr "Serverul de primire, portul 4190"
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
@@ -18861,6 +19746,18 @@ msgstr "Serviciul de rapoarte nu funcționează acum. Încercați din nou mai t�
 msgid "The report service's answer wasn't one MailCraft understands, so the report may have arrived. Try again later, or open it on GitHub."
 msgstr "Răspunsul serviciului de rapoarte nu este unul pe care MailCraft îl înțelege, deci raportul poate să fi ajuns. Încercați din nou mai târziu sau deschideți-l pe GitHub."
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The rule builder can't change it: {why}."
+msgstr "Editorul de reguli nu o poate modifica: {why}."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "The rule builder can't change this rule of your Sieve script: {why}. Change it as Sieve."
+msgstr "Editorul de reguli nu poate modifica această regulă a scriptului Sieve: {why}. Modificați-o ca Sieve."
+
 #. what a command says
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
@@ -18896,6 +19793,18 @@ msgstr "Aceeași pagină cere și permisiunea de a vă modifica persoanele de co
 #, fuzzy
 msgid "The same page asks to read and send from the shared mailboxes you have access to and to read the calendars shared with you, so that MailCraft doesn't have to ask again."
 msgstr "Aceeași pagină cere să citească și să trimită din cutiile poștale partajate la care aveți acces și să citească calendarele partajate cu dvs., ca MailCraft să nu mai fie nevoit să întrebe din nou."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "The script has too many parts to check."
+msgstr "Scriptul are prea multe părți pentru a fi verificat."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "The script is larger than {mb} MB."
+msgstr "Scriptul depășește {mb} MB."
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -18981,11 +19890,35 @@ msgstr "Serverul a răspuns fără adresa Exchange Web Services. Cereți-o admin
 msgid "The server answered, but not as an Exchange server does. Check its address in Server settings."
 msgstr "Serverul a răspuns, dar nu ca un server Exchange. Verificați-i adresa în Setări server."
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server checked the rule inside MailCraft's whole script: its line numbers count from the top of that script."
+msgstr "Serverul a verificat regula în întregul script MailCraft: numerele de linie se numără de la începutul acelui script."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server checked the rule inside your whole script: its line numbers count from the top of that script."
+msgstr "Serverul a verificat regula în întregul script: numerele de linie se numără de la începutul scriptului."
+
 #. what a command says
 #: crates/mobile/src/fetch.rs
 #, fuzzy
 msgid "The server couldn't be searched. Try again in a few minutes."
 msgstr "Serverul nu a putut fi căutat. Încercați din nou peste câteva minute."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server couldn't check this rule"
+msgstr "Serverul nu a putut verifica această regulă"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server couldn't check this script"
+msgstr "Serverul nu a putut verifica acest script"
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -19030,10 +19963,40 @@ msgid "The server didn't take the change to {name}{why}: it is as the server has
 msgstr "Serverul nu a acceptat modificarea pentru {name}{why}: este din nou cum îl are serverul."
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server didn't take your sign-in."
+msgstr "Serverul nu a acceptat conectarea."
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "The server didn't take your sign-in. Check the account's password in Account Settings."
+msgstr "Serverul nu v-a acceptat conectarea. Verificați parola contului în Setările contului."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "The server doesn't have the extension {ext}."
+msgstr "Serverul nu are extensia {ext}."
+
+#. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
 msgid "The server doesn't let this rule be changed"
 msgstr "Serverul nu permite modificarea acestei reguli"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server doesn't take this rule:"
+msgstr "Serverul nu acceptă această regulă:"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server doesn't take this script:"
+msgstr "Serverul nu acceptă acest script:"
 
 #. why a mail server couldn't be used
 #: crates/net/src/sync.rs
@@ -19109,6 +20072,30 @@ msgstr "Serverul a trimis configurarea într-un loc necriptat, pe care MailCraft
 #, fuzzy
 msgid "The server shows a certificate that needs your say."
 msgstr "Serverul arată un certificat care are nevoie de decizia dvs."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server takes this rule, with warnings:"
+msgstr "Serverul acceptă această regulă, cu avertismente:"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server takes this rule."
+msgstr "Serverul acceptă această regulă."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server takes this script, with warnings:"
+msgstr "Serverul acceptă acest script, cu avertismente:"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The server takes this script."
+msgstr "Serverul acceptă acest script."
 
 #. interface
 #: crates/ui-egui/src/graph_fetch.rs crates/ui-egui/src/reading.rs
@@ -19516,6 +20503,18 @@ msgid "The user name is too long or has a character in it that a name can't have
 msgstr "Numele de utilizator este prea lung sau conține un caracter pe care un nume nu îl poate avea"
 
 #. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "The whole script your server runs, made in another program, as Sieve text"
+msgstr "Întregul script pe care îl rulează serverul tău, creat în alt program, ca text Sieve"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "The whole script your server runs, made in another program, as it was read. Save writes back exactly this text, only while the script on the server is still the one you opened."
+msgstr "Întregul script pe care îl rulează serverul tău, creat în alt program, așa cum a fost citit. Salvează scrie înapoi exact acest text, doar cât timp scriptul de pe server este încă cel pe care l-ai deschis."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/invitation.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/report_problem.rs
 #, fuzzy
 msgid "The window isn't up yet."
@@ -19786,10 +20785,45 @@ msgid "This account's Favorites come from Outlook and are changed there (File �
 msgstr "Favoritele acestui cont vin din Outlook și se modifică acolo (Fișier › Opțiuni poate afișa în schimb pe cele păstrate în MailCraft)"
 
 #. interface
+#: crates/ui-egui/src/sieve_replies.rs
+msgid "This account's Sieve server was changed in Account Settings meanwhile: open your script again."
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/calendar_sync.rs
 #, fuzzy
 msgid "This account's calendar can't be asked yet: Send/Receive signs it in first."
 msgstr "Calendarul acestui cont nu poate fi interogat încă: Trimitere/primire îl conectează întâi."
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "This account's server doesn't offer Sieve scripts (ManageSieve), so MailCraft can't keep automatic replies there."
+msgstr "Serverul acestui cont nu oferă scripturi Sieve (ManageSieve), așa că MailCraft nu poate păstra acolo răspunsuri automate."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "This account's server doesn't offer Sieve scripts (ManageSieve), so its rules run on this computer."
+msgstr "Serverul acestui cont nu oferă scripturi Sieve (ManageSieve), așa că regulile sale rulează pe acest computer."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "This account's server doesn't offer Sieve scripts (ManageSieve)."
+msgstr "Serverul acestui cont nu oferă scripturi Sieve (ManageSieve)."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "This account's server doesn't take automatic replies from MailCraft: it offers no Sieve scripts with vacation replies (ManageSieve)"
+msgstr "Serverul acestui cont nu acceptă răspunsuri automate de la MailCraft: nu oferă scripturi Sieve cu răspunsuri de concediu (ManageSieve)"
+
+#. interface, what a command says
+#: crates/engine/src/cmd/sieve_own.rs crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "This account's server keeps no Sieve scripts."
+msgstr "Serverul acestui cont nu păstrează scripturi Sieve."
 
 #. interface
 #: crates/ui-egui/src/attachment_preview.rs
@@ -19894,10 +20928,16 @@ msgid "This build can't reach the account's server."
 msgstr "Această versiune nu poate accesa serverul contului."
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "This build can't reach the server to change automatic replies. Use the desktop app."
 msgstr "Această versiune nu poate accesa serverul pentru a modifica răspunsurile automate. Folosiți aplicația desktop."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "This build can't reach the server. Use the desktop app."
+msgstr "Această versiune nu poate accesa serverul. Folosiți aplicația desktop."
 
 #. interface
 #: crates/ui-egui/src/lib.rs
@@ -19952,6 +20992,18 @@ msgstr "Cheia acestui certificat este de un tip pe care MailCraft nu îl folose�
 #, fuzzy
 msgid "This change is on this computer and goes to the server at the next Send/Receive."
 msgstr "Această modificare este pe acest computer și ajunge la server la următorul Trimitere/Primire."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This character has no meaning here."
+msgstr "Acest caracter nu are sens aici."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This comment has no */ to end it."
+msgstr "Acest comentariu nu are */ care să-l încheie."
 
 #. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
@@ -20093,6 +21145,12 @@ msgstr "Acest fișier nu poate fi importat: {why}"
 #, fuzzy
 msgid "This file has a password. Nothing is imported without it."
 msgstr "Acest fișier are parolă. Nu se importă nimic fără ea."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "This filter of your webmail's can't be changed here: {why}."
+msgstr "Acest filtru al webmailului dvs. nu poate fi schimbat aici: {why}."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListBar.kt
@@ -20523,6 +21581,12 @@ msgstr[0] "Aceasta mută {n} programare, cea mai devreme cu oră la {when} și c
 msgstr[1] "Aceasta mută {n} programări, cea mai devreme cu oră la {when} și celelalte la fel de mult, în {to}."
 msgstr[2] "Aceasta mută {n} de programări, cea mai devreme cu oră la {when} și celelalte la fel de mult, în {to}."
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This number is too large."
+msgstr "Acest număr este prea mare."
+
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
@@ -20592,14 +21656,116 @@ msgstr "Acest raport este prea lung pentru a fi trimis: scurtați ce ați scris 
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
+msgid "This rule can't be changed here."
+msgstr "Această regulă nu poate fi modificată aici."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
 msgid "This rule can't be kept on the server: {why}. It runs on this computer, while MailCraft is open."
 msgstr "Această regulă nu poate fi păstrată pe server: {why}. Rulează pe acest computer, cât timp MailCraft e deschis."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "This rule can't be said in Sieve: {why}."
+msgstr "Această regulă nu poate fi exprimată în Sieve: {why}."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "This rule can't be written in your Sieve script: {why}."
+msgstr "Această regulă nu poate fi scrisă în scriptul Sieve: {why}."
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "This rule has a part the rule builder can't show"
+msgstr "Această regulă are o parte pe care editorul de reguli nu o poate afișa"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "This rule has a part the rule builder can't show: delete it and create it again to change it"
+msgstr "Această regulă are o parte pe care generatorul de reguli nu o poate afișa: ștergeți-o și creați-o din nou pentru a o modifica"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "This rule is a Sieve rule already: change its Sieve as it is."
+msgstr "Această regulă este deja o regulă Sieve: modificați-i Sieve-ul direct."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_sieve.rs
+#, fuzzy
+msgid "This rule isn't a Sieve rule: change it in the rule builder."
+msgstr "Această regulă nu este o regulă Sieve: modificați-o în asistentul de reguli."
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "This rule isn't one of your own Sieve script's."
+msgstr "Această regulă nu face parte din propriul script Sieve."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This rule will be kept as Sieve text from now on: the rule builder no longer changes it. This is the Sieve MailCraft writes for it now."
+msgstr "Această regulă va fi păstrată de acum ca text Sieve: editorul de reguli nu o mai modifică. Acesta este Sieve-ul pe care MailCraft îl scrie acum pentru ea."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This rule's Sieve alone, as it is in your script. Save puts your text in its place and leaves the rest of the script as it is, only while the script on the server is still the one you opened."
+msgstr "Doar Sieve-ul acestei reguli, așa cum este în script. Salvare pune textul în locul lui și lasă restul scriptului neschimbat, doar cât timp scriptul de pe server este încă cel deschis."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This script was written by a webmail ({webmail}). It may overwrite or drop the changes you make here the next time its filters are saved there."
+msgstr "Acest script a fost scris de un webmail ({webmail}). Poate suprascrie sau renunța la modificările făcute aici data viitoare când îi sunt salvate filtrele acolo."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This script was written by a webmail. It may overwrite or drop the changes you make here the next time its filters are saved there."
+msgstr "Acest script a fost scris de un webmail. Acesta poate suprascrie sau pierde modificările făcute aici data viitoare când filtrele sunt salvate acolo."
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs
 #, fuzzy
 msgid "This series is still on its way to the account's server. Change one of its days once it is there (in a moment)."
 msgstr "Această serie este încă pe drum spre serverul contului. Modificați una dintre zilele ei după ce ajunge acolo (imediat)."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This server can't check a rule without keeping it: it checks it when the rule is saved."
+msgstr "Acest server nu poate verifica o regulă fără s-o păstreze: o verifică la salvarea regulii."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "This server can't check a script without keeping it: it checks it when it is saved."
+msgstr "Acest server nu poate verifica un script fără să-l păstreze: îl verifică la salvare."
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "This server can't send them only during a time range."
+msgstr "Acest server nu le poate trimite doar într-un interval de timp."
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "This server keeps Sieve scripts, but they can't send automatic replies (it has no vacation extension)."
+msgstr "Acest server păstrează scripturi Sieve, dar acestea nu pot trimite răspunsuri automate (nu are extensia vacation)."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "This server's Sieve scripts can't file mail into folders, so its rules run on this computer."
+msgstr "Scripturile Sieve ale acestui server nu pot pune mesajele în dosare, așa că regulile sale rulează pe acest computer."
 
 #. interface
 #: crates/ui-egui/src/shared_mailboxes.rs
@@ -20619,6 +21785,12 @@ msgstr "Contul acestei cutii poștale partajate nu mai există: eliminați cutia
 msgid "This signature has a picture or its own layout. Change it on the computer."
 msgstr "Această semnătură are o imagine sau o aranjare proprie. Modificați-o pe computer."
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This string has no closing quote."
+msgstr "Acestui șir îi lipsesc ghilimelele de închidere."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AboutPages.kt
 #, fuzzy
@@ -20637,6 +21809,12 @@ msgstr "Acest sistem nu are un loc cunoscut de MailCraft pentru certificatele S/
 msgid "This task could not be read."
 msgstr "Această sarcină nu a putut fi citită."
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This text: has no line with a lone dot to end it."
+msgstr "Acest text: nu are un rând cu un punct singur care să-l încheie."
+
 #. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
@@ -20650,10 +21828,22 @@ msgid "This was copied from another mailbox than the one open now"
 msgstr "Aceasta a fost copiată din altă cutie poștală decât cea deschisă acum"
 
 #. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This { has no } to close it."
+msgstr "Această { nu are } care să o închidă."
+
+#. what a command says
 #: crates/engine/src/cmd/remote.rs
 #, fuzzy
 msgid "This {what} is kept by the server of {who}. Changes made here are not sent back yet, so it can't be changed or deleted here."
 msgstr "Acest {what} este păstrat de serverul lui {who}. Modificările făcute aici nu sunt încă trimise înapoi, deci nu poate fi modificat sau șters aici."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "This } has no { before it."
+msgstr "Această } nu are { înaintea ei."
 
 #. name
 #: crates/time/src/lib.rs
@@ -21030,7 +22220,7 @@ msgid "Try Signing In Again"
 msgstr "Încercați din nou conectarea"
 
 #. interface
-#: crates/ui-egui/src/account_setup/help.rs crates/ui-egui/src/backstage.rs crates/ui-egui/src/nav.rs crates/ui-egui/src/reading/remote.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/report_problem.rs
+#: crates/ui-egui/src/account_setup/help.rs crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/backstage.rs crates/ui-egui/src/nav.rs crates/ui-egui/src/reading/remote.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/report_problem.rs
 #, fuzzy
 msgid "Try again"
 msgstr "Încercați din nou"
@@ -21172,6 +22362,24 @@ msgstr "Anulare {what}"
 #, fuzzy
 msgid "Unfolded"
 msgstr "Extins"
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "Unknown command {name}."
+msgstr "Comandă necunoscută {name}."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "Unknown comparator \"{name}\"."
+msgstr "Comparator necunoscut „{name}”."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "Unknown test {name}."
+msgstr "Test necunoscut {name}."
 
 #. interface
 #: crates/ui-egui/src/mail_view.rs
@@ -21634,6 +22842,12 @@ msgid "Want to be one? Sign up in #11"
 msgstr "Vreți să deveniți unul? Înscrieți-vă în #11"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Warning: {what}"
+msgstr "Avertisment: {what}"
+
+#. interface
 #: crates/ui-egui/src/forms.rs crates/ui-egui/src/merge_contacts.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Website"
@@ -21834,6 +23048,12 @@ msgid "When opened"
 msgstr "La deschidere"
 
 #. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "When you press OK, MailCraft's Sieve script on the server is replaced with these automatic replies."
+msgstr "Când apăsați OK, scriptul Sieve al MailCraft de pe server este înlocuit cu aceste răspunsuri automate."
+
+#. interface
 #: crates/ui-egui/src/graph_switch.rs
 #, fuzzy
 msgid "When you switch:"
@@ -21868,6 +23088,17 @@ msgstr "Acolo unde spune fișa că se află cheia: MailCraft nu o preia."
 #, fuzzy
 msgid "Where they differ, the kept contact has:"
 msgstr "Unde diferă, contactul păstrat are:"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_blocks.rs
+msgid "Where this rule ends in your Sieve script isn't clear (a filter of your webmail's without its END:FILTER, or a rule that runs across a filter's marks), so MailCraft doesn't change it: change it in your webmail or in the whole script."
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Where your server keeps Sieve scripts (ManageSieve), if not on the incoming server at port 4190. Your sign-in is sent there."
+msgstr "Unde serverul dvs. păstrează scripturile Sieve (ManageSieve), dacă nu pe serverul de primire la portul 4190. Conectarea dvs. este trimisă acolo."
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs
@@ -22038,6 +23269,12 @@ msgid "Working offline: mail you send waits in the Outbox"
 msgstr "Lucru offline: e-mailurile trimise așteaptă în Mesaje de trimis"
 
 #. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Working with the server…"
+msgstr "Se lucrează cu serverul…"
+
+#. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
 msgid "Workplace"
@@ -22054,6 +23291,18 @@ msgstr "Scrie"
 #, fuzzy
 msgid "Write a Note with the Response…"
 msgstr "Scrie o notă împreună cu răspunsul…"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Write this text to the server in place of this rule; the rest of your script stays as it is"
+msgstr "Scrieți acest text pe server în locul acestei reguli; restul scriptului rămâne neschimbat"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Write this text to the server in place of your script; it stays the one that runs"
+msgstr "Scrie acest text pe server în locul scriptului tău; rămâne cel care rulează"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
@@ -22253,11 +23502,83 @@ msgstr "V-ați conectat ca {signedIn}, nu ca {typed}."
 msgid "You tentatively accepted this meeting."
 msgstr "Ați acceptat provizoriu această întâlnire."
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "You're working offline."
+msgstr "Lucrați offline."
+
 #. interface, what a command says
 #: crates/engine/src/sync_driver/free_busy.rs crates/ui-egui/src/send_receive.rs
 #, fuzzy
 msgid "You're working offline. Turn off Work Offline (Send / Receive) to connect."
 msgstr "Lucrați offline. Dezactivați Lucru offline (Trimitere / primire) ca să vă conectați."
+
+#. command label
+#: crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "Your Sieve Rule"
+msgstr "Regula dvs. Sieve"
+
+#. command label
+#: crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "Your Sieve Script"
+msgstr "Scriptul tău Sieve"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Your Sieve script \"{name}\""
+msgstr "Scriptul tău Sieve „{name}”"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your Sieve script \"{name}\" runs on the server instead of MailCraft's, so these rules run on this computer. MailCraft never switches your script off."
+msgstr "Pe server rulează scriptul dvs. Sieve „{name}” în locul celui al MailCraft, așa că aceste reguli rulează pe acest computer. MailCraft nu vă oprește niciodată scriptul."
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs
+#, fuzzy
+msgid "Your Sieve script \"{name}\" runs on the server instead of MailCraft's: these replies are kept there, but aren't sent while it runs. MailCraft never switches your script off."
+msgstr "Pe server rulează scriptul dvs. Sieve „{name}” în locul celui al MailCraft: aceste răspunsuri sunt păstrate acolo, dar nu sunt trimise cât timp rulează. MailCraft nu vă oprește niciodată scriptul."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs crates/engine/src/cmd/sieve_blocks.rs crates/engine/src/cmd/sieve_own.rs
+#, fuzzy
+msgid "Your Sieve script changed on the server since you opened it, so nothing was written. Reload it to see what it has now."
+msgstr "Scriptul tău Sieve s-a schimbat pe server de când l-ai deschis, așa că nu s-a scris nimic. Reîncarcă-l ca să vezi ce conține acum."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Your Sieve script changed on the server since you opened it, so nothing was written. Reload it to see what it has now: the changes made here are lost then."
+msgstr "Scriptul tău Sieve s-a schimbat pe server de când l-ai deschis, așa că nu s-a scris nimic. Reîncarcă-l ca să vezi ce conține acum: modificările făcute aici se pierd atunci."
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Your Sieve script couldn't be read again: the server doesn't run it now, or can't be reached."
+msgstr "Scriptul tău Sieve nu a putut fi recitit: serverul nu îl mai rulează sau nu poate fi accesat."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your Sieve script is saved on the server"
+msgstr "Scriptul tău Sieve este salvat pe server"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "Your Sieve script isn't known just now: MailCraft reads it again."
+msgstr "Scriptul tău Sieve nu este cunoscut acum: MailCraft îl recitește."
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your Sieve script wasn't saved"
+msgstr "Scriptul tău Sieve nu a fost salvat"
 
 #. interface
 #: crates/ui-egui/src/auto_replies.rs
@@ -22266,7 +23587,13 @@ msgid "Your automatic replies couldn't be read: {error}"
 msgstr "Răspunsurile automate nu au putut fi citite: {error}"
 
 #. interface
-#: crates/ui-egui/src/auto_replies.rs
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your automatic replies were saved on the server, but another Sieve script of yours runs there, so they aren't sent"
+msgstr "Răspunsurile automate au fost salvate pe server, dar acolo rulează alt script Sieve al dvs., așa că nu sunt trimise"
+
+#. interface
+#: crates/ui-egui/src/auto_replies.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "Your automatic replies weren't changed"
 msgstr "Răspunsurile automate nu au fost modificate"
@@ -22518,6 +23845,41 @@ msgid "Your own name."
 msgstr "Numele dvs."
 
 #. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your rules are kept on the server"
+msgstr "Regulile dvs. sunt păstrate pe server"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your rules were saved on the server, but another Sieve script of yours runs there, so they run on this computer"
+msgstr "Regulile dvs. au fost salvate pe server, dar acolo rulează alt script Sieve al dvs., așa că rulează pe acest computer"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "Your rules weren't changed on the server"
+msgstr "Regulile dvs. nu au fost modificate pe server"
+
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "Your webmail (RainLoop or SnappyMail) keeps its own copy of this filter's settings, which stay as they are. It may put its version back the next time filters are saved there, and MailCraft changes the filter only as Sieve from now on."
+msgstr "Webmailul (RainLoop sau SnappyMail) păstrează propria copie a setărilor acestui filtru, care rămân neschimbate. Își poate pune înapoi versiunea data viitoare când filtrele sunt salvate acolo, iar MailCraft modifică de acum filtrul doar ca Sieve."
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+msgid "Your webmail's Sieve script has commands of its own and no filter to put a new one after: add the filter in your webmail, or change the whole script."
+msgstr ""
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "Your webmail's Sieve script isn't the one this account's server runs, as MailCraft last read it."
+msgstr "Scriptul Sieve al webmailului dvs. nu este cel pe care îl rulează serverul acestui cont, după ultima citire a MailCraft."
+
+#. interface
 #: crates/ui-egui/src/mail_view.rs
 #, fuzzy
 msgid "Z on top"
@@ -22648,6 +24010,12 @@ msgstr "Un cont Microsoft sau Exchange trimite de la alte adrese doar cât permi
 #, fuzzy
 msgid "a Microsoft sign-in is only used with Microsoft's own mail servers: this account names another server"
 msgstr "o conectare Microsoft se folosește doar cu serverele de e-mail ale Microsoft: acest cont numește alt server"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "a POP3 server"
+msgstr "un server POP3"
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs
@@ -22820,6 +24188,12 @@ msgstr "o regulă nu poate muta sau copia e-mailuri în Mesaje de trimis: le-ar 
 #. what a command says
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
+msgid "a rule for every account is kept on this computer: Keep on Server sends it to one account's server"
+msgstr "o regulă pentru toate conturile este păstrată pe acest computer: Păstrare pe server o trimite pe serverul unui cont"
+
+#. what a command says
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
 msgid "a rule is for an account's own mail, not a shared mailbox's"
 msgstr "o regulă este pentru e-mailurile proprii ale unui cont, nu ale unei cutii poștale partajate"
 
@@ -22828,6 +24202,12 @@ msgstr "o regulă este pentru e-mailurile proprii ale unui cont, nu ale unei cut
 #, fuzzy
 msgid "a rule of one account can't go to another account's server"
 msgstr "o regulă a unui cont nu poate ajunge pe serverul altui cont"
+
+#. what a command says
+#: crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_webmail.rs crates/engine/src/cmd/sieve_blocks.rs
+#, fuzzy
+msgid "a rule stays with its account: delete it and create one for the other account"
+msgstr "o regulă rămâne la contul ei: ștergeți-o și creați una pentru celălalt cont"
 
 #. what a command says
 #: crates/engine/src/cmd/rules.rs
@@ -22840,6 +24220,12 @@ msgstr "o regulă care așteaptă să ajungă pe server vine după cele de acolo
 #, fuzzy
 msgid "a sender address has no e-mail address"
 msgstr "o adresă de expeditor nu conține o adresă de e-mail"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "a server that encrypts from the first byte"
+msgstr "un server care criptează de la primul octet"
 
 #. what a command says
 #: crates/engine/src/cmd/account.rs
@@ -22913,6 +24299,12 @@ msgstr "imaginile unei semnături sunt PNG, JPEG sau GIF (multe programe de e-ma
 msgid "a task needs a title"
 msgstr "o sarcină are nevoie de un titlu"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "a web server"
+msgstr "un server web"
+
 #. what a command says, why a command can't run
 #: crates/engine/src/cmd/people.rs
 #, fuzzy
@@ -22955,11 +24347,29 @@ msgstr "o semnătură HTML afișează imagini doar de la adresa lor web: elimina
 msgid "an HTML signature shows pictures from their web address: switch it to rich text to add one"
 msgstr "o semnătură HTML afișează imagini de la adresa lor web: treceți-o la text formatat ca să adăugați una"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "an IMAP server"
+msgstr "un server IMAP"
+
 #. what a command says
 #: crates/engine/src/digital_signature.rs
 #, fuzzy
 msgid "an S/MIME certificate is trusted through its certification authority and isn't marked Verified"
 msgstr "un certificat S/MIME este de încredere prin autoritatea sa de certificare și nu este marcat Verificat"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "an SMTP server"
+msgstr "un server SMTP"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "an SSH server"
+msgstr "un server SSH"
 
 #. what a command says
 #: crates/engine/src/cmd/account.rs
@@ -22998,7 +24408,7 @@ msgid "and"
 msgstr "și"
 
 #. android, interface
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TodayScreen.kt crates/ui-egui/src/reading.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TodayScreen.kt crates/ui-egui/src/reading.rs crates/ui-egui/src/sieve_editor.rs
 #, fuzzy
 msgid "and {n} more"
 msgid_plural "and {n} more"
@@ -23023,6 +24433,12 @@ msgid_plural "and {n} more, not merged now"
 msgstr[0] "și încă {n}, neîmbinat acum"
 msgstr[1] "și încă {n}, neîmbinate acum"
 msgstr[2] "și încă {n}, neîmbinate acum"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "another Sieve script of yours runs on the server"
+msgstr "pe server rulează alt script Sieve al dvs."
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
@@ -23152,6 +24568,12 @@ msgid "copy it to {folder} - {who}"
 msgstr "copiază în {folder} - {who}"
 
 #. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "couldn't make a secure connection to {at}: {reason}"
+msgstr "nu s-a putut stabili o conexiune securizată cu {at}: {reason}"
+
+#. why a mail server couldn't be used
 #: crates/net/src/lib.rs
 #, fuzzy
 msgid "couldn't make a secure connection to {host}: {reason}"
@@ -23182,13 +24604,13 @@ msgid "due"
 msgstr "termen"
 
 #. why a mail server couldn't be used
-#: crates/net/src/sync.rs crates/proto/src/imap/password.rs
+#: crates/net/src/sieve.rs crates/net/src/sync.rs crates/proto/src/imap/password.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "enter a password to sign in"
 msgstr "introduceți o parolă pentru conectare"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/password.rs
+#: crates/proto/src/imap/password.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "enter a user name to sign in"
 msgstr "introduceți un nume de utilizator pentru conectare"
@@ -23470,6 +24892,12 @@ msgstr "emis de {issuer}"
 msgid "it can't take it"
 msgstr "nu îl poate prelua"
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "it changed on the server since you opened it."
+msgstr "s-a schimbat pe server de când l-ai deschis."
+
 #. name
 #: crates/engine/src/agent.rs
 #, fuzzy
@@ -23507,10 +24935,45 @@ msgid "it deletes for good"
 msgstr "șterge definitiv"
 
 #. interface
-#: crates/ui-egui/src/rule_sync.rs
+#: crates/ui-egui/src/rule_sync.rs crates/ui-egui/src/sieve_replies.rs
 #, fuzzy
 msgid "it goes to the server at the next connection"
 msgstr "ajunge pe server la următoarea conectare"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "it has a part MailCraft can't write as Sieve"
+msgstr "are o parte pe care MailCraft nu o poate scrie în Sieve"
+
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+msgid "it has comments inside it, which the rule builder would leave out"
+msgstr ""
+
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "it has elsif or else branches, which the rule builder can't show"
+msgstr "are ramuri elsif sau else, pe care editorul de reguli nu le poate afișa"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "it has no conditions, and on the server it would act on every message"
+msgstr "nu are condiții, iar pe server ar acționa asupra fiecărui mesaj"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "it has parts MailCraft can't show, which changing it here would lose"
+msgstr "are părți pe care MailCraft nu le poate afișa și care s-ar pierde dacă ar fi modificată aici"
+
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "it has parts the rule builder can't show"
+msgstr "are părți pe care editorul de reguli nu le poate afișa"
 
 #. name
 #: crates/engine/src/cmd/rules.rs
@@ -23524,11 +24987,23 @@ msgstr "are două condiții de același tip, iar serverul ar accepta oricare din
 msgid "it has two exceptions of one kind that look for different things, and the server takes one"
 msgstr "are două excepții de același tip care caută lucruri diferite, iar serverul acceptă una singură"
 
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "it is a Sieve rule: its Sieve is changed as Sieve, not in the rule builder"
+msgstr "este o regulă Sieve: Sieve-ul ei se modifică drept Sieve, nu în asistentul de reguli"
+
 #. interface
 #: crates/ui-egui/src/reading/images.rs
 #, fuzzy
 msgid "it is a drawing of a kind that isn't shown (SVG)"
 msgstr "este un desen de un tip care nu se afișează (SVG)"
+
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "it is a filter of your webmail's"
+msgstr "este un filtru al webmailului"
 
 #. interface
 #: crates/ui-egui/src/reading/images.rs
@@ -23543,10 +25018,28 @@ msgid "it is a kind of picture that can't be shown here (AVIF or HEIC)"
 msgstr "este un tip de imagine care nu poate fi afișat aici (AVIF sau HEIC)"
 
 #. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "it is being written to the server"
+msgstr "se scrie pe server"
+
+#. interface
 #: crates/ui-egui/src/reading/images.rs
 #, fuzzy
 msgid "it is damaged, or larger than can be shown"
 msgstr "este deteriorată sau mai mare decât se poate afișa"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "it is in your own Sieve script on the server, made in another program: MailCraft never changes it"
+msgstr "se află în propriul dvs. script Sieve de pe server, creat în alt program: MailCraft nu o modifică niciodată"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "it is larger than MailCraft sends (1 MB)."
+msgstr "este mai mare decât trimite MailCraft (1 MB)."
 
 #. interface
 #: crates/ui-egui/src/reading/images.rs crates/ui-egui/src/reading/remote.rs
@@ -23561,10 +25054,22 @@ msgid "it is too long for the platform"
 msgstr "este prea lung pentru platformă"
 
 #. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "it isn't an if test, which is what the rule builder writes"
+msgstr "nu este un test if, care este ce scrie editorul de reguli"
+
+#. name
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
 msgid "it looks for a name, and the server looks at addresses only"
 msgstr "caută un nume, iar serverul se uită doar la adrese"
+
+#. name
+#: crates/engine/src/sieve_rainloop.rs
+#, fuzzy
+msgid "it moves mail to a folder MailCraft doesn't have"
+msgstr "mută mesajele într-un dosar pe care MailCraft nu îl are"
 
 #. name
 #: crates/engine/src/cmd/rules.rs
@@ -23603,10 +25108,28 @@ msgid "it took too long"
 msgstr "a durat prea mult"
 
 #. name
+#: crates/engine/src/sieve_rainloop.rs
+#, fuzzy
+msgid "it uses settings of your webmail that MailCraft doesn't know yet"
+msgstr "folosește setări ale webmailului dvs. pe care MailCraft nu le cunoaște încă"
+
+#. name
 #: crates/engine/src/agent.rs
 #, fuzzy
 msgid "it writes to other people or reaches out to the web"
 msgstr "scrie altor persoane sau accesează webul"
+
+#. name
+#: crates/engine/src/sieve_rainloop.rs
+#, fuzzy
+msgid "its Sieve doesn't match its settings: it was changed by hand"
+msgstr "Sieve-ul său nu se potrivește cu setările sale: a fost schimbat de mână"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "its Sieve has a mistake"
+msgstr "Sieve-ul ei conține o greșeală"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -23614,11 +25137,29 @@ msgstr "scrie altor persoane sau accesează webul"
 msgid "its account"
 msgstr "contul său"
 
+#. name
+#: crates/engine/src/sieve_rainloop.rs
+#, fuzzy
+msgid "its conditions can't be shown in the rule builder"
+msgstr "condițiile sale nu pot fi afișate în asistentul de reguli"
+
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs
 #, fuzzy
 msgid "its name isn't one a certificate can be checked against"
 msgstr "numele lui nu este unul cu care se poate verifica un certificat"
+
+#. name
+#: crates/engine/src/sieve_rainloop.rs
+#, fuzzy
+msgid "its settings in the script can't be read"
+msgstr "setările sale din script nu pot fi citite"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "its sizes are larger than the server takes"
+msgstr "dimensiunile ei depășesc ce acceptă serverul"
 
 #. interface
 #: crates/ui-egui/src/opened_message.rs
@@ -23637,6 +25178,18 @@ msgstr "mică"
 #, fuzzy
 msgid "mark it as read"
 msgstr "marchează ca citit"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "message header {names} contains {words}"
+msgstr "antetul mesajului {names} conține {words}"
+
+#. interface
+#: crates/ui-egui/src/forms.rs
+#, fuzzy
+msgid "message header {names} is exactly {words}"
+msgstr "antetul mesajului {names} este exact {words}"
 
 #. what a command says
 #: crates/engine/src/session.rs
@@ -23819,13 +25372,13 @@ msgid "no account is kept in step through Microsoft Graph"
 msgstr "niciun cont nu este sincronizat prin Microsoft Graph"
 
 #. what a command says
-#: crates/engine/src/cmd/auto_replies.rs
+#: crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/rules_webmail.rs crates/engine/src/cmd/sieve_own.rs crates/engine/src/cmd/sieve_replies.rs
 #, fuzzy
 msgid "no account with id {account}"
 msgstr "nu există cont cu ID-ul {account}"
 
 #. what a command says
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/compose.rs crates/engine/src/cmd/contacts_remote.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/ews_mail.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_mail.rs crates/engine/src/cmd/graph_send.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/jmap_mail.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/remote.rs crates/engine/src/cmd/rules.rs crates/engine/src/cmd/search_server.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/compose.rs crates/engine/src/cmd/contacts_remote.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/ews_mail.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_mail.rs crates/engine/src/cmd/graph_send.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/jmap_mail.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/remote.rs crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_sieve.rs crates/engine/src/cmd/search_server.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs
 #, fuzzy
 msgid "no account with id {id}"
 msgstr "nu există cont cu ID-ul {id}"
@@ -23963,7 +25516,7 @@ msgid "no picture {id} was put in this message"
 msgstr "imaginea {id} nu a fost pusă în acest mesaj"
 
 #. what a command says
-#: crates/engine/src/cmd/rules.rs
+#: crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_sieve.rs crates/engine/src/cmd/rules_webmail.rs crates/engine/src/cmd/sieve_blocks.rs
 #, fuzzy
 msgid "no rule with id {id}"
 msgstr "nu există regulă cu ID-ul {id}"
@@ -24087,6 +25640,12 @@ msgstr "necunoscut până la prima Trimitere/primire"
 #, fuzzy
 msgid "not sent: {why}. Send with \"confirmed\": true to send it anyway, or with \"moveToBcc\": true to move the people outside the organisation to Bcc first"
 msgstr "netrimis: {why}. Trimite cu \"confirmed\": true pentru a-l trimite oricum, sau cu \"moveToBcc\": true pentru a muta mai întâi în Cci persoanele din afara organizației"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "nothing answers at {at} ({reason})"
+msgstr "nimic nu răspunde la {at} ({reason})"
 
 #. what a command says
 #: crates/engine/src/cmd/format.rs
@@ -24310,6 +25869,12 @@ msgstr "adresa destinatarului conține {words}"
 msgid "replies can go to at most {n} addresses"
 msgstr "răspunsurile pot merge la cel mult {n} adrese"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "require goes before every other command."
+msgstr "require vine înaintea oricărei alte comenzi."
+
 #. name
 #: crates/engine/src/agent.rs
 #, fuzzy
@@ -24476,6 +26041,18 @@ msgstr "dimensiunea este între {min} KB și {max} KB"
 msgid "someone@example.org or @example.org"
 msgstr "cineva@example.org sau @example.org"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "something answers at {at}, but it isn't a ManageSieve server"
+msgstr "ceva răspunde la {at}, dar nu este un server ManageSieve"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "something answers at {at}, but it isn't a ManageSieve server: it looks like {what}"
+msgstr "ceva răspunde la {at}, dar nu este un server ManageSieve: pare să fie {what}"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -24632,6 +26209,12 @@ msgstr "cititorul fișierului .pst s-a oprit înainte de final"
 msgid "the Inbox of this account hasn't been read yet"
 msgstr "dosarul Mesaje primite al acestui cont nu a fost încă citit"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "the ManageSieve server at {at} doesn't offer STARTTLS"
+msgstr "serverul ManageSieve de la {at} nu oferă STARTTLS"
+
 #. what a command says
 #: crates/engine/src/cmd/keys.rs
 #, fuzzy
@@ -24639,7 +26222,18 @@ msgid "the OpenPGP key is larger than a Public key is kept"
 msgstr "cheia OpenPGP este mai mare decât se păstrează o cheie publică"
 
 #. why a mail server couldn't be used
-#: crates/net/src/sync.rs
+#: crates/proto/src/managesieve/mod.rs
+msgid "the Sieve script isn't UTF-8 text, which MailCraft can't change without altering it"
+msgstr ""
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the account has no address to look for"
+msgstr "contul nu are o adresă de căutat"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs crates/net/src/sync.rs
 #, fuzzy
 msgid "the account has no incoming server"
 msgstr "contul nu are server de intrare"
@@ -24663,7 +26257,7 @@ msgid "the account has no usable e-mail address to send from"
 msgstr "contul nu are o adresă de e-mail utilizabilă de la care să trimită"
 
 #. why a mail server couldn't be used
-#: crates/net/src/send.rs crates/net/src/sync.rs
+#: crates/net/src/send.rs crates/net/src/sieve.rs crates/net/src/sync.rs
 #, fuzzy
 msgid "the account has no user name or e-mail address to sign in with"
 msgstr "contul nu are nume de utilizator sau adresă de e-mail cu care să se conecteze"
@@ -24673,6 +26267,12 @@ msgstr "contul nu are nume de utilizator sau adresă de e-mail cu care să se co
 #, fuzzy
 msgid "the account is gone"
 msgstr "contul nu mai există"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the account's Deleted Items isn't on the server"
+msgstr "Elementele șterse ale contului nu sunt pe server"
 
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs
@@ -24705,7 +26305,7 @@ msgid "the attachments are larger than {mb} MB together: save them in a folder"
 msgstr "atașamentele depășesc împreună {mb} MB: salvați-le într-un dosar"
 
 #. what a command says
-#: crates/engine/src/cmd/auto_replies.rs
+#: crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/sieve_replies.rs
 #, fuzzy
 msgid "the automatic replies haven't been read from the server yet: read them first, so that nothing of them is written over unseen"
 msgstr "răspunsurile automate nu au fost încă citite de pe server: citiți-le întâi, ca nimic din ele să nu fie suprascris fără să fie văzut"
@@ -24783,7 +26383,7 @@ msgid "the check stopped unexpectedly"
 msgstr "verificarea s-a oprit neașteptat"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the command was refused"
 msgstr "comanda a fost refuzată"
@@ -24837,7 +26437,7 @@ msgid "the end is before the start"
 msgstr "sfârșitul este înainte de început"
 
 #. what a command says
-#: crates/engine/src/cmd/auto_replies.rs
+#: crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/sieve_replies.rs
 #, fuzzy
 msgid "the end of the time range must be after its start"
 msgstr "sfârșitul intervalului de timp trebuie să fie după început"
@@ -24877,6 +26477,12 @@ msgstr "fișierul este gol"
 #, fuzzy
 msgid "the file is larger than a file of Public keys can be (1 MB)"
 msgstr "fișierul este mai mare decât poate fi un fișier de chei publice (1 MB)"
+
+#. what a command says
+#: crates/engine/src/cmd/rules_webmail.rs
+#, fuzzy
+msgid "the filter next to it in your webmail's script has no end, so it can't be moved"
+msgstr "filtrul de alături din scriptul webmailului dvs. nu are sfârșit, așa că nu poate fi mutat"
 
 #. why a command can't run
 #: crates/engine/src/cmd/folder.rs
@@ -24985,6 +26591,12 @@ msgstr "ultimul calendar nu poate fi șters"
 #, fuzzy
 msgid "the list shows every account's folder: open one account's folder, or name the folder"
 msgstr "lista arată dosarul fiecărui cont: deschideți dosarul unui singur cont sau numiți dosarul"
+
+#. what a command says
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "the mail server doesn't know your contacts: replies outside the organisation go to nobody or to everybody"
+msgstr "serverul de e-mail nu vă cunoaște contactele: răspunsurile din afara organizației merg la nimeni sau la toată lumea"
 
 #. what a command says
 #: crates/engine/src/cmd/file.rs
@@ -25148,11 +26760,29 @@ msgstr "rezultatul ar face ca acest cont să păstreze mai multă stare de sincr
 msgid "the result {why}"
 msgstr "rezultatul {why}"
 
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "the rule builder can't write it back as Sieve"
+msgstr "editorul de reguli nu o poate rescrie ca Sieve"
+
+#. name
+#: crates/engine/src/cmd/sieve_elsewhere.rs
+#, fuzzy
+msgid "the rule builder would write it as other Sieve (for example an address test where it has a header test), which could change what it does"
+msgstr "editorul de reguli ar scrie-o ca alt Sieve (de exemplu un test address în loc de un test header), ceea ce ar putea schimba ce face"
+
 #. what a command says
 #: crates/engine/src/cmd/calendar/selection.rs
 #, fuzzy
 msgid "the same calendar item is named twice; nothing was changed"
 msgstr "același element de calendar este numit de două ori; nu s-a schimbat nimic"
+
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+#, fuzzy
+msgid "the script is larger than the {kb} KB MailCraft sends"
+msgstr "scriptul depășește cei {kb} KB pe care îi trimite MailCraft"
 
 #. what a command says
 #: crates/engine/src/cmd/mail.rs
@@ -25227,19 +26857,19 @@ msgid "the server answered {status}"
 msgstr "serverul a răspuns {status}"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the server asked for more than a sign-in has"
 msgstr "serverul a cerut mai mult decât conține o conectare"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs crates/proto/src/smtp.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the server asked for more than a user name and access token"
 msgstr "serverul a cerut mai mult decât un nume de utilizator și un token de acces"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/smtp.rs
+#: crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the server asked for more than a user name and password"
 msgstr "serverul a cerut mai mult decât un nume de utilizator și o parolă"
@@ -25316,6 +26946,12 @@ msgstr "serverul a continuat o autentificare cu parolă anulată"
 msgid "the server couldn't be reached"
 msgstr "serverul nu a putut fi contactat"
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "the server couldn't be reached."
+msgstr "serverul nu a putut fi accesat."
+
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs
 #, fuzzy
@@ -25329,10 +26965,22 @@ msgid "the server didn't end IDLE properly"
 msgstr "serverul nu a încheiat corect IDLE"
 
 #. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+#, fuzzy
+msgid "the server didn't greet like a ManageSieve server"
+msgstr "serverul nu a salutat ca un server ManageSieve"
+
+#. why a mail server couldn't be used
 #: crates/proto/src/imap/mod.rs
 #, fuzzy
 msgid "the server didn't greet like an IMAP server"
 msgstr "serverul nu a salutat ca un server IMAP"
+
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+#, fuzzy
+msgid "the server didn't send the script"
+msgstr "serverul nu a trimis scriptul"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -25340,13 +26988,19 @@ msgstr "serverul nu a salutat ca un server IMAP"
 msgid "the server didn't take it ({why})"
 msgstr "serverul nu l-a acceptat ({why})"
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "the server didn't take your sign-in."
+msgstr "serverul nu v-a acceptat conectarea."
+
 #. what a command says
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
 msgid "the server doesn't let the rule next to it be moved"
 msgstr "serverul nu permite mutarea regulii de lângă ea"
 
-#. what a command says
+#. name, what a command says
 #: crates/engine/src/cmd/rules.rs
 #, fuzzy
 msgid "the server doesn't let this rule be changed"
@@ -25357,6 +27011,12 @@ msgstr "serverul nu permite modificarea acestei reguli"
 #, fuzzy
 msgid "the server doesn't offer STARTTLS"
 msgstr "serverul nu oferă STARTTLS"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "the server doesn't offer Sieve scripts (ManageSieve)."
+msgstr "serverul nu oferă scripturi Sieve (ManageSieve)."
 
 #. why a mail server couldn't be used
 #: crates/proto/src/imap/mod.rs
@@ -25371,22 +27031,33 @@ msgid "the server ended the command early"
 msgstr "serverul a încheiat comanda prea devreme"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/status.rs
+#: crates/proto/src/imap/status.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the server ended the session"
 msgstr "serverul a încheiat sesiunea"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/idle.rs crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/idle.rs crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the server ended the session: {reason}"
 msgstr "serverul a încheiat sesiunea: {reason}"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the server greeted with a refusal: {reason}"
 msgstr "serverul a salutat cu un refuz: {reason}"
+
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+msgid "the server has more Sieve scripts than MailCraft reads ({n})"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "the server has no room for it (your quota, or its largest script)."
+msgstr "serverul nu are loc pentru el (cota ta sau cel mai mare script al său)."
 
 #. why a mail server couldn't be used
 #: crates/proto/src/imap/idle.rs
@@ -25401,13 +27072,18 @@ msgid "the server keeps this folder: it can't be renamed, moved or deleted"
 msgstr "serverul păstrează acest dosar: nu poate fi redenumit, mutat sau șters"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/smtp.rs
+#: crates/proto/src/managesieve/mod.rs
+msgid "the server listed a Sieve script whose name MailCraft can't use"
+msgstr ""
+
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the server offers no way to sign in with a password"
 msgstr "serverul nu oferă nicio metodă de conectare cu parolă"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/smtp.rs
+#: crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the server offers no way to sign in with an access token"
 msgstr "serverul nu oferă nicio metodă de conectare cu token de acces"
@@ -25449,6 +27125,12 @@ msgid "the server said: {reason}"
 msgstr "serverul a spus: {reason}"
 
 #. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+#, fuzzy
+msgid "the server sent MailCraft to another server for the Sieve scripts, which it doesn't follow"
+msgstr "serverul a trimis MailCraft la alt server pentru scripturile Sieve, iar MailCraft nu urmează trimiterea"
+
+#. why a mail server couldn't be used
 #: crates/proto/src/line.rs
 #, fuzzy
 msgid "the server sent a line longer than {kb} KB"
@@ -25461,7 +27143,7 @@ msgid "the server sent a web page instead of a picture"
 msgstr "serverul a trimis o pagină web în loc de imagine"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs crates/proto/src/smtp.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the server sent data before the secure connection started"
 msgstr "serverul a trimis date înainte să înceapă conexiunea securizată"
@@ -25479,7 +27161,13 @@ msgid "the server sent nothing"
 msgstr "serverul nu a trimis nimic"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/idle.rs crates/proto/src/imap/mod.rs crates/proto/src/imap/status.rs
+#: crates/proto/src/managesieve/mod.rs crates/proto/src/managesieve/parse.rs
+#, fuzzy
+msgid "the server sent something that isn't a ManageSieve response"
+msgstr "serverul a trimis ceva ce nu este un răspuns ManageSieve"
+
+#. why a mail server couldn't be used
+#: crates/proto/src/imap/idle.rs crates/proto/src/imap/mod.rs crates/proto/src/imap/status.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the server sent too many responses to one command"
 msgstr "serverul a trimis prea multe răspunsuri la o singură comandă"
@@ -25497,7 +27185,7 @@ msgid "the server sent {claimed} bytes in one piece, more than the {mb} MB MailC
 msgstr "serverul a trimis {claimed} octeți dintr-o bucată, mai mult decât cei {mb} MB acceptați de MailCraft"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/line.rs
+#: crates/proto/src/line.rs crates/proto/src/managesieve/parse.rs
 #, fuzzy
 msgid "the server sent {n} bytes in one piece, more than MailCraft accepts"
 msgstr "serverul a trimis {n} octeți dintr-o bucată, mai mult decât acceptă MailCraft"
@@ -25520,6 +27208,87 @@ msgstr "serverul a răspuns prea greu"
 msgid "the server wouldn't send “{subject}” whole, so it can't be forwarded as an attachment"
 msgstr "serverul nu a vrut să trimită „{subject}” întreg, deci nu poate fi redirecționat ca atașament"
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+msgid "the server's Sieve scripts can't be reached"
+msgstr ""
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't do one of its actions or conditions"
+msgstr "scripturile Sieve ale serverului nu pot face una dintre acțiunile sau condițiile ei"
+
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+msgid "the server's Sieve scripts can't file mail into folders"
+msgstr ""
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't flag mail for a day"
+msgstr "scripturile Sieve ale serverului nu pot semnaliza mesajele pentru o zi"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't look at attachments"
+msgstr "scripturile Sieve ale serverului nu pot verifica atașările"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't look at categories"
+msgstr "scripturile Sieve ale serverului nu pot verifica categoriile"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't look at importance"
+msgstr "scripturile Sieve ale serverului nu pot verifica importanța"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't look at sensitivity"
+msgstr "scripturile Sieve ale serverului nu pot verifica confidențialitatea"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't set categories"
+msgstr "scripturile Sieve ale serverului nu pot seta categorii"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't set importance"
+msgstr "scripturile Sieve ale serverului nu pot seta importanța"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't tell automatic replies"
+msgstr "scripturile Sieve ale serverului nu pot recunoaște răspunsurile automate"
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't tell mail sent to you alone"
+msgstr "scripturile Sieve ale serverului nu pot recunoaște mesajele trimise doar dvs."
+
+#. name
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "the server's Sieve scripts can't tell meeting invitations"
+msgstr "scripturile Sieve ale serverului nu pot recunoaște invitațiile la întâlniri"
+
+#. why a mail server couldn't be used
+#: crates/proto/src/managesieve/mod.rs
+msgid "the server's answer to one command is too long"
+msgstr ""
+
 #. why a mail server couldn't be used
 #: crates/proto/src/imap/mod.rs
 #, fuzzy
@@ -25533,7 +27302,7 @@ msgid "the server's reply has too many lines"
 msgstr "răspunsul serverului are prea multe rânduri"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/parse.rs
 #, fuzzy
 msgid "the server's response has too many parts"
 msgstr "răspunsul serverului are prea multe părți"
@@ -25545,7 +27314,7 @@ msgid "the server's response is nested too deeply"
 msgstr "răspunsul serverului este imbricat prea adânc"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/parse.rs
 #, fuzzy
 msgid "the server's response is too long"
 msgstr "răspunsul serverului este prea lung"
@@ -25623,13 +27392,13 @@ msgid "the user name or access token is too long to be sent"
 msgstr "numele de utilizator sau tokenul de acces este prea lung pentru a fi trimis"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/mod.rs crates/proto/src/smtp.rs
+#: crates/proto/src/imap/mod.rs crates/proto/src/managesieve/mod.rs crates/proto/src/smtp.rs
 #, fuzzy
 msgid "the user name or password has a character that can't be sent"
 msgstr "numele de utilizator sau parola conține un caracter care nu poate fi trimis"
 
 #. why a mail server couldn't be used
-#: crates/proto/src/imap/password.rs
+#: crates/proto/src/imap/password.rs crates/proto/src/managesieve/mod.rs
 #, fuzzy
 msgid "the user name or password is too long"
 msgstr "numele de utilizator sau parola este prea lungă"
@@ -25677,7 +27446,7 @@ msgid "there are too many categories"
 msgstr "sunt prea multe categorii"
 
 #. what a command says
-#: crates/engine/src/cmd/rules.rs
+#: crates/engine/src/cmd/rules.rs crates/engine/src/cmd/rules_sieve.rs crates/engine/src/cmd/rules_webmail.rs
 #, fuzzy
 msgid "there are too many rules"
 msgstr "sunt prea multe reguli"
@@ -25892,6 +27661,12 @@ msgstr "acest fișier conține o cheie privată, care nu se importă ca cheie pu
 msgid "this isn't a .pst file"
 msgstr "acesta nu este un fișier .pst"
 
+#. what a command says
+#: crates/engine/src/cmd/sieve_replies.rs
+#, fuzzy
+msgid "this mail server can't send automatic replies only during a time range (its Sieve scripts have no date tests)"
+msgstr "acest server de e-mail nu poate trimite răspunsuri automate doar într-un interval de timp (scripturile sale Sieve nu au teste de dată)"
+
 #. name
 #: crates/model/src/sync.rs
 #, fuzzy
@@ -25969,6 +27744,12 @@ msgstr "acest mesaj nu este descărcat: deschideți-l când sunteți online, apo
 #, fuzzy
 msgid "this read was made under the calendar server's earlier settings"
 msgstr "această citire a fost făcută cu setările anterioare ale serverului de calendar"
+
+#. what a command says
+#: crates/engine/src/cmd/rules.rs
+#, fuzzy
+msgid "this rule is in your Sieve script \"{script}\" on the server, made in another program: MailCraft shows it and never changes it"
+msgstr "această regulă este în scriptul dvs. Sieve „{script}” de pe server, creat în alt program: MailCraft o afișează și nu o modifică niciodată"
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar/selection.rs
@@ -26343,6 +28124,18 @@ msgstr "{address}: {error}. Vedeți Fișier › Informații."
 msgid "{answer}: more ways to answer"
 msgstr "{answer}: alte moduri de a răspunde"
 
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "{at} closed the connection without a word"
+msgstr "{at} a închis conexiunea fără niciun cuvânt"
+
+#. why a mail server couldn't be used
+#: crates/net/src/sieve.rs
+#, fuzzy
+msgid "{at} expects an encrypted connection from the start, which ManageSieve doesn't use"
+msgstr "{at} așteaptă o conexiune criptată de la început, pe care ManageSieve nu o folosește"
+
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
@@ -26541,6 +28334,12 @@ msgstr "{line} · nu au putut fi citite la ultima rulare: {folders}"
 msgid "{line} · the server's certificate needs your say"
 msgstr "{line} · certificatul serverului are nevoie de decizia dvs."
 
+#. interface
+#: crates/ui-egui/src/sieve_replies.rs
+#, fuzzy
+msgid "{line} · your Sieve script \"{name}\" runs instead"
+msgstr "{line} · în schimb rulează scriptul dvs. Sieve „{name}”"
+
 #. date and time
 #: crates/i18n/src/date.rs
 #, fuzzy
@@ -26656,6 +28455,12 @@ msgid "{name} has declined this meeting."
 msgstr "{name} a refuzat această întâlnire."
 
 #. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} has no :{tag}."
+msgstr "{name} nu are :{tag}."
+
+#. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
 #, fuzzy
 msgid "{name} has no Exchange server address that can be used"
@@ -26692,16 +28497,34 @@ msgid "{name} has tentatively accepted this meeting."
 msgstr "{name} a acceptat provizoriu această întâlnire."
 
 #. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} has too many arguments."
+msgstr "{name} are prea multe argumente."
+
+#. what a command says
 #: crates/engine/src/cmd/account.rs
 #, fuzzy
 msgid "{name} is a JMAP account, and this version doesn't send and receive with one yet"
 msgstr "{name} este un cont JMAP, iar această versiune nu trimite și nu primește încă prin el"
 
 #. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} is a command; a test belongs here."
+msgstr "{name} este o comandă; aici trebuie un test."
+
+#. what a command says
 #: crates/engine/src/cmd/graph_mail.rs
 #, fuzzy
 msgid "{name} is a shared mailbox whose account is gone: remove it and add it again"
 msgstr "{name} este o cutie poștală partajată al cărei cont nu mai există: eliminați-o și adăugați-o din nou"
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} is a test; a command belongs here."
+msgstr "{name} este un test; aici trebuie o comandă."
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MovePerson.kt crates/ui-egui/src/move_contacts.rs
@@ -26732,6 +28555,12 @@ msgstr "{name} rămâne pe acest computer: {folder} nu mai este pe server, iar m
 #, fuzzy
 msgid "{name} is larger than {mb} MB"
 msgstr "{name} este mai mare de {mb} MB"
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} is missing an argument."
+msgstr "Lui {name} îi lipsește un argument."
 
 #. what a command says
 #: crates/engine/src/cmd/contacts_move.rs
@@ -26823,6 +28652,54 @@ msgstr "{name} nu este sincronizat prin Microsoft Graph"
 msgid "{name} isn't waiting its turn in a Send/Receive"
 msgstr "{name} nu își așteaptă rândul într-o Trimitere/primire"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a block in braces."
+msgstr "{name} necesită un bloc între acolade."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a list of tests in brackets."
+msgstr "{name} necesită o listă de teste între paranteze."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a number here."
+msgstr "{name} necesită aici un număr."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a string here."
+msgstr "{name} necesită aici un șir."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a string or a list here."
+msgstr "{name} necesită aici un șir sau o listă."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs a test."
+msgstr "{name} necesită un test."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs one of {tags}."
+msgstr "{name} necesită unul dintre {tags}."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} needs require \"{ext}\"."
+msgstr "{name} necesită require „{ext}”."
+
 #. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
 #, fuzzy
@@ -26865,6 +28742,24 @@ msgstr "{name} v-a partajat un calendar. Este în lista dvs. de calendare."
 msgid "{name} stays at the top of its account's folders"
 msgstr "{name} rămâne în partea de sus a folderelor contului"
 
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} takes no block; end it with a semicolon."
+msgstr "{name} nu primește bloc; încheiați-l cu punct și virgulă."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} takes no test."
+msgstr "{name} nu primește test."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} takes one test, not a list."
+msgstr "{name} primește un singur test, nu o listă."
+
 #. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
@@ -26888,6 +28783,12 @@ msgstr "{name} nu a fost atașat: această aplicație nu poate citi fișierul."
 #, fuzzy
 msgid "{name} was not attached: the files on a message can be 50 MB together."
 msgstr "{name} nu a fost atașat: fișierele unui mesaj pot avea împreună 50 MB."
+
+#. what a command says
+#: crates/engine/src/sieve_check.rs
+#, fuzzy
+msgid "{name} without an if before it."
+msgstr "{name} fără un if înainte."
 
 #. interface
 #: crates/ui-egui/src/ribbon.rs
@@ -28272,6 +30173,12 @@ msgstr[0] "{used} din {cap} folosiți de {n} mesaj"
 msgstr[1] "{used} din {cap} folosiți de {n} mesaje"
 msgstr[2] "{used} din {cap} folosiți de {n} de mesaje"
 
+#. interface
+#: crates/ui-egui/src/sieve_editor.rs
+#, fuzzy
+msgid "{used} of {most} KB"
+msgstr "{used} din {most} KB"
+
 #. date and time
 #: crates/i18n/src/date.rs
 #, fuzzy
@@ -28402,6 +30309,10 @@ msgid "−Lines"
 msgstr "−Linii"
 
 #, fuzzy
+#~ msgid "This account's server keeps this contact. Changes made here aren't sent back yet, so it can't be edited or deleted here. Favorite and categories are kept on this computer."
+#~ msgstr "Serverul acestui cont păstrează acest contact. Modificările făcute aici nu sunt încă trimise înapoi, deci nu poate fi editat sau șters aici. Favoritele și categoriile se păstrează pe acest computer."
+
+#, fuzzy
 #~ msgid "Read-only"
 #~ msgstr "Doar citire"
 
@@ -28417,12 +30328,23 @@ msgstr "−Linii"
 #~ msgstr[2] "{n} de contacte sunt puse înapoi doar pe acest computer: prea multe modificări așteaptă să fie trimise."
 
 #, fuzzy
-#~ msgid "This account's server keeps this contact. Changes made here aren't sent back yet, so it can't be edited or deleted here. Favorite and categories are kept on this computer."
-#~ msgstr "Serverul acestui cont păstrează acest contact. Modificările făcute aici nu sunt încă trimise înapoi, deci nu poate fi editat sau șters aici. Favoritele și categoriile se păstrează pe acest computer."
-
-#, fuzzy
 #~ msgid "contact"
 #~ msgstr "contact"
+
+#~ msgid "Made in another program: MailCraft shows these rules, and changes them only as you edit the script's text"
+#~ msgstr "Create în alt program: MailCraft afișează aceste reguli și le schimbă doar cum editezi textul scriptului"
+
+#, fuzzy
+#~ msgid "On the server, made in another program: MailCraft never changes it"
+#~ msgstr "Pe server, creată în alt program: MailCraft nu o modifică niciodată"
+
+#, fuzzy
+#~ msgid "A Sieve rule: its Sieve is changed under Advanced…"
+#~ msgstr "O regulă Sieve: Sieve-ul ei se modifică din Avansat…"
+
+#, fuzzy
+#~ msgid "Automatic replies are kept on the mail server, and MailCraft can set them only for accounts that sign in with Microsoft so far: IMAP has no standard way to set them (Sieve vacation replies may come later)"
+#~ msgstr "Răspunsurile automate se păstrează pe serverul de e-mail, iar MailCraft le poate seta deocamdată doar pentru conturile care se conectează cu Microsoft: IMAP nu are o metodă standard pentru ele (răspunsurile de concediu Sieve pot veni mai târziu)"
 
 #, fuzzy
 #~ msgid "Use a 12-hour clock (3:05 PM)"

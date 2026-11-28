@@ -137,6 +137,12 @@ mod follow_up_tick;
 mod font_index;
 #[cfg(test)]
 mod foreign_sign_in_tests;
+mod sieve_editor;
+#[cfg(test)]
+mod sieve_editor_tests;
+pub mod sieve_replies;
+#[cfg(test)]
+mod sieve_replies_tests;
 pub mod signature_files;
 
 /// The fonts of this computer that text is drawn in: what a message asks for and what the
@@ -438,6 +444,10 @@ pub struct Services {
     /// ([`auto_replies`]): a token of its own, then Graph's mailbox settings. Absent in the
     /// browser: File › Info then has no Automatic Replies.
     pub graph_auto_replies: Option<Box<dyn Fn(auto_replies::AutoRepliesJob) -> Receiver<auto_replies::AutoRepliesResult>>>,
+    /// Read and write an IMAP account's Sieve script on its ManageSieve server
+    /// ([`sieve_replies`], #2057): Automatic Replies for servers that aren't Microsoft's. Absent
+    /// in the browser.
+    pub sieve: Option<Box<dyn Fn(sieve_replies::SieveJob) -> Receiver<sieve_replies::SieveResult>>>,
     /// A host that reaches JMAP servers (over `fetch` in the browser): read an account kept in step
     /// over JMAP (M6) as the job says, as a task of its own: connect to the account's server with
     /// the job's secret, read what the request asks for (`mailcraft_jmap::sync_mail`) and hand the
@@ -1191,7 +1201,7 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "ui.dialog",
         "Open Dialog",
         "Window",
-        r#"{"name": "commands"|"event"|"meeting"|"editEvent"|"contact"|"editContact"|"task"|"editTask"|"folder"|"goToDate"|"moveItems"|"copyItems"|"openCalendar"|"subscribe"|"link"|"dateTime"|"wordCount"|"account"|"categories"|"rules"|"junkOptions"|"about"|"contributors"|"testers"|"reportProblem"|"proposeTime"|"forwardMeeting"|"proposals", …} (account: "email"?: string to start with, or "id": number for that account's settings, and with "page": "approval" the page that says what to do when its organisation has to approve MailCraft first (as `ui.approvalHelp` opens it); proposeTime: "id"?: number (an item of the calendar) | "message": number (an invitation in the mail); forwardMeeting: "id"?: number; proposals: "id"?: number | "message": number; moveItems, copyItems: the folder for the selected messages (Move to Folder and Copy to Folder without one), never other messages; junkOptions: "list"?: "safe"|"blocked" (the page it opens on); categories: "account"?: number (whose list it opens on); rules: "folder"?: number, "id"?: number (the New rule filled in to move the mail of that message's sender, default the selected one's, to the folder: Always Move Messages From This Sender) — the first two write to other people only from their own Propose and Send buttons)"#,
+        r#"{"name": "commands"|"event"|"meeting"|"editEvent"|"contact"|"editContact"|"task"|"editTask"|"folder"|"goToDate"|"moveItems"|"copyItems"|"openCalendar"|"subscribe"|"link"|"dateTime"|"wordCount"|"account"|"categories"|"rules"|"junkOptions"|"about"|"contributors"|"testers"|"reportProblem"|"proposeTime"|"forwardMeeting"|"proposals", …} (account: "email"?: string to start with, or "id": number for that account's settings, and with "page": "approval" the page that says what to do when its organisation has to approve MailCraft first (as `ui.approvalHelp` opens it); proposeTime: "id"?: number (an item of the calendar) | "message": number (an invitation in the mail); forwardMeeting: "id"?: number; proposals: "id"?: number | "message": number; moveItems, copyItems: the folder for the selected messages (Move to Folder and Copy to Folder without one), never other messages; junkOptions: "list"?: "safe"|"blocked" (the page it opens on); categories: "account"?: number (whose list it opens on); rules: "folder"?: number, "id"?: number (the New rule filled in to move the mail of that message's sender, default the selected one's, to the folder: Always Move Messages From This Sender), "edit"?: number (open on that rule to change it: Change Rule) — the first two write to other people only from their own Propose and Send buttons)"#,
     ),
     ("ui.closeDialog", "Close Dialog", "Window", "{}"),
     ("ui.theme", "Interface Theme", "File › Options", r#"{"value": "light"|"classicLight"|"dark"|"system"}"#),
@@ -1833,6 +1843,8 @@ pub struct MailApp {
     pub(crate) category_sync: category_sync::CategorySync,
     /// The automatic replies' jobs, and what is said of them ([`auto_replies`]).
     pub(crate) auto_replies: auto_replies::AutoRepliesSync,
+    /// The Sieve scripts' jobs, and what is said of them ([`sieve_replies`]).
+    pub(crate) sieve: sieve_replies::SieveSync,
     /// Opening other people's calendars by address (#70).
     open_shared: open_shared::OpenShared,
     /// Subscribed calendars: their addresses and the look under way ([`subscribed`]).
@@ -2153,6 +2165,7 @@ impl MailApp {
             rules: Default::default(),
             category_sync: Default::default(),
             auto_replies: Default::default(),
+            sieve: Default::default(),
             open_shared: Default::default(),
             subscribed: Default::default(),
             dav: Default::default(),
@@ -2753,6 +2766,8 @@ impl MailApp {
         }
         // Automatic replies (File › Info): read on the server, or changed there, by the host.
         let r = self.auto_replies_after(id, r);
+        // Rules kept in an IMAP account's Sieve script (#2057): written again when they change.
+        let r = self.sieve_after(id, r);
         // A calendar opened by address (#70), from the dialog or a script: read at once.
         if let (Ok(opened), "calendar.openShared") = (&r, id)
             && let Some(account) = opened.get("account").and_then(Value::as_u64)
@@ -2975,7 +2990,7 @@ impl MailApp {
                 // The New rule filled in from a message: an id that is none is refused, never
                 // taken to mean the selection (#566).
                 if name == "rules"
-                    && let Some(e) = ["folder", "id"].into_iter().find_map(|k| mailcraft_engine::p::id_strict(p, k).err())
+                    && let Some(e) = ["folder", "id", "edit"].into_iter().find_map(|k| mailcraft_engine::p::id_strict(p, k).err())
                 {
                     return Some(Err(e.to_string()));
                 }
@@ -5384,6 +5399,7 @@ impl MailApp {
         }
         self.take_in_sync_answers(now_ms());
         self.poll_auto_replies();
+        self.poll_sieve();
         self.poll_calendar_check();
         self.poll_free_busy();
         self.poll_resolving();
@@ -5425,6 +5441,7 @@ impl MailApp {
             self.categories_tick(ctx);
             // The automatic replies, read now and then so that the status bar can say they are on.
             self.auto_replies_tick(ctx);
+            self.sieve_tick(ctx);
         }
         // Snoozed mail whose Return time has come (#949).
         self.snooze_tick();

@@ -104,6 +104,13 @@ doc = false
 bench = false
 
 [[bin]]
+name = "managesieve"
+path = "fuzz_targets/managesieve.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
 name = "po"
 path = "fuzz_targets/po.rs"
 test = false
@@ -260,6 +267,13 @@ bench = false
 [[bin]]
 name = "header_block"
 path = "fuzz_targets/header_block.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "sieve_check"
+path = "fuzz_targets/sieve_check.rs"
 test = false
 doc = false
 bench = false

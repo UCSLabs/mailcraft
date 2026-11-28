@@ -27,7 +27,7 @@ use crate::{CmdError, CmdResult, CommandSpec, Session, p};
 pub fn specs() -> Vec<CommandSpec> {
     vec![
         CommandSpec::new("account.add", "Add Account", "File › Info", add).params(ACCOUNT),
-        CommandSpec::new("account.edit", "Account Settings", "File › Info", edit).params(r#"{"id": number, …the fields of account.add, "downloadInFull"?: "upTo1Mb"|"upTo10Mb"|"upTo25Mb"|"upTo50Mb"|"everything" (a Microsoft or Exchange server account: which messages are fetched whole in the background), "keepOffline"?: "3d"|"1w"|"2w"|"1m"|"3m"|"6m"|"12m"|"2y"|"5y"|"10y"|"all" (a Microsoft or Exchange server account's mail to keep offline: how far back, by received date, mail is kept in full on this computer; older mail keeps its headers and preview. A shared mailbox follows its owner's. Shortening it removes nothing by itself: account.thinOffline does), "askBeforeDeletingConversation"?: bool (Delete on a conversation's row that takes more than one message, in its folder or found by a search, asks first in the window; on unless turned off. A shared mailbox follows its owner's), "showGmailCategories"?: bool (a Gmail account: the folder pane shows Gmail's categories, Primary, Social, Promotions, Updates and Forums, under its Inbox; on unless turned off), "desktopMailAlerts"?: bool (whether this account may show desktop new-mail alerts, including rule-triggered alerts; on unless turned off), "alertPrimaryOnly"?: bool (a Gmail account: a desktop alert only for new mail in Gmail's Primary category; off unless turned on)}"#),
+        CommandSpec::new("account.edit", "Account Settings", "File › Info", edit).params(r#"{"id": number, …the fields of account.add, "sieve"?: {"host"?: string (empty: the IMAP server's host), "port"?: number (0: 4190)} | null (an IMAP account: the ManageSieve server its Automatic Replies are kept on, when it isn't the IMAP host on port 4190; the sign-in goes there), "downloadInFull"?: "upTo1Mb"|"upTo10Mb"|"upTo25Mb"|"upTo50Mb"|"everything" (a Microsoft or Exchange server account: which messages are fetched whole in the background), "keepOffline"?: "3d"|"1w"|"2w"|"1m"|"3m"|"6m"|"12m"|"2y"|"5y"|"10y"|"all" (a Microsoft or Exchange server account's mail to keep offline: how far back, by received date, mail is kept in full on this computer; older mail keeps its headers and preview. A shared mailbox follows its owner's. Shortening it removes nothing by itself: account.thinOffline does), "askBeforeDeletingConversation"?: bool (Delete on a conversation's row that takes more than one message, in its folder or found by a search, asks first in the window; on unless turned off. A shared mailbox follows its owner's), "showGmailCategories"?: bool (a Gmail account: the folder pane shows Gmail's categories, Primary, Social, Promotions, Updates and Forums, under its Inbox; on unless turned off), "desktopMailAlerts"?: bool (whether this account may show desktop new-mail alerts, including rule-triggered alerts; on unless turned off), "alertPrimaryOnly"?: bool (a Gmail account: a desktop alert only for new mail in Gmail's Primary category; off unless turned on)}"#),
         CommandSpec::new("account.forgetEwsCertificate", "Forget Trusted Certificate", "File › Info", forget_ews_certificate)
             .params(r#"{"id": number} — an Exchange server account stops trusting the one certificate it was told to trust although the system doesn't: its fingerprint is forgotten, so the server's certificate is judged by the system alone and the owner is asked again if it isn't trusted. Answers {"id": id, "forgotten": bool}"#),
         CommandSpec::new("account.remove", "Remove Account", "File › Info", remove).params(r#"{"id": number} — removes the account, its mail and what is kept for it on this computer (bodies and attachments leave the content folder once a state without it is saved; no Undo step is kept), and what came from its server: its events, contacts, to-dos and calendars (what was made here and not sent yet stays, as this computer's own), Outlook's list of categories, its rules (those its server keeps stay there; those for every account stay here), and, where the window's settings are kept (the window, not mailcraft-cli), its mailbox's working hours; nothing on the server is touched. Mail moved into it from elsewhere that its server wasn't given yet goes back to where it came from, and so does mail moved into it whose original another server keeps until the copy is safe; once the copy is safe on its server, that original goes as it would have (mail moved onto this computer goes back to its original, as its copy goes with the account). The only account leaves an empty mailbox, as at a first start. Answers {"deleted": id, "leftToSweep": n (content files the sweep removes later)}"#),
@@ -303,6 +303,29 @@ fn apply_fields(a: &mut Account, v: &Value) -> Result<(), CmdError> {
         Some(Value::Bool(without)) => a.outgoing_without_sign_in = *without,
         Some(_) => return Err(bad("`outgoingWithoutSignIn` is true or false")),
     }
+    // Where an IMAP account's Sieve scripts are (#2057): the owner's own choice of host.
+    match v.get("sieve") {
+        None => {}
+        Some(Value::Null) => (a.sieve_host, a.sieve_port) = (String::new(), 0),
+        Some(Value::Object(sieve)) => {
+            let wrong = || bad("`sieve` is {\"host\": a server's name, \"port\"?: a number up to 65535}, or null");
+            let host = match sieve.get("host") {
+                None | Some(Value::Null) => String::new(),
+                Some(Value::String(host)) => host.trim().trim_end_matches('.').to_string(),
+                Some(_) => return Err(wrong()),
+            };
+            let usable = |c: char| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '_' | ':' | '[' | ']');
+            if host.len() > 253 || !host.chars().all(usable) {
+                return Err(wrong());
+            }
+            let port = match sieve.get("port") {
+                None | Some(Value::Null) => 0,
+                Some(port) => port.as_u64().and_then(|n| u16::try_from(n).ok()).ok_or_else(wrong)?,
+            };
+            (a.sieve_host, a.sieve_port) = (host, port);
+        }
+        Some(_) => return Err(bad("`sieve` is {\"host\": a server's name, \"port\"?: a number up to 65535}, or null")),
+    }
     // Which messages are fetched whole in the background (R3 spec S12).
     if let Some(limit) = p::str(v, "downloadInFull") {
         a.download_in_full = serde_json::from_value(json!(limit.trim()))
@@ -532,7 +555,13 @@ pub fn servers_text(a: &Account) -> String {
             None => "exchange, no server address that can be used".to_string(),
         };
     }
-    let parts: Vec<String> = [one("imap", &a.incoming), one("smtp", &a.outgoing)].into_iter().flatten().collect();
+    // The ManageSieve server the owner named, which the sign-in goes to as well (#2057).
+    let sieve = (!a.sieve_host.is_empty() || a.sieve_port != 0).then(|| match (a.sieve_host.as_str(), a.sieve_port) {
+        ("", port) => format!("sieve port {port}"),
+        (host, 0) => format!("sieve {host}"),
+        (host, port) => format!("sieve {host}:{port}"),
+    });
+    let parts: Vec<String> = [one("imap", &a.incoming), one("smtp", &a.outgoing), sieve].into_iter().flatten().collect();
     if parts.is_empty() { "no server".to_string() } else { parts.join(", ") }
 }
 
@@ -599,6 +628,12 @@ pub(crate) fn added_by_newer(a: &Account, then: &'static str) -> CmdError {
     failed!("{who} was added by a newer version of MailCraft, {then}", who = super::remote::who(a), then = mailcraft_i18n::Arg::words(then))
 }
 
+/// Where an account's ManageSieve server is: the host named for it, its port, and the incoming
+/// server's host (the default one), as they are compared.
+fn sieve_at(a: &mailcraft_model::Account) -> (String, u16, Option<String>) {
+    (a.sieve_host.trim().to_ascii_lowercase(), a.sieve_port, a.incoming.as_ref().map(|i| i.host.trim().to_ascii_lowercase()))
+}
+
 fn edit(s: &mut Session, v: &Value) -> CmdResult {
     let id = p::req_id(v, "id")?;
     let mut a = s.mailbox.account(id).cloned().ok_or_else(|| failed!("no account with id {id}", id))?;
@@ -607,6 +642,7 @@ fn edit(s: &mut Session, v: &Value) -> CmdResult {
         return Err(added_by_newer(&a, "which keeps its settings: change them there"));
     }
     let before = a.clone();
+    let sieve_before = sieve_at(&a);
     let named_by_address = before.named_by_address();
     apply_fields(&mut a, v)?;
     check_address(&a, Some(&before))?;
@@ -684,7 +720,14 @@ fn edit(s: &mut Session, v: &Value) -> CmdResult {
     // A longer one on a device that lists only its window's mail (a phone, MB3.16): its folders
     // are listed afresh, to bring the older mail it now covers.
     let lengthened = a.keep_offline > before.keep_offline && s.mailbox.device_limits.is_some();
+    // Where its ManageSieve server is (named, or the incoming server's host): what is known of the
+    // Sieve scripts and replies of the server before is no longer this account's (#2058).
+    let sieve_moved = sieve_before != sieve_at(&a);
     *s.mailbox.account_mut(id)? = a;
+    if sieve_moved {
+        s.sieve.remove(&id);
+        s.auto_replies.remove(&id);
+    }
     if shortened {
         s.driver.thinning.now = true;
     }
