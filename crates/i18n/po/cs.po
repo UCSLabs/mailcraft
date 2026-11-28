@@ -25304,6 +25304,12 @@ msgid "the server can't show a desktop alert"
 msgstr "server neumí zobrazit upozornění na ploše"
 
 #. why a mail server couldn't be used
+#: crates/net/src/sync.rs
+#, fuzzy
+msgid "the server changed its password authentication methods; try again later"
+msgstr "server změnil metody ověřování hesla; zkuste to znovu později"
+
+#. why a mail server couldn't be used
 #: crates/net/src/transport.rs crates/proto/src/line.rs
 #, fuzzy
 msgid "the server closed the connection"
@@ -28390,9 +28396,9 @@ msgstr "• komu: {to}, předmět „{subject}“"
 #, fuzzy
 msgid "…and {n} more — type to narrow it"
 msgid_plural "…and {n} more — type to narrow it"
-msgstr[0] "…and {n} more — type to narrow it"
-msgstr[1] "…and {n} more — type to narrow it"
-msgstr[2] ""
+msgstr[0] "…a {n} další — pište pro zúžení"
+msgstr[1] "…a {n} další — pište pro zúžení"
+msgstr[2] "…a {n} dalších — pište pro zúžení"
 
 #. interface
 #: crates/ui-egui/src/credits.rs
