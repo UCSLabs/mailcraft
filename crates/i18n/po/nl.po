@@ -2624,8 +2624,9 @@ msgstr "Bijlagen"
 
 #. interface
 #: crates/ui-egui/src/attachment_open.rs crates/ui-egui/src/compose.rs
+#, fuzzy
 msgid "Attachments can't be opened here."
-msgstr ""
+msgstr "Bijlagen kunnen hier niet worden geopend."
 
 #. interface
 #: crates/ui-egui/src/attachment_open.rs
@@ -5393,13 +5394,15 @@ msgstr "Gereed: {n} nieuw"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
+#, fuzzy
 msgid "Double-click to download {name}"
-msgstr ""
+msgstr "Dubbelklik om {name} te downloaden"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
+#, fuzzy
 msgid "Double-click to open {name}"
-msgstr ""
+msgstr "Dubbelklik om {name} te openen"
 
 #. android, interface, ribbon location
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/engine/src/cmd/send_receive.rs crates/ui-egui/src/compose.rs
@@ -9373,8 +9376,9 @@ msgstr "MailCraft kan de regels van dit account niet op de server bewaren, dus z
 
 #. interface
 #: crates/ui-egui/src/attachment_open.rs
+#, fuzzy
 msgid "MailCraft can't open {name} because of its file type."
-msgstr ""
+msgstr "MailCraft kan {name} niet openen vanwege het bestandstype."
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12634,8 +12638,9 @@ msgstr "Concept openen"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
+#, fuzzy
 msgid "Open Draft Attachment"
-msgstr ""
+msgstr "Bijlage van concept openen"
 
 #. interface
 #: crates/ui-egui/src/account_setup.rs
@@ -18508,8 +18513,9 @@ msgstr "De download is afgebroken."
 
 #. interface
 #: crates/ui-egui/src/attachment_open.rs
+#, fuzzy
 msgid "The draft isn't open any more"
-msgstr ""
+msgstr "Het concept is niet meer geopend"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
