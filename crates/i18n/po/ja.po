@@ -324,6 +324,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. 下のメッセージをコピーして、組織の管理者に送信してください。"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1"
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -371,6 +377,12 @@ msgstr "2 週間"
 msgid "2 years"
 msgstr "2 年"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2"
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -400,6 +412,12 @@ msgstr "3 日"
 #, fuzzy
 msgid "3 months"
 msgstr "3 か月"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3"
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -820,6 +838,12 @@ msgstr "共有メールボックス。{account}のサインインで読み取り
 #, fuzzy
 msgid "A short note with the link to that page, to paste into mail or chat. MailCraft sends nothing itself."
 msgstr "そのページへのリンクを添えた短いメモ。メールやチャットに貼り付けて使います。MailCraft 自体は何も送信しません。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "A text signature file is at most 10,000 characters."
+msgstr "テ"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -1554,7 +1578,7 @@ msgid "Allowed"
 msgstr "許可済み"
 
 #. interface
-#: crates/ui-egui/src/lib.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "Already in your contacts"
 msgstr "既に連絡先にあります"
@@ -1620,6 +1644,12 @@ msgid "An Exchange server or IMAP?"
 msgstr "Exchange サーバーですか、それとも IMAP ですか?"
 
 #. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "An HTML signature file is at most 64 KB."
+msgstr "H"
+
+#. interface
 #: crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "An OpenPGP secret key, protected by a passphrase"
@@ -1666,6 +1696,12 @@ msgstr "このアカウントから送信できるアドレス"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "ドメインのないアドレス。"
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "こ"
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3201,7 +3237,7 @@ msgid "Celebrate"
 msgstr "お祝い"
 
 #. interface
-#: crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
+#: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Certificates"
 msgstr "証明書"
@@ -3526,6 +3562,12 @@ msgstr "既定の署名を選択"
 msgid "Choose Google sign-in, or select Use an app password instead."
 msgstr "Google でサインインを選ぶか、[アプリ パスワードを使用する] を選択してください。"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Choose Signature File"
+msgstr "署"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -3549,6 +3591,24 @@ msgstr "開始日と終了日を、1 年以内の間隔で選択してくださ�
 #, fuzzy
 msgid "Choose a folder"
 msgstr "フォルダーを選択"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose a signature file"
+msgstr "署"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
+msgstr "テ"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Choose an absolute local path for the signature file."
+msgstr "署"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -3579,6 +3639,12 @@ msgstr "これらのタスクを Microsoft アカウントの To Do に送信す
 #, fuzzy
 msgid "Choose who this is sent from"
 msgstr "差出人を選択"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Choose…"
+msgstr "選"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -5166,6 +5232,12 @@ msgstr "画像をダウンロード"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "連"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "すべてのメールで画像をダウンロード"
 
@@ -5174,6 +5246,18 @@ msgstr "すべてのメールで画像をダウンロード"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "メールの画像を自動的にダウンロード"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "連"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "連"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5210,6 +5294,12 @@ msgstr "迷惑メールを除き、すべてのメッセージで確認せずに
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "メールの画像を自動的にダウンロード"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "連"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -5249,6 +5339,12 @@ msgid "Downloading pictures…"
 msgstr "画像をダウンロードしています…"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the address book stopped unexpectedly"
+msgstr "ア"
+
+#. interface
 #: crates/ui-egui/src/graph_fetch.rs
 #, fuzzy
 msgid "Downloading the message first…"
@@ -5259,6 +5355,12 @@ msgstr "先にメッセージをダウンロードしています…"
 #, fuzzy
 msgid "Downloading the messages first…"
 msgstr "先にメッセージをダウンロードしています…"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Downloading the organisation's address book…"
+msgstr "組"
 
 #. interface
 #: crates/ui-egui/src/reading.rs
@@ -5999,8 +6101,8 @@ msgstr "フィードバック"
 msgid "Fewer than two of these contacts are still here, so there is nothing to merge."
 msgstr "これらの連絡先のうち、残っているものが 2 件未満のため、統合するものがありません。"
 
-#. command label, name, ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs
+#. command label, interface, name, ribbon location
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/auto_replies.rs crates/engine/src/cmd/calendar/invitation.rs crates/engine/src/cmd/calendar_extra.rs crates/engine/src/cmd/calendar_opened.rs crates/engine/src/cmd/calendar_settings.rs crates/engine/src/cmd/calendar_subscribed.rs crates/engine/src/cmd/dav_account.rs crates/engine/src/cmd/device_limits.rs crates/engine/src/cmd/file.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/graph_switch.rs crates/engine/src/cmd/help.rs crates/engine/src/cmd/keys.rs crates/engine/src/cmd/offline.rs crates/engine/src/cmd/senders.rs crates/engine/src/cmd/shared.rs crates/engine/src/cmd/signature.rs crates/engine/src/cmd/tasks_remote.rs crates/engine/src/cmd/zones.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "File"
 msgstr "ファイル"
@@ -6010,6 +6112,12 @@ msgstr "ファイル"
 #, fuzzy
 msgid "File dialogs aren't available here"
 msgstr "ここではファイル ダイアログを使用できません"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "File signature"
+msgstr "フ"
 
 #. interface
 #: crates/ui-egui/src/security.rs
@@ -6602,6 +6710,12 @@ msgstr "差出人に次の文字が含まれる"
 #, fuzzy
 msgid "From outside your organisation."
 msgstr "組織外からです。"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
+msgstr "{"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -7292,6 +7406,12 @@ msgid "Horizontal Line"
 msgstr "水平線"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "ア"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7338,6 +7458,12 @@ msgstr "アイコン"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "Google からアプリがテスト中と表示された場合は、開発者にメール アドレスをテスト ユーザーとして追加してもらってください。組織が MailCraft をブロックしている場合は、Workspace の管理者にお問い合わせください。これらのページからここに戻らない場合があります。その場合はキャンセルし、アクセスが許可されてから再試行するか、許可されていればアプリ パスワードを使用してください。"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "G"
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -7723,6 +7849,12 @@ msgstr "選択範囲内"
 #, fuzzy
 msgid "In this calendar:"
 msgstr "この予定表内:"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "In your contacts"
+msgstr "連"
 
 #. interface
 #: crates/ui-egui/src/import_pst.rs
@@ -11231,6 +11363,12 @@ msgstr "別の日時を提案した人はいません。"
 #. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
+msgid "Nobody in the address book matches"
+msgstr "ア"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
 msgid "Nobody in the address list matches"
 msgstr "アドレス一覧に一致する人はいません"
 
@@ -11407,6 +11545,12 @@ msgstr "すべてのサーバーが見つかったわけではありません。
 #, fuzzy
 msgid "Not everything could be removed. Some of it is still here. Try again."
 msgstr "すべてを削除できませんでした。一部が残っています。もう一度試してください。"
+
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
+msgstr "メ"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12108,6 +12252,12 @@ msgstr "添付ファイルを開く"
 msgid "Open Calendar"
 msgstr "予定表を開く"
 
+#. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "Open Contact"
+msgstr "連"
+
 #. command label
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
@@ -12131,6 +12281,12 @@ msgstr "下書きを開く"
 #, fuzzy
 msgid "Open Draft Attachment"
 msgstr "下書きの添付ファイルを開く"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "G"
 
 #. interface
 #: crates/ui-egui/src/data_removal.rs
@@ -12865,10 +13021,22 @@ msgid "Pictures are always downloaded from ({n}):"
 msgstr "常に画像をダウンロードする差出人 ({n} 件):"
 
 #. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
+msgstr "テ"
+
+#. interface
 #: crates/ui-egui/src/backstage.rs
 #, fuzzy
 msgid "Pictures in mail"
 msgstr "メール内の画像"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "連"
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
@@ -12893,6 +13061,12 @@ msgstr "Web 上の画像は、メールボックスにないメッセージで�
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "開くすべてのメッセージで、Web 上の画像をダウンロードします。その際、各差出人のサーバーに、メッセージを開いた日時とインターネット上のアドレスが知られます。"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "連"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13317,6 +13491,12 @@ msgid "Read Invitation"
 msgstr "招待を読む"
 
 #. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Read again for each new message. If unavailable, the usual signature is used."
+msgstr "新"
+
+#. interface
 #: crates/ui-egui/src/advanced_search.rs
 #, fuzzy
 msgid "Read status"
@@ -13539,6 +13719,12 @@ msgstr "{what}のやり直し"
 #, fuzzy
 msgid "Refresh"
 msgstr "再読み込み"
+
+#. interface
+#: crates/ui-egui/src/signatures.rs
+#, fuzzy
+msgid "Refresh Preview"
+msgstr "プ"
 
 #. command label
 #: crates/ui-egui/src/lib.rs
@@ -16250,8 +16436,8 @@ msgstr "他の人の空き時間を確認するには、送受信でサインイ
 msgid "Sign-in cancelled"
 msgstr "サインインをキャンセルしました"
 
-#. android, command label, ribbon
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs
+#. android, command label, interface, ribbon
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/SettingsPages.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/signature_files.rs
 #, fuzzy
 msgid "Signature"
 msgstr "署名"
@@ -16262,8 +16448,20 @@ msgstr "署名"
 msgid "Signature file:"
 msgstr "署名ファイル:"
 
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "Signature files can only be configured by the owner in the desktop app."
+msgstr "署"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Signature from File"
+msgstr "フ"
+
 #. android, command label, interface, ribbon location
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/signatures.rs
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/Navigation.kt crates/engine/src/cmd/signature.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "Signatures"
 msgstr "署名"
@@ -16915,6 +17113,12 @@ msgstr "切り替え"
 #, fuzzy
 msgid "Switch to Google sign-in"
 msgstr "Google サインインに切り替え"
+
+#. interface
+#: crates/ui-egui/src/compose.rs
+#, fuzzy
+msgid "Switch to HTML"
+msgstr "H"
 
 #. command label, interface
 #: crates/engine/src/cmd/graph_switch.rs crates/ui-egui/src/graph_switch.rs crates/ui-egui/src/lib.rs
@@ -18450,6 +18654,12 @@ msgid "The one this build came with"
 msgstr "このビルドに付属のもの"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The organisation's address book is empty"
+msgstr "組"
+
+#. interface
 #: crates/ui-egui/src/meeting_dialogs.rs
 #, fuzzy
 msgid "The organizer can't be written to from this account."
@@ -18825,6 +19035,12 @@ msgid "The server or the organisation wouldn't give its settings. Ask your admin
 msgstr "サーバーまたは組織が設定を提供しませんでした。管理者にサーバーのアドレスを問い合わせ、サーバー設定に入力してください。"
 
 #. interface
+#: crates/ui-egui/src/address_book.rs
+#, fuzzy
+msgid "The server sent no address book"
+msgstr "サ"
+
+#. interface
 #: crates/ui-egui/src/account_setup/exchange.rs
 #, fuzzy
 msgid "The server sent the setup somewhere that isn't encrypted, which MailCraft never follows. Type the server's address in Server settings."
@@ -19044,10 +19260,46 @@ msgid "The sign-in was declined."
 msgstr "サインインが拒否されました。"
 
 #. interface
+#: crates/ui-egui/src/files.rs
+#, fuzzy
+msgid "The signature changed while the signature file picker was open."
+msgstr "署"
+
+#. interface
 #: crates/ui-egui/src/lib.rs
 #, fuzzy
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
 msgstr "署名を保存できませんでした: {why}。保存せずに閉じるには、もう一度閉じてください。"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file could not be read."
+msgstr "署"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file is too large."
+msgstr "署"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must be a regular file of at most 256 KB."
+msgstr "署"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature file must contain UTF-8 text."
+msgstr "署"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "The signature image could not be decoded."
+msgstr "署"
 
 #. interface
 #: crates/ui-egui/src/compose.rs
@@ -21820,6 +22072,12 @@ msgstr "{address}の予定表へのアクセス権がありません。相手に
 #, fuzzy
 msgid "You don't have access to {address}. If access was just given, try again in an hour."
 msgstr "{address}へのアクセス権がありません。アクセス権が付与された直後の場合は、1 時間後にもう一度お試しください。"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "連"
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -27556,6 +27814,12 @@ msgstr "{provider}のサインイン ページをブラウザーで開いてい�
 #, fuzzy
 msgid "{read} of {total} MB"
 msgstr "{read} / {total} MB"
+
+#. interface
+#: crates/ui-egui/src/signature_files.rs
+#, fuzzy
+msgid "{reason} Using the account's usual signature instead."
+msgstr "{"
 
 #. interface
 #: crates/ui-egui/src/sync_panel.rs
