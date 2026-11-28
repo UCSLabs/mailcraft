@@ -7353,8 +7353,9 @@ msgstr "Skrij MailCraft"
 
 #. command label, interface
 #: crates/engine/src/cmd/ews_mail.rs crates/ui-egui/src/nav.rs
+#, fuzzy
 msgid "Hide Online Archive"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -9112,8 +9113,9 @@ msgstr "Pošta iz drugega poštnega predala ne more v mapo Odpošlji: naslednje 
 
 #. what a command says
 #: crates/model/src/mailbox.rs
+#, fuzzy
 msgid "Mail goes into an online archive only from its own mailbox: move it into that mailbox first"
-msgstr ""
+msgstr "P"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -9123,8 +9125,9 @@ msgstr "Pošta v Neželeni pošti še vedno najprej vpraša. Datoteka › Možno
 
 #. what a command says
 #: crates/model/src/mailbox.rs
+#, fuzzy
 msgid "Mail in an online archive is copied within the archive: move it out instead"
-msgstr ""
+msgstr "P"
 
 #. interface
 #: crates/ui-egui/src/shared_mailboxes.rs
@@ -9134,8 +9137,9 @@ msgstr "Pošta v mapi Odpošlji tega skupnega poštnega predala čaka: pošiljan
 
 #. what a command says
 #: crates/model/src/mailbox.rs
+#, fuzzy
 msgid "Mail isn't copied into an online archive from elsewhere: move it there from its own mailbox"
-msgstr ""
+msgstr "P"
 
 #. what a command says
 #: crates/model/src/mailbox.rs
@@ -12135,8 +12139,9 @@ msgstr "Povezano"
 
 #. interface
 #: crates/ui-egui/src/nav.rs
+#, fuzzy
 msgid "Online Archive – {address}"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -15628,8 +15633,9 @@ msgstr "Pošlji/prejmi se je nepričakovano ustavil"
 
 #. interface
 #: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
 msgid "Send/Receive the mailbox to sign in and read its online archive"
-msgstr ""
+msgstr "U"
 
 #. command label
 #: crates/engine/src/cmd/ews_mail.rs
@@ -16055,8 +16061,9 @@ msgstr "Pokaži sporočilo"
 
 #. command label, interface
 #: crates/engine/src/cmd/ews_mail.rs crates/ui-egui/src/nav.rs
+#, fuzzy
 msgid "Show Online Archive"
-msgstr ""
+msgstr "P"
 
 #. command label, interface
 #: crates/engine/src/cmd/calendar_settings.rs crates/ui-egui/src/calendar_view.rs
@@ -18774,13 +18781,15 @@ msgstr "Tisti, ki je priložen tej gradnji"
 
 #. interface
 #: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
 msgid "The online archive couldn't be read: Refresh to try again"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/nav.rs
+#, fuzzy
 msgid "The online archive needs a connection to the server"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs
@@ -19138,8 +19147,9 @@ msgstr "Strežnik je zaseden. Čez nekaj minut poskusite znova."
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "The server no longer has the online archive: changes made in it that hadn't reached the server are lost"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -20377,8 +20387,9 @@ msgstr "Ta nabiralnik je bil odprt iz datoteke: najprej potrdite njegove strežn
 
 #. interface
 #: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
 msgid "This mailbox's online archive is kept in Microsoft 365, which needs a Microsoft sign-in, so it isn't shown"
-msgstr ""
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/calendar_sync.rs
@@ -23102,8 +23113,9 @@ msgstr "dogodek potrebuje naslov"
 
 #. what a command says
 #: crates/model/src/mailbox.rs
+#, fuzzy
 msgid "an online archive stays under its mailbox: move that account"
-msgstr ""
+msgstr "s"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -24286,8 +24298,9 @@ msgstr "ponovno je mogoče poslati samo sporočilo, ki je šlo od vas"
 
 #. what a command says
 #: crates/model/src/archive.rs
+#, fuzzy
 msgid "only an Exchange server account has an online archive here"
-msgstr ""
+msgstr "s"
 
 #. what a command says
 #: crates/engine/src/cmd/senders.rs
@@ -24613,8 +24626,9 @@ msgstr "zadeva ali telo vsebuje {words}"
 
 #. what a command says
 #: crates/model/src/archive.rs
+#, fuzzy
 msgid "that account isn't an online archive"
-msgstr ""
+msgstr "t"
 
 #. what a command says
 #: crates/engine/src/cmd/calendar.rs
@@ -24804,8 +24818,9 @@ msgstr "računa ni več"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the account {name} is the online archive of is gone"
-msgstr ""
+msgstr "r"
 
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs
@@ -25217,13 +25232,15 @@ msgstr "ponovitev ni bila spremenjena; nič ni bilo premaknjeno"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the online archive has changes that haven't reached the server yet: Send/Receive first, then hide it"
-msgstr ""
+msgstr "s"
 
 #. what a command says
 #: crates/engine/src/cmd/account.rs
+#, fuzzy
 msgid "the online archive has changes that haven't reached the server yet: Send/Receive first, then say it is kept in Exchange Online"
-msgstr ""
+msgstr "s"
 
 #. what a command says
 #: crates/model/src/mailbox.rs
