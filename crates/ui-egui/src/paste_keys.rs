@@ -16,7 +16,7 @@
 //! is none but there is a picture, sends an empty paste, which a message being written answers by
 //! asking the clipboard for the picture (`RichClipboard::image`). Nothing else changes.
 
-use egui::{Event, Key};
+use egui::{Event, Key, OutputCommand};
 
 use crate::RichClipboard;
 
@@ -74,22 +74,24 @@ pub fn translate(events: &mut Vec<Event>, board: Option<&dyn RichClipboard>) {
     *events = out;
 }
 
-/// Route copies through the host clipboard on Wayland, including where neither data-control
-/// nor X11 exists. Leave failed copies for the window's clipboard to try.
+/// Route the frame's latest text copy through the Wayland host clipboard. Leave a failed
+/// text copy or an image copy for the window's clipboard to try.
 pub(crate) fn copy_output(ctx: &egui::Context, board: Option<&dyn RichClipboard>) {
     let Some(board) = board else { return };
     ctx.output_mut(|output| {
-        output.commands.retain(|command| {
-            if let egui::OutputCommand::CopyText(text) = command {
-                if let Err(e) = board.put_text(text) {
-                    log::debug!("passing the failed copy to the window's clipboard: {e}");
-                    return true;
+        let is_copy = |command: &OutputCommand| matches!(command, OutputCommand::CopyText(_) | OutputCommand::CopyImage(_));
+        let Some(latest) = output.commands.iter().rposition(is_copy) else { return };
+        if let Some(OutputCommand::CopyText(text)) = output.commands.get(latest) {
+            match board.put_text(text) {
+                Ok(()) => {
+                    output.commands.remove(latest);
                 }
-                false
-            } else {
-                true
+                Err(e) => log::debug!("passing the failed copy to the window's clipboard: {e}"),
             }
-        });
+        }
+        // The platform processes this queue after the host write. An older copy would
+        // overwrite the latest one. PRIMARY selection and other commands keep their order.
+        output.commands.extract_if(..latest, |command| is_copy(command)).for_each(drop);
     });
 }
 

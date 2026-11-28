@@ -79,6 +79,50 @@ fn a_failed_host_copy_is_left_for_the_window_clipboard() {
 }
 
 #[test]
+fn only_the_latest_copy_can_reach_the_clipboard() {
+    struct CopyBoard {
+        written: std::cell::RefCell<Vec<String>>,
+        write_works: bool,
+    }
+
+    impl RichClipboard for CopyBoard {
+        fn put(&self, _: &str, _: &str) -> Result<(), String> {
+            Ok(())
+        }
+
+        fn put_text(&self, text: &str) -> Result<(), String> {
+            self.written.borrow_mut().push(text.into());
+            if self.write_works && text == "latest" { Ok(()) } else { Err("clipboard write failed".into()) }
+        }
+
+        fn html(&self) -> Option<String> {
+            None
+        }
+    }
+
+    let older_image = OutputCommand::CopyImage(egui::ColorImage::filled([1, 1], egui::Color32::WHITE));
+    let image = OutputCommand::CopyImage(egui::ColorImage::filled([1, 1], egui::Color32::BLACK));
+    let text = OutputCommand::CopyText("latest".into());
+    let selection = OutputCommand::TextSelectionSettled("selected".into());
+    for (latest, write_works, written, fallback) in
+        [(&text, true, &["latest"][..], None), (&text, false, &["latest"][..], Some(&text)), (&image, true, &[][..], Some(&image))]
+    {
+        let board = CopyBoard { written: Default::default(), write_works };
+        let ctx = egui::Context::default();
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| {
+            ui.ctx().output_mut(|output| {
+                output.commands.extend([OutputCommand::CopyText("older".into()), selection.clone(), older_image.clone(), latest.clone()]);
+            });
+            copy_output(ui.ctx(), Some(&board));
+        });
+        output.textures_delta.clear();
+        let expected: Vec<_> = std::iter::once(&selection).chain(fallback).cloned().collect();
+        assert_eq!(output.platform_output.commands, expected);
+        assert_eq!(*board.written.borrow(), written);
+    }
+}
+
+#[test]
 fn wayland_paste_never_requests_the_unbounded_window_reader() {
     use crate::{MailApp, Services};
     use mailcraft_engine::Session;
