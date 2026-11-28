@@ -15625,8 +15625,8 @@ msgstr "Startdatum"
 msgid "Start date:"
 msgstr "Startdatum:"
 
-#. interface
-#: crates/ui-egui/src/backstage.rs
+#. command label, interface
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/lib.rs
 msgid "Start hidden in system tray"
 msgstr ""
 
