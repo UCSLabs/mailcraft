@@ -1331,6 +1331,18 @@ msgstr "Wenn Sie eine Besprechungsanfrage in der E-Mail zusagen, mit Vorbehalt z
 msgid "Agenda"
 msgstr "Agenda"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Linksbündig ausrichten"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Rechtsbündig ausrichten"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3075,6 +3087,12 @@ msgstr "Cc: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Feiern"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Zentrieren"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

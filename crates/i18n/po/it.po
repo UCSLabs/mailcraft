@@ -1400,6 +1400,18 @@ msgstr "Dopo aver accettato, accettato con riserva o rifiutato una convocazione 
 msgid "Agenda"
 msgstr "Agenda"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Allinea a sinistra"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Allinea a destra"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3232,6 +3244,12 @@ msgstr "Cc: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Festeggia"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Centra"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

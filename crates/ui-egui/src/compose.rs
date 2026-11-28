@@ -10,6 +10,8 @@ use crate::theme::{Tokens, paint_clipped, regular};
 use crate::{MailApp, icons};
 
 #[cfg(test)]
+mod align_tests;
+#[cfg(test)]
 mod attachment_tests;
 pub(crate) mod editor;
 #[cfg(test)]

@@ -1401,6 +1401,18 @@ msgstr "După ce acceptați, acceptați provizoriu sau refuzați o invitație la
 msgid "Agenda"
 msgstr "Agendă"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Aliniere la stânga"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Aliniere la dreapta"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3239,6 +3251,12 @@ msgstr "Cc: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Sărbătorește"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Centrare"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

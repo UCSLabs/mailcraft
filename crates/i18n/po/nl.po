@@ -1372,6 +1372,18 @@ msgstr "Nadat u een vergaderverzoek in de e-mail hebt geaccepteerd, voorlopig he
 msgid "Agenda"
 msgstr "Agenda"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Links uitlijnen"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Rechts uitlijnen"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3140,6 +3152,12 @@ msgstr "CC: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Vieren"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Centreren"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: MailCraft contributors
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! The owner's text in a message being written, drawn as it will be sent: bold, italic,
-//! underline, a font size, links, bulleted and numbered lists, and a signature's pictures
-//! (`mailcraft_model::rich`). The same editor edits a signature in File › Signatures
-//! ([`Which`]); while one is open there, the message's body is only drawn.
+//! underline, a font size, links, bulleted and numbered lists, paragraphs aligned left, centred
+//! or right, and a signature's pictures (`mailcraft_model::rich`). The same editor edits a
+//! signature in File › Signatures ([`Which`]); while one is open there, the message's body is
+//! only drawn.
 //!
 //! The widget only draws and listens. Every change, the caret and the selection included, is a
 //! command (`compose.select`, `compose.type`, `compose.delete`, `format.*`, `compose.link`,
@@ -14,9 +15,10 @@
 //! change lays out again only the paragraphs it touched, and a frame paints only the paragraphs
 //! in view, so a long message costs what is on screen.
 //!
-//! The formatting keys (Ctrl+B, I, U, K, Z, Y; Cmd on a Mac) are the body's only while it has the
-//! keyboard: elsewhere Ctrl+U marks a message unread and Ctrl+Z undoes what was done to the
-//! mailbox (`keys::global_shortcuts` leaves them to the body, [`owns_chord`]).
+//! The formatting keys (Ctrl+B, I, U, K, L, E, R, Z, Y; Cmd on a Mac) are the body's only while it
+//! has the keyboard: elsewhere Ctrl+U marks a message unread, Ctrl+E goes to the search, Ctrl+R
+//! replies and Ctrl+Z undoes what was done to the mailbox (`keys::global_shortcuts` leaves them to
+//! the body, [`owns_chord`]).
 //!
 //! On Linux and the BSDs it has the primary selection as egui's text fields do: what the owner
 //! selects goes there once it settles ([`settle`]), and a middle click pastes it where the pointer
@@ -28,7 +30,7 @@ use egui::epaint::text::CharIndex;
 use egui::text::{CCursor, LayoutJob, TextFormat};
 use egui::{Align2, Event, FontId, Galley, Key, Modifiers, Rect, Sense, Stroke, Ui, Vec2, pos2, vec2};
 use mailcraft_model::RichBody;
-use mailcraft_model::rich::{ListKind, OBJECT, Paragraph, Selection, Style, numbers};
+use mailcraft_model::rich::{Align, ListKind, OBJECT, Paragraph, Selection, Style, numbers};
 use mailcraft_model::signature::Picture;
 use serde_json::{Value, json};
 
@@ -64,6 +66,9 @@ const BREAKS_BEFORE: char = '\u{30A2}';
 /// The most times a paragraph's text is laid out to find the pictures that start a row
 /// ([`Layout::lay`]), with one more after that.
 const MOST_LAYOUTS: usize = 32;
+
+/// How wide the sliver is that shows a paragraph's break selected.
+const SLIVER: f32 = 5.0;
 
 /// Which text the editor shows.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -110,6 +115,12 @@ pub fn has_focus(ctx: &egui::Context) -> bool {
 /// The key a command has in the body (shown in tooltips and menus). They are not the registry's
 /// shortcuts: they mean something else outside the body.
 pub fn key_of(command: &str) -> Option<&'static str> {
+    key_in(command, cfg!(target_arch = "wasm32"))
+}
+
+/// The key a command has in the body, in the browser (`browser`) or out of it. The browser keeps
+/// Ctrl+L, Ctrl+E and Ctrl+R (see [`align_key`]), so the alignments have none there.
+pub(crate) fn key_in(command: &str, browser: bool) -> Option<&'static str> {
     Some(match command {
         "format.bold" => "Mod+B",
         "format.italic" => "Mod+I",
@@ -117,6 +128,10 @@ pub fn key_of(command: &str) -> Option<&'static str> {
         "compose.link" => "Mod+K",
         "compose.undo" => "Mod+Z",
         "compose.redo" => "Mod+Y",
+        // The three alignments run one command; their controls go by these names.
+        "format.alignLeft" if !browser => "Mod+L",
+        "format.alignCenter" if !browser => "Mod+E",
+        "format.alignRight" if !browser => "Mod+R",
         "edit.cut" => "Mod+X",
         "edit.copy" => "Mod+C",
         "edit.paste" => "Mod+V",
@@ -124,9 +139,40 @@ pub fn key_of(command: &str) -> Option<&'static str> {
     })
 }
 
-/// The keys that, with Mod, are the body's while it has the keyboard.
-pub fn owns_chord(key: Key) -> bool {
-    matches!(key, Key::B | Key::I | Key::U | Key::K | Key::Z | Key::Y | Key::A)
+/// The keys that, with Mod and `modifiers`, are the body's while it has the keyboard. L, E and R
+/// are its own with Mod alone, and only where its text can be aligned: with Shift or Alt as well
+/// they are the window's, from the body as from anywhere else (Ctrl+Shift+R replies to all,
+/// Ctrl+Shift+E makes a folder), and so they are in a plain-text message (Ctrl+R replies,
+/// Ctrl+E goes to the search). In the browser, which keeps the three for itself, the body holds
+/// them whatever its text, so that nothing of the mailbox's acts on them as well.
+pub fn owns_chord(app: &MailApp, ctx: &egui::Context, key: Key, modifiers: Modifiers) -> bool {
+    owns_chord_in(app, ctx, key, modifiers, cfg!(target_arch = "wasm32"))
+}
+
+/// [`owns_chord`] in the browser (`browser`) or out of it.
+pub(crate) fn owns_chord_in(app: &MailApp, ctx: &egui::Context, key: Key, modifiers: Modifiers, browser: bool) -> bool {
+    match key {
+        Key::B | Key::I | Key::U | Key::K | Key::Z | Key::Y | Key::A => true,
+        Key::L | Key::E | Key::R => !modifiers.shift && !modifiers.alt && (browser || focused_can_align(app, ctx)),
+        _ => false,
+    }
+}
+
+/// Whether the text of the body that has the keyboard can be aligned now: the signature open in
+/// File › Signatures, or a message being written in HTML. Asked of the session as it is, not as
+/// the body was last drawn: a message made plain, or closed, since then can't be.
+fn focused_can_align(app: &MailApp, ctx: &egui::Context) -> bool {
+    let Some(focused) = ctx.memory(|m| m.focused()) else { return false };
+    let session = &app.session;
+    if focused == Which::Signature.id(app) {
+        return session.signature_edit.is_some();
+    }
+    session
+        .compose
+        .iter()
+        .chain(session.composing.iter())
+        .find(|c| id_of(c.id) == focused)
+        .is_some_and(|c| c.format != mailcraft_engine::BodyFormat::Plain)
 }
 
 /// A size in points as the screen draws it (as the reading pane draws `font-size: Npt`).
@@ -199,6 +245,9 @@ struct Para {
     /// Its number in a numbered list (0 otherwise).
     number: u32,
     galley: Arc<Galley>,
+    /// How wide the room its rows stand in is (epaint wraps them at that width rounded to a whole
+    /// point, `galley.job.wrap.max_width`).
+    room: f32,
     chars: usize,
     /// Its first character's position in the text, and its top in the body.
     start: usize,
@@ -411,19 +460,35 @@ impl Layout {
         self.laid += 1;
         // Each picture is drawn where its gap is: in the gap before its character, or right of
         // its character when it starts its row (whether or not it was marked, so a picture is
-        // never drawn away from its gap).
-        let mut pictures = Vec::new();
-        let mut grids = Vec::new();
+        // never drawn away from its gap). That is found with the rows at the left; a picture or a
+        // table then moves with its row when the paragraph is aligned.
+        let mut pictures: Vec<(usize, PictureBox)> = Vec::new();
+        let mut grids: Vec<(usize, TableBox)> = Vec::new();
         for (run, local, id, size, _) in sized {
-            let glyph = galley.pos_from_cursor(CCursor { index: local.into(), prefer_next_row: true });
+            let cursor = CCursor { index: local.into(), prefer_next_row: true };
+            let glyph = galley.pos_from_cursor(cursor);
             let left = if local == 0 || starts_row(glyph, size) { glyph.min.x } else { glyph.min.x - size.x };
             let rect = Rect::from_min_size(pos2(left, glyph.max.y - size.y), size);
             if rect.is_finite() {
+                let row = galley.layout_from_cursor(cursor).row;
                 if let Some(id) = id {
-                    pictures.push(PictureBox { local, id, rect });
+                    pictures.push((row, PictureBox { local, id, rect }));
                 } else if let Some(grid) = tables.remove(&run) {
-                    grids.push(TableBox { local, rect, grid });
+                    grids.push((row, TableBox { local, rect, grid }));
                 }
+            }
+        }
+        // A plain-text message goes out left, and is drawn as it goes.
+        if !plain {
+            let reach: Vec<(usize, f32)> =
+                pictures.iter().map(|(row, b)| (*row, b.rect.max.x)).chain(grids.iter().map(|(row, g)| (*row, g.rect.max.x))).collect();
+            let shifts = align_rows(&mut galley, p.align, room, ctx.pixels_per_point(), &reach);
+            let shift = |row: usize| vec2(shifts.get(row).copied().unwrap_or(0.0), 0.0);
+            for (row, b) in &mut pictures {
+                b.rect = b.rect.translate(shift(*row));
+            }
+            for (row, g) in &mut grids {
+                g.rect = g.rect.translate(shift(*row));
             }
         }
         Para {
@@ -431,10 +496,11 @@ impl Layout {
             source: p.clone(),
             number,
             galley,
+            room,
             start: 0,
             top: 0.0,
-            pictures,
-            tables: grids,
+            pictures: pictures.into_iter().map(|(_, b)| b).collect(),
+            tables: grids.into_iter().map(|(_, g)| g).collect(),
             spelling: None,
             spelling_retry_at: 0.0,
         }
@@ -505,22 +571,21 @@ impl Layout {
         Some((b.id, b.rect.translate(vec2(p.indent(), p.top))))
     }
 
-    /// Where the link under a point of the body leads.
+    /// Where the link under a point of the body leads: the link of the letter or the picture the
+    /// point is on, and none in the room before or after a row.
     fn link_at(&self, at: Vec2) -> Option<String> {
-        let p = self.para_at_y(at.y)?;
-        if at.y < p.top || at.y > p.top + p.height() {
-            return None;
+        let c = self.char_under(at)?;
+        let p = self.para_at(c)?;
+        p.style_at(c.saturating_sub(p.start))?.link.clone()
+    }
+
+    /// How the line a position is on is drawn: as its paragraph is aligned, and left in a
+    /// plain-text message.
+    fn align_at(&self, pos: usize) -> Align {
+        match self.para_at(pos) {
+            Some(p) if !self.key.is_some_and(|k| k.plain) => p.source.align,
+            _ => Align::Left,
         }
-        let local = vec2(at.x - p.indent(), at.y - p.top);
-        let c = p.galley.cursor_from_pos(local).index.0;
-        // Over the text itself, not the room after the end of its line.
-        let over = p.galley.pos_from_cursor(CCursor::new(c)).min.x;
-        let next = p.galley.pos_from_cursor(CCursor::new(c + 1)).min.x;
-        let column = if local.x < over { c.checked_sub(1)? } else { c };
-        if local.x > next.max(over) + 1.0 && c >= p.chars {
-            return None;
-        }
-        p.style_at(column).and_then(|s| s.link.clone())
     }
 
     /// The caret at a position, in the body.
@@ -605,6 +670,93 @@ impl Layout {
     }
 }
 
+/// Move the rows of a paragraph laid out at the left to where `align` puts them in `room`, each by
+/// the whole number of the screen's pixels nearest, and never beyond the room. `reach` is how far
+/// right, in the galley, a picture of a row is drawn (by its row): a picture that starts a row
+/// stands right of its unseen character, past the row's glyphs (`Layout::lay`, #792), and counts
+/// in the row's width. How far each row moved, by row.
+///
+/// It is laid out left and moved after, not laid out with epaint's own alignment
+/// (`LayoutJob::halign`): epaint 0.37.0 lines a centred or right row up by its first glyph that
+/// isn't a space and leaves out the room before that glyph, and a picture is exactly such room
+/// (before an unseen character, see `Layout::lay`), so a picture alone on a centred line would
+/// stand its own width left of the middle. What this counts on, in epaint 0.37.0: a row stands at
+/// `pos` in the galley and is `size` wide, the room before its first glyph and the spaces after
+/// its last included (`PlacedRow::rect`); `pos.x` is 0 except in a paragraph too wide for the room
+/// with nowhere to break it, where it holds the room before the first glyph, so the shift is added
+/// to it; an empty row is 0 wide, so its caret stands in the middle or at the right edge; a row
+/// that wraps keeps every space it wraps after, and the caret, a click and the selection go by a
+/// glyph's `pos` and `advance_width`, which can be changed for a space, while the painting goes by
+/// the mesh made before, where a space is nothing but its underline, drawn after the letters
+/// (`RowVisuals::glyph_vertex_range`). The caret, a click, the selection and the painting all add
+/// `pos`, so only the galley's bounds are made again here, as epaint makes them. To be checked
+/// again when egui is upgraded.
+fn align_rows(galley: &mut Arc<Galley>, align: Align, room: f32, ppp: f32, reach: &[(usize, f32)]) -> Vec<f32> {
+    let part = match align {
+        Align::Left => return Vec::new(),
+        Align::Center => 0.5,
+        Align::Right => 1.0,
+    };
+    let g = Arc::make_mut(galley);
+    let wrapped = g.rows.len().saturating_sub(1);
+    let mut shifts = Vec::with_capacity(g.rows.len());
+    for (i, row) in g.rows.iter_mut().enumerate() {
+        // A row that wraps ends with the space it was broken at, which is not counted. The last
+        // row's spaces are counted on purpose: a paragraph's last space, and a space after
+        // another, are sent as `&nbsp;` (`mailcraft_mime_model::rich`), which a reader's
+        // `text-align` counts, so the line is drawn where the recipient will see it.
+        let last = row.glyphs.iter().rev().find(|c| !c.chr.is_whitespace());
+        let glyphs = match last {
+            Some(c) if i < wrapped => c.max_x(),
+            _ => row.size.x,
+        };
+        let end = reach.iter().filter(|(r, _)| *r == i).fold(glyphs, |end, (_, x)| end.max(x - row.pos.x));
+        let free = (room - row.pos.x - end).max(0.0) * ppp;
+        let shift = (free * part).round().min(free.floor()) / ppp;
+        row.pos.x += shift;
+        shifts.push(shift);
+        // The spaces it wraps after that would reach beyond the room stand at its edge, none of
+        // them wide, as a word processor keeps them: the caret goes through them there, where a
+        // click reaches and the selection is drawn.
+        let edge = (room - row.pos.x).max(end);
+        if i < wrapped && row.size.x > edge {
+            let row = Arc::make_mut(&mut row.row);
+            for c in row.glyphs.iter_mut().rev().take_while(|c| c.chr.is_whitespace()) {
+                c.pos.x = c.pos.x.min(edge);
+                c.advance_width = c.advance_width.min(edge - c.pos.x).max(0.0);
+            }
+            row.size.x = edge;
+            // Their underline ends where they do.
+            let v = &mut row.visuals;
+            let letters = v.glyph_vertex_range.clone();
+            for (i, x) in v.mesh.vertices.iter_mut().enumerate() {
+                if !letters.contains(&i) {
+                    x.pos.x = x.pos.x.min(edge);
+                }
+            }
+            v.mesh_bounds = v.mesh.calc_bounds();
+        }
+    }
+    g.rect = g.rows.iter().fold(Rect::ZERO, |r, row| r | row.rect());
+    g.mesh_bounds = g.rows.iter().fold(Rect::NOTHING, |r, row| r | row.visuals.mesh_bounds.translate(row.pos.to_vec2()));
+    shifts
+}
+
+/// The alignment Mod and `key` gives a paragraph of the body: left, centre or right for L, E and
+/// R, and none in the browser (`browser`), which keeps those keys: eframe 0.37 lets it act on them
+/// (Ctrl+L and Ctrl+E go to its address bar or its search, Ctrl+R loads the page again) and passes
+/// them on too, so the paragraph would change behind what the browser does. The buttons align it
+/// there.
+pub(crate) fn align_key(key: Key, browser: bool) -> Option<&'static str> {
+    match key {
+        _ if browser => None,
+        Key::L => Some("left"),
+        Key::E => Some("center"),
+        Key::R => Some("right"),
+        _ => None,
+    }
+}
+
 /// What a character is for moving by words: 0 blank, 1 punctuation, 2 part of a word.
 fn class(c: char) -> u8 {
     if c.is_whitespace() {
@@ -681,6 +833,39 @@ pub(crate) fn laid(ctx: &egui::Context, app: &MailApp) -> usize {
     store(ctx, id(app)).lock().map_or(0, |l| l.laid)
 }
 
+/// Where the caret stands at `pos` of the text `which` names, in the body (from its top left
+/// corner), as it was last laid out; for tests.
+#[cfg(test)]
+pub(crate) fn caret_rect(ctx: &egui::Context, app: &MailApp, which: Which, pos: usize) -> Rect {
+    store(ctx, which.id(app)).lock().map_or(Rect::NOTHING, |l| l.caret(pos))
+}
+
+/// The position a point of the body (from its top left corner) puts the caret at; for tests.
+#[cfg(test)]
+pub(crate) fn hit_at(ctx: &egui::Context, app: &MailApp, which: Which, at: Vec2) -> usize {
+    store(ctx, which.id(app)).lock().map_or(0, |l| l.hit(at))
+}
+
+/// Where each row of the text `which` names begins and where its last letter ends, in the body
+/// (a space a row was broken at is not counted); for tests.
+#[cfg(test)]
+pub(crate) fn row_ends(ctx: &egui::Context, app: &MailApp, which: Which) -> Vec<(f32, f32)> {
+    let store = store(ctx, which.id(app));
+    let Ok(layout) = store.lock() else { return Vec::new() };
+    let ends = |p: &Para, row: &egui::epaint::text::PlacedRow| {
+        let first = row.glyphs.first().map_or(0.0, |g| g.pos.x);
+        let last = row.glyphs.iter().rev().find(|g| !g.chr.is_whitespace()).map_or(first, |g| g.max_x());
+        (p.indent() + row.pos.x + first, p.indent() + row.pos.x + last)
+    };
+    layout.paras.iter().flat_map(|p| p.galley.rows.iter().map(move |row| ends(p, row))).collect()
+}
+
+/// Where the link under a point of the body (from its top left corner) leads; for tests.
+#[cfg(test)]
+pub(crate) fn link_under(ctx: &egui::Context, app: &MailApp, which: Which, at: Vec2) -> Option<String> {
+    store(ctx, which.id(app)).lock().ok()?.link_at(at)
+}
+
 /// A picture's corner being dragged: the picture, the corner (top left, top right, bottom left,
 /// bottom right), the width it has so far, and whether Escape gave the drag up (it then sets
 /// nothing, and the button is still the drag's until it comes up).
@@ -702,10 +887,15 @@ fn corners(r: Rect) -> [egui::Pos2; 4] {
 const CORNER_NAMES: [&str; 4] = ["pictureCornerTopLeft", "pictureCornerTopRight", "pictureCornerBottomLeft", "pictureCorner"];
 
 /// The picture `r` shown `width` wide in proportion, from the corner opposite corner `i`, which
-/// stays where it is.
-pub(super) fn sized_from(r: Rect, i: usize, width: f32) -> Rect {
+/// stays where it is; on a centred line (`align`) about its middle across, which it keeps once
+/// the line is laid out again.
+pub(super) fn sized_from(r: Rect, i: usize, width: f32, align: Align) -> Rect {
     let size = vec2(width, width * r.height() / r.width().max(1.0));
-    let x = if i % 2 == 1 { r.min.x } else { r.max.x - size.x };
+    let x = match align {
+        Align::Center => r.center().x - size.x / 2.0,
+        _ if i % 2 == 1 => r.min.x,
+        _ => r.max.x - size.x,
+    };
     let y = if i >= 2 { r.min.y } else { r.max.y - size.y };
     Rect::from_min_size(egui::pos2(x, y), size)
 }
@@ -861,6 +1051,7 @@ pub(crate) fn show_doc(app: &mut MailApp, ui: &mut Ui, which: Which, min_height:
         && let Some((pid, r)) = layout.selected_picture(sel)
         && let Some(most) = widest(which, pid, width)
     {
+        let align = layout.align_at(sel.start());
         let r = r.translate(origin.to_vec2());
         for (i, (at, name)) in corners(r).into_iter().zip(CORNER_NAMES).enumerate() {
             let corner = Rect::from_center_size(at, vec2(10.0, 10.0));
@@ -869,8 +1060,9 @@ pub(crate) fn show_doc(app: &mut MailApp, ui: &mut Ui, which: Which, min_height:
             if handle.hovered() || handle.dragged() {
                 ctx.set_cursor_icon(if i == 0 || i == 3 { egui::CursorIcon::ResizeNwSe } else { egui::CursorIcon::ResizeNeSw });
             }
-            // (A right corner widens the picture going right, a left one going left.)
-            let outward = if i % 2 == 1 { 1.0 } else { -1.0 };
+            // (A right corner widens the picture going right, a left one going left; on a
+            // centred line by twice as much, since it grows on both sides.)
+            let outward = if i % 2 == 1 { 1.0 } else { -1.0 } * if align == Align::Center { 2.0 } else { 1.0 };
             // (The primary button's, as a click's: Escape's hold on a drag ends when it comes up.
             // The resize is a drag the primary button started by its press on the corner: one
             // another button started is nothing, though the primary button was down already or
@@ -1280,9 +1472,10 @@ pub(crate) fn show_doc(app: &mut MailApp, ui: &mut Ui, which: Which, min_height:
     }
     // The selected picture: a frame, and the corners that size it.
     if let Some((pid, r)) = layout.selected_picture(sel) {
+        let align = layout.align_at(sel.start());
         let mut r = r.translate(origin.to_vec2());
         if let Some(z) = st.resizing.filter(|z| z.id == pid && !z.cancelled) {
-            r = sized_from(r, z.corner, z.width);
+            r = sized_from(r, z.corner, z.width, align);
         }
         painter.rect_stroke(r, 0.0, Stroke::new(1.5, t.accent), egui::StrokeKind::Outside);
         if editable && widest(which, pid, width).is_some() {
@@ -1385,9 +1578,33 @@ fn paint_selection(painter: &egui::Painter, p: &Para, at: egui::Pos2, sel: Selec
             continue;
         }
         let x0 = row.pos.x + row.x_offset(CharIndex(lo.saturating_sub(rs)));
-        let x1 = row.pos.x + row.x_offset(CharIndex(hi.saturating_sub(rs))) + if breaks && last { 5.0 } else { 0.0 };
-        let r = Rect::from_min_max(pos2(x0, row.min_y()), pos2(x1, row.max_y())).translate(at.to_vec2());
-        painter.rect_filled(r, 0.0, fill);
+        let x1 = row.pos.x + row.x_offset(CharIndex(hi.saturating_sub(rs)));
+        let band = |from: f32, to: f32| Rect::from_min_max(pos2(from, row.min_y()), pos2(to, row.max_y())).translate(at.to_vec2());
+        // Inside the body: before the edge, over the end of the row, when the row reaches it (a
+        // right-aligned one always does).
+        let sliver = |at: f32| {
+            let from = at.min(p.room - SLIVER).max(0.0);
+            band(from, from + SLIVER)
+        };
+        let text = if x1 > x0 {
+            Some(band(x0, x1))
+        } else if hi > lo {
+            // Only spaces a centred or right row wraps after, which stand at its edge, none of
+            // them wide (`align_rows`).
+            Some(sliver(x0))
+        } else {
+            None
+        };
+        // One rectangle for the text and the break, which touch or overlap: the fill shows
+        // through, so a part painted twice would show darker.
+        let shown = match (text, breaks && last) {
+            (Some(r), true) => Some(r.union(sliver(x1))),
+            (None, true) => Some(sliver(x1)),
+            (r, false) => r,
+        };
+        if let Some(r) = shown {
+            painter.rect_filled(r, 0.0, fill);
+        }
     }
 }
 
@@ -1456,6 +1673,10 @@ fn key_press(layout: &Layout, st: &mut State, sel: Selection, plain: bool, key: 
                 )
             }
         }
+        Key::L | Key::E | Key::R if chord && !m.shift => match align_key(key, cfg!(target_arch = "wasm32")) {
+            Some(value) if !plain => ask("format.align", json!({"value": value})),
+            _ => None,
+        },
         Key::K if chord && !plain => ask("compose.link", json!({})),
         Key::Z if chord => ask(if m.shift { "compose.redo" } else { "compose.undo" }, json!({})),
         Key::Y if chord => ask("compose.redo", json!({})),

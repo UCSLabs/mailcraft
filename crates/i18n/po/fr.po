@@ -1399,6 +1399,18 @@ msgstr "Lorsque vous acceptez, acceptez provisoirement ou refusez une demande de
 msgid "Agenda"
 msgstr "Agenda"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Aligner à gauche"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Aligner à droite"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3228,6 +3240,12 @@ msgstr "Cc : {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Fêter"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Centrer"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

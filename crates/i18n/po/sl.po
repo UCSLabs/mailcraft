@@ -1403,6 +1403,18 @@ msgstr "Ko v pošti sprejmete, pogojno sprejmete ali zavrnete prošnjo za sreča
 msgid "Agenda"
 msgstr "Dnevni red"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Poravnaj levo"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Poravnaj desno"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3244,6 +3256,12 @@ msgstr "Kp: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Praznuj"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Na sredino"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

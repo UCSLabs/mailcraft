@@ -1401,6 +1401,18 @@ msgstr "Když v poště přijmete, předběžně přijmete nebo odmítnete žád
 msgid "Agenda"
 msgstr "Agenda"
 
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Left"
+msgstr "Zarovnat doleva"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Align Right"
+msgstr "Zarovnat doprava"
+
 #. command label
 #: crates/engine/src/cmd/format.rs
 #, fuzzy
@@ -3239,6 +3251,12 @@ msgstr "Kopie: {names}"
 #, fuzzy
 msgid "Celebrate"
 msgstr "Oslava"
+
+#. ribbon
+#: crates/ui-egui/src/ribbon.rs
+#, fuzzy
+msgid "Center"
+msgstr "Zarovnat na střed"
 
 #. interface
 #: crates/ui-egui/src/address_book.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/security.rs

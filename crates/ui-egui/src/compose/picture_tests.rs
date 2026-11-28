@@ -12,7 +12,7 @@ use crate::RichClipboard;
 
 /// A clipboard holding a picture (and perhaps HTML).
 #[derive(Clone, Default)]
-struct PictureBoard(std::rc::Rc<std::cell::RefCell<(Option<Vec<u8>>, Option<String>)>>);
+pub(super) struct PictureBoard(pub(super) std::rc::Rc<std::cell::RefCell<(Option<Vec<u8>>, Option<String>)>>);
 
 impl RichClipboard for PictureBoard {
     fn put(&self, _: &str, _: &str) -> Result<(), String> {
@@ -32,7 +32,7 @@ fn png(extra: usize) -> Vec<u8> {
     v
 }
 
-fn writing_with(board: &PictureBoard) -> Window {
+pub(super) fn writing_with(board: &PictureBoard) -> Window {
     let mut a = app();
     a.services.clipboard = Some(Box::new(board.clone()));
     a.execute("mail.new", json!({"to": "maya@lumen.example"})).unwrap();
@@ -459,16 +459,16 @@ fn a_picture_not_selected_has_no_corners() {
 fn the_outline_while_dragging_keeps_the_opposite_corner_where_it_is() {
     let r = egui::Rect::from_min_max(egui::pos2(10.0, 20.0), egui::pos2(130.0, 60.0));
     // Top left held, 150 wide: the bottom right stays.
-    let shown = super::editor::sized_from(r, 0, 150.0);
+    let shown = super::editor::sized_from(r, 0, 150.0, mailcraft_model::rich::Align::Left);
     assert_eq!((shown.max, shown.width(), shown.height()), (r.max, 150.0, 50.0));
     // Top right: the bottom left stays.
-    let shown = super::editor::sized_from(r, 1, 60.0);
+    let shown = super::editor::sized_from(r, 1, 60.0, mailcraft_model::rich::Align::Left);
     assert_eq!((shown.left_bottom(), shown.width(), shown.height()), (r.left_bottom(), 60.0, 20.0));
     // Bottom left: the top right stays.
-    let shown = super::editor::sized_from(r, 2, 60.0);
+    let shown = super::editor::sized_from(r, 2, 60.0, mailcraft_model::rich::Align::Left);
     assert_eq!((shown.right_top(), shown.width()), (r.right_top(), 60.0));
     // Bottom right: the top left stays, as before.
-    let shown = super::editor::sized_from(r, 3, 240.0);
+    let shown = super::editor::sized_from(r, 3, 240.0, mailcraft_model::rich::Align::Left);
     assert_eq!((shown.min, shown.width(), shown.height()), (r.min, 240.0, 80.0));
 }
 
