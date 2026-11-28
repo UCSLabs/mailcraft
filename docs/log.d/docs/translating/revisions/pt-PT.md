@@ -1,0 +1,1 @@
+| 2026-11-28 | minor | European Portuguese as a preview language (`pt_PT.po`, derived from the Brazilian catalogue and not yet reviewed by a native speaker); File › Options names it Português europeu (pré-visualização) |

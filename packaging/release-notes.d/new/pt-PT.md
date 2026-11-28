@@ -1,0 +1,1 @@
+- European Portuguese as a preview language (Português europeu (pré-visualização) in File › Options). The texts are not yet reviewed by a native speaker.

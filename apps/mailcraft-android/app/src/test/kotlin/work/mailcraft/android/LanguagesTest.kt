@@ -19,7 +19,13 @@ class LanguagesTest {
         assertEquals("sl", coreLanguage("sl-SI"))
         assertEquals("cs", coreLanguage("cs-CZ"))
         assertEquals("ka", coreLanguage("ka-GE"))
-        assertEquals("en", coreLanguage("pt"))
+        assertEquals("pt-BR", coreLanguage("pt"))
+        assertEquals("pt-BR", coreLanguage("pt-BR"))
+        assertEquals("pt-PT", coreLanguage("pt-PT"))
+        assertEquals("pt-PT", coreLanguage("pt_PT"))
+        assertEquals("pt-PT", coreLanguage("pt-PT-u-ca-gregory"))
+        assertEquals("pt-PT", coreLanguage("pt-Latn-PT"))
+        assertEquals("pt-BR", coreLanguage("pt-BR-x-pt"))
         assertEquals("en", coreLanguage(""))
         assertEquals("en", coreLanguage(null))
         assertEquals("en", coreLanguage("\u0000￿"))
@@ -29,8 +35,14 @@ class LanguagesTest {
     fun theChoiceIsTheFirstLanguageThatIsOffered() {
         assertEquals("", chosenTag(emptyList()))
         assertEquals("fr", chosenTag(listOf("fr-CA")))
-        assertEquals("es", chosenTag(listOf("pt-BR", "es-MX", "fr")))
-        assertEquals("", chosenTag(listOf("pt-BR", "ja")))
+        assertEquals("pt-BR", chosenTag(listOf("pt-BR", "es-MX", "fr")))
+        assertEquals("pt-PT", chosenTag(listOf("pt-PT", "fr")))
+        assertEquals("pt-PT", chosenTag(listOf("pt-PT-u-ca-gregory", "fr")))
+        assertEquals("pt-PT", chosenTag(listOf("pt-Latn-PT", "fr")))
+        assertEquals("pt-BR", chosenTag(listOf("pt-BR-x-pt", "fr")))
+        assertEquals("pt-BR", chosenTag(listOf("pt", "fr")))
+        assertEquals("es", chosenTag(listOf("ja", "es-MX", "fr")))
+        assertEquals("", chosenTag(listOf("ja")))
         assertEquals("", chosenTag(listOf("")))
     }
 
@@ -45,9 +57,17 @@ class LanguagesTest {
 
     @Test
     fun everyLanguageHasACatalogueOrIsEnglish() {
-        // crates/i18n/po/<code>.po, from the app's folder.
+        // crates/i18n/po/<code>.po, from the app's folder. The two Portuguese catalogues are
+        // pt_BR.po (tag `pt-BR`) and pt_PT.po (tag `pt-PT`).
         val po = File("../../../crates/i18n/po")
-        LANGUAGES.filter { it.tag != "en" }.forEach { assertTrue(it.tag, File(po, it.tag + ".po").isFile) }
+        LANGUAGES.filter { it.tag != "en" }.forEach { lang ->
+            val file = when (lang.tag) {
+                "pt-BR" -> "pt_BR.po"
+                "pt-PT" -> "pt_PT.po"
+                else -> "${lang.tag}.po"
+            }
+            assertTrue(lang.tag, File(po, file).isFile)
+        }
     }
 
     @Test

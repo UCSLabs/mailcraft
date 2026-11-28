@@ -6,7 +6,7 @@
 
 use mailcraft_i18n::po;
 
-const POS: [(&str, &str); 11] = [
+const POS: [(&str, &str); 13] = [
     ("cs", include_str!("../../i18n/po/cs.po")),
     ("de", include_str!("../../i18n/po/de.po")),
     ("es", include_str!("../../i18n/po/es.po")),
@@ -17,6 +17,8 @@ const POS: [(&str, &str); 11] = [
     ("nl", include_str!("../../i18n/po/nl.po")),
     ("pl", include_str!("../../i18n/po/pl.po")),
     ("ro", include_str!("../../i18n/po/ro.po")),
+    ("pt_BR", include_str!("../../i18n/po/pt_BR.po")),
+    ("pt_PT", include_str!("../../i18n/po/pt_PT.po")),
     ("zh_CN", include_str!("../../i18n/po/zh_CN.po")),
 ];
 
