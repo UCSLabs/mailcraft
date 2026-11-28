@@ -292,30 +292,40 @@ impl Transport {
             let mut third: Option<Secret> = None;
             if fresh {
                 state.unsigned = false;
-                let held = state.connection.take().filter(|_| probe);
-                let mut connection = match held {
-                    Some(connection) => connection,
-                    None => Connection::open(request.url(), &self.trusted).map_err(|e| self.judged_for(e, request))?,
-                };
-                let hash = connection.end_point_hash();
-                let context = ntlm::Context {
-                    client_challenge: mailcraft_net::https::client_challenge().map_err(|_| TransportError::Other)?,
-                    unix_seconds: u64::try_from(mailcraft_time::now()).unwrap_or(0),
-                    host: host_of(request.url()),
-                    channel_binding: hash.as_deref(),
-                };
-                let signed = ntlm::sign_in(credentials, &context, |negotiate| {
-                    let fields = [("Authorization", negotiate.expose()), ("Content-Type", "text/xml; charset=utf-8")];
-                    let ask = mailcraft_net::https::Request {
-                        method: "POST",
-                        url: request.url(),
-                        fields: &fields,
-                        body: &[],
-                        max_response: request.max_response_bytes().min(64 * 1024),
-                        trusted: &self.trusted,
+                let mut held = state.connection.take().filter(|_| probe);
+                let (connection, signed) = loop {
+                    let reused = held.is_some();
+                    let mut connection = match held.take() {
+                        Some(connection) => connection,
+                        None => Connection::open(request.url(), &self.trusted).map_err(|e| self.judged_for(e, request))?,
                     };
-                    connection.send(&ask).map(|answer| ntlm::Leg { status: answer.status, challenges: answer.challenges })
-                });
+                    let hash = connection.end_point_hash();
+                    let context = ntlm::Context {
+                        client_challenge: mailcraft_net::https::client_challenge().map_err(|_| TransportError::Other)?,
+                        unix_seconds: u64::try_from(mailcraft_time::now()).unwrap_or(0),
+                        host: host_of(request.url()),
+                        channel_binding: hash.as_deref(),
+                    };
+                    let signed = ntlm::sign_in(credentials, &context, |negotiate| {
+                        let fields = [("Authorization", negotiate.expose()), ("Content-Type", "text/xml; charset=utf-8")];
+                        let ask = mailcraft_net::https::Request {
+                            method: "POST",
+                            url: request.url(),
+                            fields: &fields,
+                            body: &[],
+                            max_response: request.max_response_bytes().min(64 * 1024),
+                            trusted: &self.trusted,
+                        };
+                        connection.send(&ask).map(|answer| ntlm::Leg { status: answer.status, challenges: answer.challenges })
+                    });
+                    // The first request's connection was closed by a server or proxy that said nothing of it
+                    // (no `Connection: close`): the sign-in legs have no body, so nothing of the request went
+                    // out, and a new connection signs in once more, whatever the request is.
+                    if reused && matches!(&signed, Err(ntlm::SignInError::Exchange(error)) if mailcraft_net::https::is_closed(error)) {
+                        continue;
+                    }
+                    break (connection, signed);
+                };
                 match signed {
                     Ok(secret) => third = Some(secret),
                     // (The connection failed before the request went: nothing was done.)

@@ -48,6 +48,8 @@ struct Misbehaviour {
     /// The connection is dropped after the answer to its first request, with no word of it in the
     /// answer (a server or a proxy that closes it while the client is already sending the next).
     close_after_first_answer: bool,
+    /// The operations of the service this server answered, in order.
+    served_ops: Vec<String>,
 }
 
 pub(crate) struct Server {
@@ -204,6 +206,7 @@ fn connection(
             String::from_utf8_lossy(&body).split("<m:").nth(1).map(|rest| rest.split([' ', '>', '/']).next().unwrap_or_default().to_owned());
         let response = block_on(standin.exchange(&request)).unwrap().unwrap();
         served += 1;
+        misbehaves.lock().unwrap().served_ops.extend(operation.clone());
         if response.status() != 401 {
             let mut m = misbehaves.lock().unwrap();
             if m.drop_answer_of.is_some() && m.drop_answer_of == operation.as_deref() {
@@ -387,6 +390,29 @@ fn a_connection_the_server_drops_after_the_first_answer_is_replaced_for_the_sign
     assert!(here(&app, account, "Kickoff").is_some());
     // The first connection learned the offer and was dropped; the sign-in and the run are on a second.
     assert_eq!(server.connections.load(Ordering::Relaxed), 2);
+}
+
+/// What the server answered in a first run, in order.
+fn operations_of_a_first_run(first_connection_dropped: bool) -> Vec<String> {
+    let server = serve(Mode::Ntlm);
+    server.standin.state().deliver("inbox", "Kickoff", false);
+    server.misbehaves.lock().unwrap().close_after_first_answer = first_connection_dropped;
+    let (mut app, account) = window(&server);
+    first_run(&mut app, account);
+    let served = server.misbehaves.lock().unwrap();
+    served.served_ops.clone()
+}
+
+/// The first request of a run is made, not given up: the connection that learned the offer is dropped
+/// without a word, the sign-in legs (which have no body) go to a new one, and the request is answered
+/// as it is on a server that drops nothing. The count of connections can't tell this from a first
+/// request that failed and was passed over (a failed `own_folders` is "no such folders", and the next
+/// request opens a new connection), so the operations the server answered are compared.
+#[test]
+fn the_first_request_is_answered_when_the_connection_that_learned_the_offer_is_dropped() {
+    let steady = operations_of_a_first_run(false);
+    assert!(!steady.is_empty());
+    assert_eq!(operations_of_a_first_run(true), steady);
 }
 
 #[test]
