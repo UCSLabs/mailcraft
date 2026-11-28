@@ -571,6 +571,7 @@ fn message() -> impl Strategy<Value = Message> {
             send_at: None,
             sending: false,
             sent_here: false,
+            sent_pending: false,
             answers: None,
             kept: None,
             rule_alert: false,
