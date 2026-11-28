@@ -2717,6 +2717,12 @@ fn options_validate() {
 /// Never-crash: every command, with junk for every parameter it might read, returns `Ok` or `Err`.
 #[test]
 fn hostile_params_never_panic() {
+    let mut bounded = session();
+    for count in [51, 4096] {
+        let addresses = vec!["repeat@example.org"; count];
+        let error = bounded.run("mail.mergeCorrespondents", &json!({"addresses": addresses})).unwrap_err();
+        assert!(error.to_string().contains("2 to 50"));
+    }
     let mut junk = vec![
         json!(null),
         json!({}),

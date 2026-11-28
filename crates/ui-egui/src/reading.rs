@@ -496,15 +496,15 @@ pub(crate) fn show_chat_body(
     wrap_width: f32,
     collapsed_max_h: f32,
     expanded: bool,
+    on_screen: bool,
     card_fill: egui::Color32,
 ) -> ChatBodyShown {
     let ctx = ui.ctx().clone();
     let place = Place::Chat(m.id);
     let t = Tokens::get(&ctx);
-    let env = mailcraft_html::Env::for_pane(wrap_width.min(MAX_TEXT_WIDTH), t.dark);
-    let doc = view::doc_shown(&ctx, m, place, remote::available(app), env);
+    let doc = view::doc_fitted(&ctx, m, place, remote::available(app), wrap_width, t.dark);
     let access = if doc.remote.is_empty() { Access::Blocked } else { remote::access(app, m) };
-    let progress = if access == Access::Allowed { remote::want(app, &ctx, m, &doc) } else { remote::Progress::default() };
+    let progress = if access == Access::Allowed && on_screen { remote::want(app, &ctx, m, &doc) } else { remote::Progress::default() };
 
     let mut block_click = false;
     if !doc.remote.is_empty() {
@@ -538,7 +538,7 @@ pub(crate) fn show_chat_body(
         child.set_clip_rect(clip_rect);
         let mut painted = view::ChatPainted { size: egui::Vec2::ZERO, link_clicked: false };
         egui::ScrollArea::horizontal().id_salt(("chat_body_h", m.id)).auto_shrink([true, true]).show(&mut child, |ui| {
-            painted = view::show_at(app, ui, m, place, access, wrap_width);
+            painted = view::show_at(app, ui, m, place, access, wrap_width, Some(collapsed_max_h));
         });
         block_click |= painted.link_clicked;
         let fade_h = 28.0_f32.min(collapsed_max_h * 0.25);
@@ -555,7 +555,7 @@ pub(crate) fn show_chat_body(
     } else {
         let mut painted = view::ChatPainted { size: egui::Vec2::ZERO, link_clicked: false };
         egui::ScrollArea::horizontal().id_salt(("chat_body_h", m.id)).auto_shrink([true, true]).show(ui, |ui| {
-            painted = view::show_at(app, ui, m, place, access, wrap_width);
+            painted = view::show_at(app, ui, m, place, access, wrap_width, None);
         });
         block_click |= painted.link_clicked;
         painted.size

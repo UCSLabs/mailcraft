@@ -3358,6 +3358,11 @@ msgstr "Znaki (ze spacjami)"
 msgid "Chart"
 msgstr "Wykres"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "Kolory dymków czatu"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4627,7 +4632,7 @@ msgid "Decrease Indent"
 msgstr "Zmniejsz wcięcie"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Default"
 msgstr "Domyślne"
@@ -7075,10 +7080,13 @@ msgstr "Grupa"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"Grupuj według\n"
+"adresu"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -9454,6 +9462,12 @@ msgstr "Zarządzaj regułami…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "Zarządzaj zadaniem"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "Usunięto ręczne scalenie, ale ten adres nadal jest powiązany przez kartę kontaktu."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -14230,6 +14244,12 @@ msgstr "Wymagany"
 msgid "Resend Message"
 msgstr "Wyślij wiadomość ponownie"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "Resetuj"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -15207,6 +15227,18 @@ msgstr "Wybierz wiadomość, zanim wyświetlisz podgląd jej załącznika."
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "Zaznacz najwyżej {n} wiadomości, z których chcesz się wypisać."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "Kolor zaznaczonego dymka"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "Kolor zaznaczonego dymka jako hex"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -16053,6 +16085,12 @@ msgstr "Pokaż ukończone zadania"
 msgid "Show details"
 msgstr "Pokaż szczegóły"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "Pokaż całą konwersację"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -16208,6 +16246,15 @@ msgstr "Pokazuj nazwy użytkowników, nazwy wyświetlane lub prawdziwe imiona i 
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "Pokazuj numery tygodni w widoku miesiąca i w selektorze dat"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "Wyświetlono {n} wiadomość pasującą do wyszukiwania"
+msgstr[1] "Wyświetlono {n} wiadomości pasujące do wyszukiwania"
+msgstr[2] "Wyświetlono {n} wiadomości pasujących do wyszukiwania"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -21084,6 +21131,18 @@ msgid "Unread"
 msgstr "Nieprzeczytane"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "Kolor nieprzeczytanych dymków"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "Kolor nieprzeczytanych dymków jako hex"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -23104,6 +23163,11 @@ msgstr "wpisz nazwę użytkownika, aby się zalogować"
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "wszyscy z @{domain}"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "Wymagane jest od 2 do 50 adresów"
 
 #. what a command says
 #: crates/model/src/rich/body.rs

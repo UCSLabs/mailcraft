@@ -551,6 +551,20 @@ fn every_command_leaves_only_what_the_list_shows_selected() {
                 if let Some(said) = answer.get("selected").filter(|said| said.is_array()) {
                     assert_eq!(*said, json!(s.sel.messages), "{id} {params}, from {setup_name}: {:?}", s.view);
                 }
+                if s.view.contact_conversations {
+                    if let Some(key) = s.view.selected_correspondent.as_deref() {
+                        let all = crate::correspondents::default_all_accounts(&s);
+                        let scope = s.view.selected_correspondent_all_accounts.unwrap_or(all);
+                        let allowed: HashSet<Id> =
+                            crate::correspondents::messages_for(&s, key, scope, crate::Filter::All, "").1.into_iter().collect();
+                        for m in &s.sel.messages {
+                            assert!(allowed.contains(m), "{id} {params}, from {setup_name}: {m} selected outside correspondent timeline");
+                        }
+                    } else {
+                        assert!(s.sel.messages.is_empty(), "{id} {params}, from {setup_name}: message selected with no correspondent");
+                    }
+                    continue;
+                }
                 let listed: HashSet<Id> = s.rows().iter().flat_map(|r| r.members.iter()).copied().collect();
                 let in_view = crate::list::in_view(&s);
                 for m in &s.sel.messages {

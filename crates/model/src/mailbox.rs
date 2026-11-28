@@ -5512,6 +5512,9 @@ impl Mailbox {
     /// Manually merge two or more email addresses into one correspondent group (#1907), unioning
     /// any existing groups that overlap those addresses.
     pub fn merge_correspondents(&mut self, addresses: &[String], name: Option<&str>) -> Result<crate::CorrespondentGroup, ModelError> {
+        if !(2..=crate::MAX_GROUP_ADDRESSES).contains(&addresses.len()) {
+            return Err(ModelError::Invalid("expected 2 to 50 addresses".into()));
+        }
         let mut merged: Vec<String> = Vec::new();
         for raw in addresses {
             let Some(addr) = crate::correspondents::normalize_address(raw) else {

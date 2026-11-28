@@ -609,6 +609,23 @@ impl Stays {
     }
 }
 
+/// A few active queries (including unread and search) share immutable results across redraws.
+#[derive(Default)]
+struct QueryCache<T>(std::sync::Mutex<Vec<(String, Arc<T>)>>);
+
+impl<T> QueryCache<T> {
+    fn get(&self, key: String, build: impl FnOnce() -> T) -> Arc<T> {
+        let mut entries = self.0.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some((_, result)) = entries.iter().find(|(stored, _)| *stored == key) {
+            return Arc::clone(result);
+        }
+        let result = Arc::new(build());
+        entries.insert(0, (key, Arc::clone(&result)));
+        entries.truncate(6);
+        result
+    }
+}
+
 /// The message list last built ([`Session::rows`]).
 struct ListCache {
     key: String,
@@ -1169,6 +1186,8 @@ pub(crate) struct Undo {
     /// Whether the step changed mail (a message, a folder), and not only tasks, the calendar or
     /// the like: only then does undoing it select again what it had selected (#485).
     mail: bool,
+    correspondent: Option<String>,
+    correspondent_all_accounts: Option<bool>,
 }
 
 pub struct Session {
@@ -1321,6 +1340,11 @@ pub struct Session {
     /// The conversations of the mailbox ([`Session::threads`]), as of the revision and message
     /// count they were worked out at.
     pub(crate) threads_cache: crate::conversations::ThreadsCache,
+    /// Cached word-index + disk phrase results for correspondent searches, keyed by mailbox
+    /// revision, date context, word-index completion, scope tag, and query string (#1907).
+    correspondent_lists: QueryCache<Vec<crate::correspondents::CorrespondentSummary>>,
+    correspondent_timelines: QueryCache<(Option<crate::correspondents::CorrespondentSummary>, Vec<Id>)>,
+    correspondent_search_cache: QueryCache<HashMap<Id, bool>>,
     /// How many times the list was built ([`Session::list_builds`]).
     list_builds: u64,
     /// The message a selection just opened, to be marked read once the command that selected it
@@ -1605,6 +1629,9 @@ impl Session {
             counts_cache: None,
             conversation_cache: None,
             threads_cache: Default::default(),
+            correspondent_lists: QueryCache::default(),
+            correspondent_timelines: QueryCache::default(),
+            correspondent_search_cache: QueryCache::default(),
             list_builds: 0,
             opened: None,
             sender_checks: Default::default(),
@@ -2437,6 +2464,52 @@ impl Session {
         _: impl Fn(&Message) -> bool,
     ) -> (std::collections::HashMap<Id, bool>, usize) {
         (std::collections::HashMap::new(), 0)
+    }
+
+    /// Folder-scoped correspondent rows for the current rendering state.
+    pub fn correspondent_rows(&self, all: bool, filter: Filter, query: &str) -> Arc<Vec<crate::correspondents::CorrespondentSummary>> {
+        let key = format!("{}|{all}|{filter:?}|{query:?}", self.list_key());
+        self.correspondent_lists.get(key, || crate::correspondents::summaries(self, all, filter, query))
+    }
+
+    /// Cross-folder timeline for the current rendering state.
+    pub fn correspondent_timeline(
+        &self,
+        contact: &str,
+        all: bool,
+        filter: Filter,
+        query: &str,
+    ) -> Arc<(Option<crate::correspondents::CorrespondentSummary>, Vec<Id>)> {
+        let key = format!("{}|{contact:?}|{all}|{filter:?}|{query:?}", self.list_key());
+        self.correspondent_timelines.get(key, || crate::correspondents::messages_for(self, contact, all, filter, query))
+    }
+
+    /// Cached wrapper around [`Session::search_words_for`] for correspondent views (#1907),
+    /// keyed by revision, date context, word-index generation, scope tag, and raw query so
+    /// redraws do not repeat disk phrase verification.
+    pub(crate) fn cached_search_words_for(
+        &self,
+        query: &mailcraft_model::search::Query,
+        raw_query: &str,
+        scope_tag: u64,
+        in_scope: impl Fn(&Message) -> bool,
+    ) -> Arc<std::collections::HashMap<Id, bool>> {
+        if query.is_empty() {
+            return Arc::default();
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        if self.words.is_none() {
+            return Arc::default();
+        }
+        let key = format!(
+            "{}|{}|{}|{}|{}|{scope_tag}|{raw_query}",
+            self.rev,
+            self.today().to_days(),
+            self.prefs.week_start.index(),
+            self.zone_key(),
+            self.words_finished(),
+        );
+        self.correspondent_search_cache.get(key, || self.search_words_for(query, in_scope).0)
     }
 
     /// How far the word index a search answers from has got.
@@ -3320,6 +3393,15 @@ impl Session {
     /// its open conversation there (#503): one gone, taken elsewhere by a run, or left in a folder
     /// the view has left, is let go of.
     fn select_in_view(&mut self) {
+        if self.view.contact_conversations
+            && let Some(key) = self.view.selected_correspondent.clone()
+        {
+            let all_accounts = self.view.selected_correspondent_all_accounts.unwrap_or_else(|| crate::correspondents::default_all_accounts(self));
+            let (_, ids) = crate::correspondents::messages_for(self, &key, all_accounts, Filter::All, "");
+            let allowed: HashSet<Id> = ids.into_iter().collect();
+            self.sel.messages.retain(|id| allowed.contains(id));
+            return;
+        }
         let outside: HashSet<Id> = {
             let in_view = crate::list::in_view(self);
             self.sel.messages.iter().copied().filter(|id| !self.mailbox.message(*id).is_some_and(&in_view)).collect()
@@ -3627,6 +3709,9 @@ impl Session {
         self.view.open.clear();
         self.view.selected_correspondent = None;
         self.view.selected_correspondent_all_accounts = None;
+        self.correspondent_lists = QueryCache::default();
+        self.correspondent_timelines = QueryCache::default();
+        self.correspondent_search_cache = QueryCache::default();
         // An account's id means another account there, or none.
         self.view.task_account = AccountChoice::All;
         self.view.people_account = AccountChoice::All;
@@ -3640,13 +3725,31 @@ impl Session {
     // ---- undo ----
 
     fn snapshot(&self, label: &'static str) -> Undo {
-        Undo { label, mailbox: self.mailbox.clone(), touched: Default::default(), sel: self.sel.clone(), folder: self.view.folder, mail: false }
+        Undo {
+            label,
+            mailbox: self.mailbox.clone(),
+            touched: Default::default(),
+            sel: self.sel.clone(),
+            folder: self.view.folder,
+            mail: false,
+            correspondent: self.view.selected_correspondent.clone(),
+            correspondent_all_accounts: self.view.selected_correspondent_all_accounts,
+        }
     }
 
     /// [`Session::snapshot`] without the mailbox, for a command that doesn't change it
     /// ([`Session::run`]): never kept as a step of the history.
     fn snapshot_light(&self, label: &'static str) -> Undo {
-        Undo { label, mailbox: Mailbox::default(), touched: Default::default(), sel: self.sel.clone(), folder: self.view.folder, mail: false }
+        Undo {
+            label,
+            mailbox: Mailbox::default(),
+            touched: Default::default(),
+            sel: self.sel.clone(),
+            folder: self.view.folder,
+            mail: false,
+            correspondent: self.view.selected_correspondent.clone(),
+            correspondent_all_accounts: self.view.selected_correspondent_all_accounts,
+        }
     }
 
     /// A .pst import that came in a batch at a time, kept as one step to undo: the mailbox as it
@@ -3894,7 +3997,22 @@ impl Session {
         self.ews_run_cut.clear();
         self.run_had.clear();
         let mail = u.mail;
-        let cur = Undo { label: u.label, mailbox: now, touched, sel: std::mem::replace(&mut self.sel, u.sel), folder: self.view.folder, mail };
+        let prev_correspondent = self.view.selected_correspondent.clone();
+        let prev_all_accounts = self.view.selected_correspondent_all_accounts;
+        if u.correspondent.is_some() {
+            self.view.selected_correspondent = u.correspondent;
+            self.view.selected_correspondent_all_accounts = u.correspondent_all_accounts;
+        }
+        let cur = Undo {
+            label: u.label,
+            mailbox: now,
+            touched,
+            sel: std::mem::replace(&mut self.sel, u.sel),
+            folder: self.view.folder,
+            mail,
+            correspondent: prev_correspondent,
+            correspondent_all_accounts: prev_all_accounts,
+        };
         self.rev += 1;
         self.restored = self.restored.wrapping_add(1);
         self.dirty = true;
@@ -3912,8 +4030,39 @@ impl Session {
         if let Some(contact) = self.sel.contact {
             crate::cmd::people::reveal(self, contact);
         }
+        self.reconcile_selected_correspondent();
         self.normalize();
         cur
+    }
+
+    /// Reconcile `selected_correspondent` against the current mailbox/identity map after Undo or Redo
+    /// so an address that was merged/unmerged recovers to a conversation that still has mail.
+    fn reconcile_selected_correspondent(&mut self) {
+        let Some(key) = self.view.selected_correspondent.clone() else { return };
+        let own = crate::correspondents::own_addresses(&self.mailbox);
+        let id_map = crate::correspondents::IdentityMap::build(&self.mailbox, &own);
+        let resolved = mailcraft_model::correspondents::normalize_address(&key).map(|n| id_map.resolve(&n)).unwrap_or(key);
+        let scope = self.view.selected_correspondent_all_accounts.unwrap_or_else(|| crate::correspondents::default_all_accounts(self));
+        if crate::correspondents::messages_for(self, &resolved, scope, Filter::All, "").0.is_some() {
+            self.view.selected_correspondent = Some(resolved);
+            return;
+        }
+        let recovered = id_map
+            .addresses_of(&resolved)
+            .into_iter()
+            .find(|addr| crate::correspondents::messages_for(self, addr, scope, Filter::All, "").0.is_some())
+            .or_else(|| {
+                self.sel
+                    .focus()
+                    .and_then(|id| crate::correspondents::correspondent_key_of_message(self, id))
+                    .filter(|k| crate::correspondents::messages_for(self, k, scope, Filter::All, "").0.is_some())
+            });
+        if let Some(found) = recovered {
+            self.view.selected_correspondent = Some(found);
+        } else {
+            self.view.selected_correspondent = None;
+            self.view.selected_correspondent_all_accounts = None;
+        }
     }
 
     /// Whether undoing the last step (or redoing, `redo`) would take away the event, contact or

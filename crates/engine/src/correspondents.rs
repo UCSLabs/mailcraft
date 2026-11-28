@@ -4,6 +4,8 @@
 //! and outgoing emails per correspondent across folders and optionally across accounts.
 
 use std::collections::{HashMap, HashSet};
+use std::hash::{Hash, Hasher};
+use std::sync::Arc;
 
 use mailcraft_model::correspondents::normalize_address;
 use mailcraft_model::search::Query;
@@ -85,13 +87,23 @@ pub fn is_outgoing(mb: &Mailbox, m: &Message, own: &HashSet<String>) -> bool {
     normalize_address(&m.from.email).is_some_and(|addr| own.contains(&addr))
 }
 
+/// Default `allAccounts` scope for correspondent views when not explicitly overridden: enabled
+/// either by the owner's All Accounts toggle or by an active Unified folder view (#1907).
+pub fn default_all_accounts(s: &Session) -> bool {
+    s.view.contact_all_accounts || crate::unified::of(s).is_some()
+}
+
+/// Effective `allAccounts` scope when opening a correspondent from `summaries` with `query_str`:
+/// expands across accounts when `Scope::Everywhere` is active for a non-empty search.
+pub fn search_all_accounts(s: &Session, all_accounts: bool, query_str: &str) -> bool {
+    all_accounts || (!query_str.trim().is_empty() && s.view.scope == crate::Scope::Everywhere)
+}
+
 /// Folders eligible for contact-based aggregation: excludes Deleted Items, Junk E-mail, and their
-/// subfolders. When `all_accounts` is false (and Unified All Accounts is not active), restricts to
-/// the account of `s.view.folder`.
+/// subfolders. When `all_accounts` is false, restricts to the account of `s.view.folder`.
 pub fn eligible_folders(s: &Session, all_accounts: bool) -> HashSet<Id> {
     let mb = &s.mailbox;
-    let multi_account = all_accounts || crate::unified::of(s).is_some();
-    let active_account = (!multi_account).then(|| mb.folder(s.view.folder).map(|f| f.account)).flatten();
+    let active_account = (!all_accounts).then(|| mb.folder(s.view.folder).map(|f| f.account)).flatten();
 
     let excluded: HashSet<Id> = mb
         .folders
@@ -391,13 +403,30 @@ impl ListScope {
             ListScope::Any(folders) => folders.contains(&m.folder),
         }
     }
+
+    fn tag(&self) -> u64 {
+        let (kind, folders) = match self {
+            ListScope::Incoming(f) => (0u8, f),
+            ListScope::Outgoing(f) => (1u8, f),
+            ListScope::Any(f) => (2u8, f),
+        };
+        folder_set_tag(kind, folders)
+    }
+}
+
+fn folder_set_tag(kind: u8, folders: &HashSet<Id>) -> u64 {
+    let mut ids: Vec<Id> = folders.iter().copied().collect();
+    ids.sort_unstable();
+    let mut hasher = std::hash::DefaultHasher::new();
+    kind.hash(&mut hasher);
+    ids.hash(&mut hasher);
+    hasher.finish()
 }
 
 fn list_scope(s: &Session, all_accounts: bool) -> ListScope {
     let mb = &s.mailbox;
-    let multi_account = all_accounts || crate::unified::of(s).is_some();
     let active_kind = crate::unified::of(s).or_else(|| mb.folder(s.view.folder).map(|f| f.kind));
-    let active_account = (!multi_account).then(|| mb.folder(s.view.folder).map(|f| f.account)).flatten();
+    let active_account = (!all_accounts).then(|| mb.folder(s.view.folder).map(|f| f.account)).flatten();
 
     let mut folders: HashSet<Id> = match active_kind {
         Some(FolderKind::Inbox) => {
@@ -410,7 +439,7 @@ fn list_scope(s: &Session, all_accounts: bool) -> ListScope {
             .map(|f| f.id)
             .collect(),
         Some(FolderKind::Custom) => std::iter::once(s.view.folder).collect(),
-        _ if multi_account => {
+        _ if all_accounts => {
             if let Some(kind) = active_kind {
                 mb.folders.iter().filter(|f| f.kind == kind).map(|f| f.id).collect()
             } else {
@@ -419,7 +448,7 @@ fn list_scope(s: &Session, all_accounts: bool) -> ListScope {
         }
         _ => std::iter::once(s.view.folder).collect(),
     };
-    let eligible = eligible_folders(s, multi_account);
+    let eligible = eligible_folders(s, all_accounts);
     folders.retain(|id| eligible.contains(id));
 
     match active_kind {
@@ -429,16 +458,45 @@ fn list_scope(s: &Session, all_accounts: bool) -> ListScope {
     }
 }
 
+fn search_list_scope(s: &Session, all_accounts: bool, needle: &str) -> ListScope {
+    let base = list_scope(s, all_accounts);
+    if needle.is_empty() {
+        return base;
+    }
+    match s.view.scope {
+        crate::Scope::Folder => base,
+        crate::Scope::Subfolders => {
+            let mb = &s.mailbox;
+            let base_folders = match &base {
+                ListScope::Incoming(f) | ListScope::Outgoing(f) | ListScope::Any(f) => f,
+            };
+            let eligible = eligible_folders(s, all_accounts);
+            let mut folders: HashSet<Id> = base_folders.iter().flat_map(|id| mb.subtree(*id)).collect();
+            if folders.is_empty() {
+                folders.extend(mb.subtree(s.view.folder));
+            }
+            folders.retain(|id| eligible.contains(id));
+            ListScope::Any(folders)
+        }
+        crate::Scope::Mailbox => ListScope::Any(eligible_folders(s, all_accounts)),
+        crate::Scope::Everywhere => ListScope::Any(eligible_folders(s, true)),
+    }
+}
+
 /// All correspondent conversations matching `filter` and `query_str`, sorted by latest
 /// communication time (`s.view.sort_descending`).
 pub fn summaries(s: &Session, all_accounts: bool, filter: Filter, query_str: &str) -> Vec<CorrespondentSummary> {
     let mb = &s.mailbox;
     let own = own_addresses(mb);
     let id_map = IdentityMap::build(mb, &own);
-    let scope = list_scope(s, all_accounts);
-    let query = Query::parse(query_str);
     let needle = query_str.trim();
-    let decided = if query.is_empty() { HashMap::new() } else { s.search_words_for(&query, |m| scope.contains_folder(m.folder)).0 };
+    let scope = search_list_scope(s, all_accounts, needle);
+    let query = Query::parse(query_str).on(s.today(), s.prefs.week_start);
+    let decided = if query.is_empty() {
+        Arc::default()
+    } else {
+        s.cached_search_words_for(&query, query_str, scope.tag(), |m| scope.contains_folder(m.folder))
+    };
 
     let mut map: HashMap<String, Accum<'_>> = HashMap::new();
     for m in mb.messages.values() {
@@ -539,9 +597,13 @@ pub fn messages_for(s: &Session, key_or_email: &str, all_accounts: bool, filter:
         return (None, Vec::new());
     }
     let folders = eligible_folders(s, all_accounts);
-    let query = Query::parse(query_str);
+    let query = Query::parse(query_str).on(s.today(), s.prefs.week_start);
     let needle = query_str.trim();
-    let decided = if query.is_empty() { HashMap::new() } else { s.search_words_for(&query, |m| folders.contains(&m.folder)).0 };
+    let decided = if query.is_empty() {
+        Arc::default()
+    } else {
+        s.cached_search_words_for(&query, query_str, folder_set_tag(3, &folders), |m| folders.contains(&m.folder))
+    };
 
     let mut acc: Option<Accum<'_>> = None;
     let mut matched: Vec<(Timestamp, Id)> = Vec::new();
@@ -606,6 +668,15 @@ pub fn messages_for(s: &Session, key_or_email: &str, all_accounts: bool, filter:
     let ids = matched.into_iter().map(|(_, id)| id).collect();
     let summary = acc.map(|a| finalize_summary(target_key, a, &id_map));
     (summary, ids)
+}
+
+/// Return the canonical correspondent key associated with message `id`, if any.
+pub(crate) fn correspondent_key_of_message(s: &Session, id: Id) -> Option<String> {
+    let m = s.mailbox.message(id)?;
+    let own = own_addresses(&s.mailbox);
+    let id_map = IdentityMap::build(&s.mailbox, &own);
+    let (_, corrs) = message_correspondents(&s.mailbox, m, &own, &id_map);
+    corrs.into_iter().next().map(|(k, _, _)| k)
 }
 
 /// Return the chronological window of up to `limit` newest messages ending `offset_from_end`

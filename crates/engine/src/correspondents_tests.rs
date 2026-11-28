@@ -308,12 +308,12 @@ fn selection_scope_identity_resolution_custom_folders_and_mailbox_replace() {
     let err = s.run("mail.correspondentMessages", &json!({"allAccounts": false})).unwrap_err();
     assert!(err.to_string().contains("no conversation"));
 
-    // 4) Merging selected `z@example.org` with Contact-linked `bob.home@example.org` resolves
-    // through IdentityMap to canonical key `bob.home@example.org` (`bob@example.org` & `z@example.org`).
+    // 4) Merging selected `z@example.org` with Contact-linked `bob@example.org` resolves
+    // through IdentityMap to canonical key `bob.home@example.org` (`bob.home@example.org` < `bob@example.org` < `z@example.org`).
     let inbox1 = s.mailbox.folder_of_kind(acc1, FolderKind::Inbox).unwrap();
     add_msg(&mut s.mailbox, inbox1, ("Zed", "z@example.org"), &[("Avery", "avery@example.org")], "Z mail", ts(23, 4, 0), "z", true);
     run(&mut s, "mail.selectCorrespondent", json!({"key": "z@example.org"}));
-    run(&mut s, "mail.mergeCorrespondents", json!({"addresses": ["z@example.org", "bob.home@example.org"]}));
+    run(&mut s, "mail.mergeCorrespondents", json!({"addresses": ["z@example.org", "bob@example.org"]}));
     assert_eq!(s.view.selected_correspondent.as_deref(), Some("bob.home@example.org"));
 
     // 5) `replace_mailbox` clears transient selected correspondent while preserving view mode.
@@ -323,4 +323,116 @@ fn selection_scope_identity_resolution_custom_folders_and_mailbox_replace() {
     assert!(s.view.selected_correspondent_all_accounts.is_none());
     assert!(s.view.contact_conversations);
     assert!(s.view.contact_all_accounts);
+}
+
+#[test]
+fn review_regressions_focus_unified_scope_dates_and_undo() {
+    let mut s = test_session();
+    let acc1 = s.mailbox.accounts[0].id;
+    let acc2 = s.mailbox.accounts[1].id;
+    let inbox1 = s.mailbox.folder_of_kind(acc1, FolderKind::Inbox).unwrap();
+    let archive1 = s.mailbox.folder_of_kind(acc1, FolderKind::Archive).unwrap();
+
+    // M2: Selecting an Archive message in Inbox contact mode keeps `sel.focus()` across mark_opened/normalize.
+    let arch_unread = add_msg(
+        &mut s.mailbox,
+        archive1,
+        ("Archive Sender", "arch@example.org"),
+        &[("Avery", "avery@example.org")],
+        "Archived topic",
+        ts(24, 8, 0),
+        "archive body",
+        false,
+    );
+    add_msg(
+        &mut s.mailbox,
+        inbox1,
+        ("Archive Sender", "arch@example.org"),
+        &[("Avery", "avery@example.org")],
+        "Inbox topic",
+        ts(23, 8, 0),
+        "inbox body",
+        true,
+    );
+    run(&mut s, "view.contactConversations", json!({"value": true}));
+    let sel_res = run(&mut s, "mail.selectCorrespondent", json!({"key": "arch@example.org", "messageId": arch_unread}));
+    assert_eq!(sel_res["focused"], arch_unread);
+    assert_eq!(s.sel.focus(), Some(arch_unread), "Archive message must remain focused after normalize");
+    run(&mut s, "mail.flag", json!({"flag": "flagged"}));
+    assert_eq!(s.mailbox.message(arch_unread).unwrap().flag, mailcraft_model::FlagStatus::Flagged);
+
+    // Turning off contact mode returns ordinary folder pruning (Inbox drops Archive focus).
+    run(&mut s, "view.contactConversations", json!({"value": false}));
+    assert_ne!(s.sel.focus(), Some(arch_unread));
+
+    run(&mut s, "view.contactConversations", json!({"value": true}));
+    run(&mut s, "mail.selectCorrespondent", json!({"key": "arch@example.org", "messageId": arch_unread}));
+    run(&mut s, "mail.reply", json!({}));
+    assert_eq!(s.compose.as_ref().unwrap().subject, "RE: Archived topic");
+    s.compose = None;
+    let timeline = s.correspondent_timeline("arch@example.org", false, Filter::All, "");
+    assert!(std::sync::Arc::ptr_eq(&timeline, &s.correspondent_timeline("arch@example.org", false, Filter::All, "")));
+    run(&mut s, "mail.delete", json!({}));
+    assert_eq!(s.mailbox.message(arch_unread).unwrap().folder, s.mailbox.folder_of_kind(acc1, FolderKind::Deleted).unwrap());
+    assert!(!s.correspondent_timeline("arch@example.org", false, Filter::All, "").1.contains(&arch_unread));
+    run(&mut s, "view.contactConversations", json!({"value": false}));
+
+    // M3: In Unified Inbox anchored to account 1, explicit `allAccounts: false` narrows scope to account 1.
+    let inbox2 = s.mailbox.folder_of_kind(acc2, FolderKind::Inbox).unwrap();
+    add_msg(&mut s.mailbox, inbox2, ("Ada", "ada@example.org"), &[("Work", "avery@work.example")], "Only Acc2", ts(24, 8, 30), "hello", false);
+    run(&mut s, "view.allAccounts", json!({"kind": "inbox"}));
+    let default_list = run(&mut s, "mail.contactConversations", json!({}));
+    assert!(default_list["conversations"].as_array().unwrap().iter().any(|c| c["key"] == "ada@example.org"));
+    let narrowed = run(&mut s, "mail.contactConversations", json!({"allAccounts": false}));
+    assert!(!narrowed["conversations"].as_array().unwrap().iter().any(|c| c["key"] == "ada@example.org"));
+    let err = s.run("mail.correspondentMessages", &json!({"key": "ada@example.org", "allAccounts": false})).unwrap_err();
+    assert!(err.to_string().contains("no conversation"));
+    run(&mut s, "folder.select", json!({"id": inbox1}));
+
+    // M4: `Scope::Everywhere` lets grouped search find Archive-only correspondents from Inbox.
+    add_msg(
+        &mut s.mailbox,
+        archive1,
+        ("Archive Only", "archonly@example.org"),
+        &[("Avery", "avery@example.org")],
+        "Deep Archive Secret",
+        ts(24, 7, 0),
+        "secret",
+        true,
+    );
+    s.view.folder = inbox1;
+    s.view.scope = crate::Scope::Folder;
+    assert!(summaries(&s, false, Filter::All, "Secret").is_empty());
+    s.view.scope = crate::Scope::Everywhere;
+    let found = summaries(&s, false, Filter::All, "Secret");
+    assert_eq!(found.iter().map(|c| c.key.as_str()).collect::<Vec<_>>(), ["archonly@example.org"]);
+    s.view.scope = crate::Scope::Folder;
+
+    // m2: Relative dates (`received:today`) bind to session clock/week_start in both summaries and messages_for.
+    add_msg(
+        &mut s.mailbox,
+        inbox1,
+        ("Today Person", "today@example.org"),
+        &[("Avery", "avery@example.org")],
+        "Fresh Today",
+        ts(24, 8, 45),
+        "today note",
+        false,
+    );
+    let today_sum = summaries(&s, false, Filter::All, "received:today");
+    assert!(today_sum.iter().any(|c| c.key == "today@example.org"));
+    let (_, today_ids) = messages_for(&s, "today@example.org", false, Filter::All, "received:today");
+    assert_eq!(today_ids.len(), 1);
+
+    // m1: Merging `z@example.org` with empty `a@example.org`, then undoing recovers `z@example.org` selection.
+    add_msg(&mut s.mailbox, inbox1, ("Zed", "z@example.org"), &[("Avery", "avery@example.org")], "Zed Note", ts(24, 6, 0), "zed", true);
+    run(&mut s, "mail.selectCorrespondent", json!({"key": "z@example.org"}));
+    run(&mut s, "mail.mergeCorrespondents", json!({"addresses": ["z@example.org", "a@example.org"]}));
+    assert_eq!(s.view.selected_correspondent.as_deref(), Some("a@example.org"));
+    assert!(s.undo());
+    assert_eq!(s.view.selected_correspondent.as_deref(), Some("z@example.org"));
+    let restored = run(&mut s, "mail.correspondentMessages", json!({}));
+    assert_eq!(restored["total"], 1);
+    assert!(s.redo());
+    assert_eq!(s.view.selected_correspondent.as_deref(), Some("a@example.org"));
 }

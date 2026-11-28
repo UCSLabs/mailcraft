@@ -291,6 +291,9 @@ fn select(app: &mut MailApp, mut selection: Selection) {
     }
     close(app);
     if selection.window == 0 {
+        if app.session.view.contact_conversations && (app.session.sel.messages.len() != 1 || app.session.sel.focus() != Some(selection.message)) {
+            let _ = app.run("mail.select", json!({"id": selection.message}));
+        }
         selection.return_tab = Some(std::mem::replace(&mut app.ui.tab, "Attachments".into()));
     }
     app.attachment_selection = Some(selection);
@@ -466,6 +469,11 @@ pub(crate) fn poll(app: &mut MailApp, ctx: &egui::Context) {
 pub(crate) fn showing(app: &MailApp, message: Id) -> bool {
     target(app, app.hit.window(), message)
         .is_some_and(|index| app.attachment_preview.is_some() || (available(app, message, index) && !in_junk(app, message)))
+}
+
+/// Message currently displaying an attachment preview (or consent prompt) in the active window.
+pub(crate) fn active_message(app: &MailApp) -> Option<Id> {
+    app.attachment_selection.as_ref().filter(|s| s.window == app.hit.window() && showing(app, s.message)).map(|s| s.message)
 }
 
 /// Show Message is useful only while this window's preview or its consent prompt hides the body.

@@ -728,6 +728,95 @@ fn accent_swatches(app: &mut MailApp, ui: &mut Ui, t: &Tokens) {
     }
 }
 
+/// One of the conversation views' bubble colours (#1907) as a row of File › Options › Mail: its
+/// swatch opens a colour picker with a hex field (applied as it changes, through `ui.chatColors`),
+/// and Reset gives the theme's own colour back. `label` and `hex_label` are already translated.
+#[allow(clippy::too_many_arguments)]
+fn chat_color_row(
+    app: &mut MailApp,
+    ui: &mut Ui,
+    t: &Tokens,
+    kind: &'static str,
+    label: &str,
+    hex_label: &str,
+    hit: &'static str,
+    current: Option<egui::Color32>,
+    default: egui::Color32,
+) {
+    row(ui, label, |ui| {
+        let text = match current {
+            Some(c) => crate::theme::hex_string(c),
+            None => tl!("Default").to_string(),
+        };
+        let w = ui.fonts_mut(|f| f.layout_no_wrap(text.clone(), regular(12.5), t.text).size().x) + 40.0;
+        let (r, resp) = ui.allocate_exact_size(vec2(w, 24.0), Sense::click());
+        app.hit.add(hit, 0, r);
+        resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, true, label));
+        if resp.hovered() {
+            ui.painter().rect_filled(r, 4.0, t.hover);
+        }
+        let disc = pos2(r.min.x + 14.0, r.center().y);
+        ui.painter().circle_filled(disc, 7.0, current.unwrap_or(default));
+        ui.painter().circle_stroke(disc, 7.5, Stroke::new(1.0, t.border_strong));
+        ui.painter().text(pos2(r.min.x + 28.0, r.center().y), Align2::LEFT_CENTER, &text, regular(12.5), t.text);
+        if resp.has_focus() {
+            ui.painter().rect_stroke(r, 4.0, Stroke::new(2.0, t.focus_ring), egui::StrokeKind::Inside);
+        }
+        let pid = ui.scope_id().with(("chat-color-picker", kind));
+        let hex_id = pid.with("hex");
+        let sync_id = pid.with("sync");
+        let saved = current.unwrap_or(default);
+        let shown = egui::Popup::from_toggle_button_response(&resp)
+            .close_behavior(egui::PopupCloseBehavior::CloseOnClickOutside)
+            .accessible_name(label)
+            .show(|ui| {
+                ui.set_min_width(240.0);
+                // The working copy starts from the saved colour and follows it when it changes
+                // from outside while the picker is open, as the accent's picker does.
+                let stale = ui.ctx().data_mut(|d| d.get_temp::<egui::Color32>(sync_id)).is_none_or(|s| s != saved);
+                let mut color = if stale { saved } else { ui.ctx().data_mut(|d| d.get_temp::<egui::Color32>(pid)).unwrap_or(saved) };
+                let mut changed = egui::widgets::color_picker::color_picker_color32(ui, &mut color, egui::widgets::color_picker::Alpha::Opaque);
+                let mut text = if stale {
+                    crate::theme::hex_string(saved)
+                } else {
+                    ui.ctx().data_mut(|d| d.get_temp::<String>(hex_id)).unwrap_or_else(|| crate::theme::hex_string(color))
+                };
+                if changed {
+                    text = crate::theme::hex_string(color);
+                }
+                let hex = ui.add(egui::TextEdit::singleline(&mut text).desired_width(90.0).hint_text("#RRGGBB"));
+                hex.widget_info(|| egui::WidgetInfo::labeled(egui::Role::TextInput, true, hex_label));
+                if hex.changed()
+                    && let Some(c) = crate::theme::parse_hex_color(&text)
+                {
+                    color = c;
+                    changed = true;
+                }
+                ui.ctx().data_mut(|d| {
+                    d.insert_temp(pid, color);
+                    d.insert_temp(hex_id, text);
+                    d.insert_temp(sync_id, if changed { color } else { saved });
+                });
+                if changed {
+                    let _ = app.run("ui.chatColors", json!({ kind: crate::theme::hex_string(color) }));
+                }
+            });
+        if shown.is_none() {
+            ui.ctx().data_mut(|d| {
+                d.remove::<egui::Color32>(pid);
+                d.remove::<String>(hex_id);
+                d.remove::<egui::Color32>(sync_id);
+            });
+        }
+        if current.is_some() {
+            let reset = ui.button(tl!("Reset"));
+            if reset.clicked() {
+                let _ = app.run("ui.chatColors", json!({ kind: serde_json::Value::Null }));
+            }
+        }
+    });
+}
+
 fn options(app: &mut MailApp, ui: &mut Ui, t: &Tokens) {
     heading(ui, tl!("Options"), t);
     section(ui, tl!("General"), t);
@@ -918,6 +1007,30 @@ fn options(app: &mut MailApp, ui: &mut Ui, t: &Tokens) {
             }
         });
     });
+    // The bubbles of the conversation views (Group by Address and by Project, #1907).
+    let (unread_color, selected_color) = (app.ui.chat_unread_color, app.ui.chat_selected_color);
+    chat_color_row(
+        app,
+        ui,
+        t,
+        "unread",
+        tl!("Unread bubble colour"),
+        tl!("Unread bubble colour as hex"),
+        "optionChatUnreadColor",
+        unread_color,
+        t.orange,
+    );
+    chat_color_row(
+        app,
+        ui,
+        t,
+        "selected",
+        tl!("Selected bubble colour"),
+        tl!("Selected bubble colour as hex"),
+        "optionChatSelectedColor",
+        selected_color,
+        t.selection_edge,
+    );
     row(ui, tl!("Messages to download per folder"), |ui| {
         egui::ComboBox::from_id_salt("opt_sync")
             .selected_text(if prefs.sync_limit == 0 { tl!("All").to_string() } else { prefs.sync_limit.to_string() })

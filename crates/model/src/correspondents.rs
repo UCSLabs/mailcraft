@@ -29,7 +29,7 @@ pub struct CorrespondentGroup {
 }
 
 /// Normalize an email address for correspondent grouping: trimmed and lowercased, no whitespace or
-/// control characters, valid `local@domain.tld` format, at most 320 UTF-8 bytes after lowercasing.
+/// control characters, valid `local@domain` format, at most 320 UTF-8 bytes after lowercasing.
 pub fn normalize_address(raw: &str) -> Option<String> {
     let t = raw.trim();
     if t.is_empty() || t.chars().any(|c| c.is_control() || c.is_whitespace()) {
@@ -49,7 +49,7 @@ pub fn normalize_address(raw: &str) -> Option<String> {
     if local.chars().any(|c| matches!(c, '<' | '>' | '(' | ')' | ',' | ';' | ':' | '"' | '\\' | '[' | ']')) {
         return None;
     }
-    if !domain.contains('.') || domain.starts_with('.') || domain.ends_with('.') || domain.contains("..") {
+    if domain.starts_with('.') || domain.ends_with('.') || domain.contains("..") {
         return None;
     }
     let domain_ok = domain
@@ -85,7 +85,10 @@ pub fn repair_groups(groups: &mut Vec<CorrespondentGroup>) -> bool {
                 changed = true;
                 continue;
             };
-            if addr != *raw || claimed.contains(&addr) || addresses.contains(&addr) {
+            if addr != *raw {
+                changed = true;
+            }
+            if claimed.contains(&addr) || addresses.contains(&addr) {
                 changed = true;
                 continue;
             }

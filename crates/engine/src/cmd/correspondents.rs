@@ -6,7 +6,9 @@ use mailcraft_model::correspondents::normalize_address;
 use serde_json::{Value, json};
 
 use super::{bad, fail};
-use crate::correspondents::{DEFAULT_CHAT_PAGE, IdentityMap, MAX_CHAT_PAGE, is_outgoing, messages_for, own_addresses, paginate_latest, summaries};
+use crate::correspondents::{
+    DEFAULT_CHAT_PAGE, IdentityMap, MAX_CHAT_PAGE, default_all_accounts, is_outgoing, messages_for, own_addresses, paginate_latest, summaries,
+};
 use crate::session::parse_enum;
 use crate::{CmdResult, CommandSpec, Filter, Module, Session, p};
 
@@ -74,13 +76,14 @@ fn toggle_view(s: &mut Session, v: &Value) -> CmdResult {
     if s.view.contact_conversations {
         s.view.conversations = false;
         s.view.module = Module::Mail;
-        let list = summaries(s, s.view.contact_all_accounts, s.view.filter, &s.view.search);
+        let effective_all = all_accounts.unwrap_or_else(|| default_all_accounts(s));
+        let list = summaries(s, effective_all, s.view.filter, &s.view.search);
         let valid = s.view.selected_correspondent.as_deref().is_some_and(|k| list.iter().any(|c| c.key == k));
         if !valid {
             s.view.selected_correspondent = list.first().map(|c| c.key.clone());
         }
         let selected = s.view.selected_correspondent.clone();
-        sync_selection_for_correspondent(s, selected.as_deref(), s.view.contact_all_accounts);
+        sync_selection_for_correspondent(s, selected.as_deref(), effective_all);
     }
     Ok(json!({
         "value": s.view.contact_conversations,
@@ -90,7 +93,7 @@ fn toggle_view(s: &mut Session, v: &Value) -> CmdResult {
 }
 
 fn list_conversations(s: &mut Session, v: &Value) -> CmdResult {
-    let all_accounts = p::bool(v, "allAccounts").unwrap_or(s.view.contact_all_accounts);
+    let all_accounts = p::bool(v, "allAccounts").unwrap_or_else(|| default_all_accounts(s));
     let query = p::str(v, "query").unwrap_or(&s.view.search);
     let filter = match p::str(v, "filter") {
         Some(f) => parse_enum::<Filter>(f).ok_or_else(|| bad("`filter` is all, unread, flagged, attachments or toMe"))?,
@@ -112,7 +115,7 @@ fn select_correspondent(s: &mut Session, v: &Value) -> CmdResult {
     if raw.is_empty() {
         return Err(bad("`key` must not be empty"));
     }
-    let all_accounts = p::bool(v, "allAccounts").unwrap_or(s.view.contact_all_accounts);
+    let all_accounts = p::bool(v, "allAccounts").unwrap_or_else(|| default_all_accounts(s));
     let requested_msg = p::u64(v, "messageId");
     let (summary, ids) = messages_for(s, raw, all_accounts, Filter::All, "");
     let Some(summary) = summary else {
@@ -145,11 +148,11 @@ fn select_correspondent(s: &mut Session, v: &Value) -> CmdResult {
 
 fn correspondent_messages(s: &mut Session, v: &Value) -> CmdResult {
     let (key, implicit_all_accounts) = match p::str(v, "key") {
-        Some(k) if !k.trim().is_empty() => (k.trim().to_string(), s.view.contact_all_accounts),
+        Some(k) if !k.trim().is_empty() => (k.trim().to_string(), default_all_accounts(s)),
         Some(_) => return Err(bad("`key` must not be empty")),
         None => {
             let k = s.view.selected_correspondent.clone().ok_or_else(|| fail("select a correspondent first"))?;
-            let scope = s.view.selected_correspondent_all_accounts.unwrap_or(s.view.contact_all_accounts);
+            let scope = s.view.selected_correspondent_all_accounts.unwrap_or_else(|| default_all_accounts(s));
             (k, scope)
         }
     };
@@ -191,6 +194,9 @@ fn correspondent_messages(s: &mut Session, v: &Value) -> CmdResult {
 
 fn merge_correspondents(s: &mut Session, v: &Value) -> CmdResult {
     let arr = v.get("addresses").and_then(Value::as_array).ok_or_else(|| bad("`addresses` (array of strings) is required"))?;
+    if !(2..=mailcraft_model::MAX_GROUP_ADDRESSES).contains(&arr.len()) {
+        return Err(bad("expected 2 to 50 addresses"));
+    }
     let mut addresses = Vec::with_capacity(arr.len());
     for item in arr {
         let Some(addr) = item.as_str() else {

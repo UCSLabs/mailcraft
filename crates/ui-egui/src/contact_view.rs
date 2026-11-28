@@ -6,7 +6,9 @@
 
 use egui::{Align2, Color32, Rect, Sense, Stroke, Ui, pos2, vec2};
 use mailcraft_engine::Filter;
-use mailcraft_engine::correspondents::{CorrespondentSummary, messages_for, summaries};
+use mailcraft_engine::correspondents::{
+    CorrespondentSummary, IdentityMap, default_all_accounts, messages_for, own_addresses, search_all_accounts, summaries,
+};
 use mailcraft_model::Address;
 use mailcraft_model::correspondents::normalize_address;
 use serde_json::json;
@@ -39,13 +41,12 @@ impl MergeDialog {
         let all = summaries(app_session(app), app.session.view.contact_all_accounts, Filter::All, "");
         let existing_set: std::collections::HashSet<&str> = addresses.iter().map(String::as_str).collect();
         let candidates: Vec<(String, String)> = all.into_iter().filter(|c| !existing_set.contains(c.key.as_str())).map(|c| (c.key, c.name)).collect();
-        let selected_candidate = candidates.first().map(|(k, _)| k.clone());
         MergeDialog {
             primary_key: key.to_string(),
             existing_addresses: addresses.to_vec(),
             manual_addresses: manual_address_set(&app.session.mailbox),
             candidates,
-            selected_candidate,
+            selected_candidate: None,
             custom_address: String::new(),
             custom_name: name.to_string(),
             error: String::new(),
@@ -96,12 +97,18 @@ impl MergeDialog {
                 Err(err) => self.error = app.refusal_said(&err),
                 Ok(val) => {
                     if val.get("changed").and_then(|v| v.as_bool()).unwrap_or(false) {
-                        self.existing_addresses.retain(|a| a != &addr);
+                        let own = own_addresses(&app.session.mailbox);
+                        let id_map = IdentityMap::build(&app.session.mailbox, &own);
+                        let anchor = self.existing_addresses.iter().find(|a| *a != &addr).cloned().unwrap_or_else(|| self.primary_key.clone());
+                        let resolved = normalize_address(&anchor).map(|n| id_map.resolve(&n)).unwrap_or(anchor);
+                        self.primary_key = resolved;
+                        self.existing_addresses = id_map.addresses_of(&self.primary_key);
                         self.manual_addresses = manual_address_set(&app.session.mailbox);
-                        if let Some(first) = self.existing_addresses.first() {
-                            self.primary_key = first.clone();
+                        if self.existing_addresses.contains(&addr) {
+                            self.error = tl!("Manual merge removed, but this address is still linked by a Contact card.").to_string();
+                        } else {
+                            self.error.clear();
                         }
-                        self.error.clear();
                     } else {
                         self.error = tl!("This address is linked by a Contact card rather than a manual merge.").to_string();
                     }
@@ -132,8 +139,8 @@ impl MergeDialog {
         }
 
         ui.horizontal(|ui| {
-            ui.label(egui::RichText::new(tl!("Or add email address:")).font(regular(12.5)).color(t.text));
-            ui.add(egui::TextEdit::singleline(&mut self.custom_address).hint_text("name@example.com").desired_width(240.0));
+            let addr_lbl = ui.label(egui::RichText::new(tl!("Or add email address:")).font(regular(12.5)).color(t.text));
+            ui.add(egui::TextEdit::singleline(&mut self.custom_address).hint_text("name@example.com").desired_width(240.0)).labelled_by(addr_lbl.id);
         });
 
         if !self.error.is_empty() {
@@ -177,21 +184,31 @@ pub fn show_list(app: &mut MailApp, ui: &mut Ui) {
     let t = Tokens::get(ui.ctx());
     ui.spacing_mut().item_spacing = vec2(0.0, 0.0);
 
-    let all_accounts = app.session.view.contact_all_accounts;
-    let list = summaries(&app.session, all_accounts, app.session.view.filter, &app.session.view.search);
+    let all_accounts = default_all_accounts(&app.session);
+    let list = app.session.correspondent_rows(all_accounts, app.session.view.filter, &app.session.view.search);
 
-    // Ensure a valid correspondent and aligned message selection when available; clear stale selection.
-    if list.is_empty() {
+    // Preserve the selected conversation while it still exists in the current folder/search scope
+    // (for example, opening its last unread message in the Unread tab). Clear or switch only
+    // when it disappears from the active scope.
+    let keep_selected = app.session.view.filter != Filter::All
+        && app
+            .session
+            .view
+            .selected_correspondent
+            .as_deref()
+            .is_some_and(|k| app.session.correspondent_rows(all_accounts, Filter::All, &app.session.view.search).iter().any(|c| c.key == k));
+    if list.is_empty() && !keep_selected {
         app.session.view.selected_correspondent = None;
         app.session.view.selected_correspondent_all_accounts = None;
         app.session.sel.clear_messages();
-    } else {
+    } else if !keep_selected {
         let valid = app.session.view.selected_correspondent.as_deref().is_some_and(|k| list.iter().any(|c| c.key == k));
         if !valid {
             let next_key = list[0].key.clone();
-            let (_, ids) = messages_for(&app.session, &next_key, all_accounts, Filter::All, "");
+            let effective_all = search_all_accounts(&app.session, all_accounts, &app.session.view.search);
+            let (_, ids) = messages_for(&app.session, &next_key, effective_all, Filter::All, "");
             app.session.view.selected_correspondent = Some(next_key);
-            app.session.view.selected_correspondent_all_accounts = Some(all_accounts);
+            app.session.view.selected_correspondent_all_accounts = Some(effective_all);
             if app.session.sel.focus().is_none_or(|fid| !ids.contains(&fid)) {
                 if let Some(&latest) = ids.last() {
                     app.session.sel.messages = vec![latest];
@@ -396,7 +413,8 @@ fn correspondent_row(app: &mut MailApp, ui: &mut Ui, item: &CorrespondentSummary
     paint_clipped(ui.painter(), pos2(text_x, rect.min.y + 46.0), snippet_room, &snippet, regular(12.0), t.text_dim);
 
     if resp.clicked() {
-        let _ = app.run("mail.selectCorrespondent", json!({"key": item.key}));
+        let effective_all = search_all_accounts(&app.session, default_all_accounts(&app.session), &app.session.view.search);
+        let _ = app.run("mail.selectCorrespondent", json!({"key": item.key, "allAccounts": effective_all}));
         app.chat_pane.scroll_to_bottom = true;
     }
 
@@ -437,11 +455,11 @@ fn correspondent_row(app: &mut MailApp, ui: &mut Ui, item: &CorrespondentSummary
 /// Render the Contact-based Chat Reading Pane in `CentralPanel`.
 pub fn show_reading(app: &mut MailApp, ui: &mut Ui) {
     let t = Tokens::get(ui.ctx());
-    let key = app.session.view.selected_correspondent.clone().or_else(|| {
-        summaries(&app.session, app.session.view.contact_all_accounts, app.session.view.filter, &app.session.view.search)
-            .first()
-            .map(|c| c.key.clone())
-    });
+    let default_all = default_all_accounts(&app.session);
+    let key =
+        app.session.view.selected_correspondent.clone().or_else(|| {
+            app.session.correspondent_rows(default_all, app.session.view.filter, &app.session.view.search).first().map(|c| c.key.clone())
+        });
 
     let Some(key) = key else {
         let r = ui.available_rect_before_wrap();
@@ -462,10 +480,15 @@ pub fn show_reading(app: &mut MailApp, ui: &mut Ui) {
         return;
     };
 
-    let all_accounts = app.session.view.contact_all_accounts;
+    let all_accounts = app
+        .session
+        .view
+        .selected_correspondent_all_accounts
+        .unwrap_or_else(|| search_all_accounts(&app.session, default_all, &app.session.view.search));
     let in_filter = app.chat_pane.filter;
     let in_query = app.chat_pane.search_query.clone();
-    let (summary, message_ids) = messages_for(&app.session, &key, all_accounts, in_filter, &in_query);
+    let timeline = app.session.correspondent_timeline(&key, all_accounts, in_filter, &in_query);
+    let (summary, message_ids) = timeline.as_ref();
     let Some(summary) = summary else {
         let r = ui.available_rect_before_wrap();
         ui.painter().text(
@@ -476,6 +499,52 @@ pub fn show_reading(app: &mut MailApp, ui: &mut Ui) {
             t.text_dim,
         );
         return;
+    };
+
+    // If an attachment preview was requested for a message in this conversation, render it here
+    // using the shared attachment preview host instead of hiding the preview behind the timeline.
+    if let Some(preview_id) = crate::attachment_preview::active_message(app) {
+        let in_conv = message_ids.contains(&preview_id)
+            || app.session.correspondent_timeline(&summary.key, all_accounts, Filter::All, "").1.contains(&preview_id);
+        if in_conv && let Some(pm) = app.session.mailbox.messages.get(&preview_id).cloned() {
+            crate::attachment_preview::show(app, ui, &pm);
+            return;
+        }
+        crate::attachment_preview::close(app);
+    }
+
+    // When a global Mail search matched specific messages (such as an older subject outside the
+    // default 50-message tail), surface those matching messages first with a one-click option to
+    // view the full conversation; if the search matched only the correspondent name/email, show full history.
+    let global_query = app.session.view.search.trim().to_string();
+    let force_full = app.chat_pane.show_full_history_for.as_ref().is_some_and(|(k, q)| k == &summary.key && q == &global_query);
+    let hits;
+    let timeline_ids: &[mailcraft_model::Id] = if !global_query.is_empty() && in_query.trim().is_empty() && !force_full {
+        hits = app.session.correspondent_timeline(&summary.key, all_accounts, in_filter, &global_query);
+        let hit_ids = &hits.1;
+        if hit_ids.is_empty() {
+            message_ids
+        } else {
+            let shown_ids = hit_ids;
+            let banner = egui::Frame::NONE.fill(t.selection).inner_margin(egui::Margin { left: 16, right: 12, top: 6, bottom: 6 }).show(ui, |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.spacing_mut().item_spacing = vec2(8.0, 4.0);
+                    ui.label(
+                        egui::RichText::new(tln!(shown_ids.len(), "Showing {n} message matching search", "Showing {n} messages matching search"))
+                            .font(regular(12.0))
+                            .color(t.text),
+                    );
+                    if ui.link(egui::RichText::new(tl!("Show full conversation")).font(semibold(12.0))).clicked() {
+                        app.chat_pane.show_full_history_for = Some((summary.key.clone(), global_query.clone()));
+                    }
+                });
+            });
+            let br = banner.response.rect;
+            ui.painter().line_segment([pos2(br.min.x, br.max.y), pos2(br.max.x, br.max.y)], Stroke::new(1.0, t.border_faint));
+            shown_ids
+        }
+    } else {
+        message_ids
     };
 
     let avatar_addr = Address::new(&summary.name, &summary.primary_email);
@@ -492,17 +561,18 @@ pub fn show_reading(app: &mut MailApp, ui: &mut Ui) {
         unread_count: summary.unread_count,
     };
 
-    let (_, unread_ids) = messages_for(&app.session, &summary.key, all_accounts, Filter::Unread, "");
+    let has_unread = summary.unread_count > 0;
     let sum_key = summary.key.clone();
     let sum_name = summary.name.clone();
     let sum_email = summary.primary_email.clone();
     let sum_addrs = summary.addresses.clone();
 
-    show_timeline(app, ui, header, &message_ids, move |app, ui| {
-        if !unread_ids.is_empty() {
+    show_timeline(app, ui, header, timeline_ids, move |app, ui| {
+        if has_unread {
             let mark_btn = crate::widgets::icon_text_button(ui, "markAllRead", tl!("Mark All Read"), true);
             app.hit.add("contactMarkAllRead", 0, mark_btn.rect);
             if mark_btn.clicked() {
+                let (_, unread_ids) = messages_for(&app.session, &sum_key, all_accounts, Filter::Unread, "");
                 let _ = app.run("mail.markRead", json!({"ids": unread_ids}));
             }
         }

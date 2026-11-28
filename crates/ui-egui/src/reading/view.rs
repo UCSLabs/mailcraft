@@ -326,7 +326,9 @@ impl Store {
                 let (kept, room) = match place {
                     Place::Pane => (self.entries.iter().filter(|e| e.place == Place::Pane).count(), KEPT),
                     Place::Chat(_) => {
-                        self.entries.retain(|e| !matches!(e.place, Place::Chat(_)) || !e.laid.done || e.used.saturating_add(8) >= frame);
+                        // Drop any chat entry (complete or abandoned incomplete) not touched in the last 8 frames;
+                        // active on-screen entries refresh `used = frame` each pass so their progress stays intact.
+                        self.entries.retain(|e| !matches!(e.place, Place::Chat(_)) || e.used.saturating_add(8) >= frame);
                         (self.entries.iter().filter(|e| matches!(e.place, Place::Chat(_))).count(), KEPT_IN_CHAT)
                     }
                     Place::Window(_) | Place::Quote | Place::Preview => {
@@ -349,6 +351,7 @@ impl Store {
                         .or_else(|| {
                             self.entries.iter().enumerate().filter(|(_, e)| of_a_kind(e) && (!chat || e.laid.done)).min_by_key(|(_, e)| e.used)
                         })
+                        .or_else(|| self.entries.iter().enumerate().filter(|(_, e)| of_a_kind(e) && e.used < frame).min_by_key(|(_, e)| e.used))
                         .map(|(i, _)| i)
                 {
                     self.entries.swap_remove(oldest);
@@ -476,6 +479,31 @@ pub fn doc_shown(ctx: &egui::Context, message: &Arc<Message>, place: Place, can_
     }
 }
 
+/// Cached document fitted to the exact quantized `wrap_width` and `dark` theme used by
+/// [`show_at`], so empty-body checks and remote-picture banners see the same document.
+pub(crate) fn doc_fitted(ctx: &egui::Context, message: &Arc<Message>, place: Place, can_download: bool, wrap_width: f32, dark: bool) -> Arc<Doc> {
+    let width = ((wrap_width.min(super::MAX_TEXT_WIDTH) / WIDTH_STEP).floor() * WIDTH_STEP).max(1.0);
+    let env = Env::for_pane(width, dark);
+    let store = Store::of(ctx);
+    let mut store = store.lock().unwrap_or_else(|e| e.into_inner());
+    let Some(entry) = store.entry(message, place, images::frame(ctx), can_download, env) else {
+        return Arc::new(Doc::of_in(message, can_download, env));
+    };
+    let made = entry.fit(message, can_download, env);
+    if entry.doc.blocks.is_empty() {
+        // Empty-body entries skip layout; mark complete so normal age/capacity eviction applies.
+        entry.laid.done = true;
+    }
+    let doc = entry.doc.clone();
+    #[cfg(test)]
+    {
+        store.made += made;
+    }
+    #[cfg(not(test))]
+    let _ = made;
+    doc
+}
+
 /// Measured layout dimensions and whether a link inside the body was clicked (#1907).
 pub(crate) struct ChatPainted {
     pub size: egui::Vec2,
@@ -487,16 +515,33 @@ pub(crate) struct ChatPainted {
 /// it runs. Pictures from the web are shown when `access` says the owner asked for them, as far
 /// as they have come.
 pub fn show(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Place, access: Access) {
-    let _ = show_inner(app, ui, message, place, access, None);
+    let _ = show_inner(app, ui, message, place, access, None, None);
 }
 
-/// Same as [`show`], laying text out at `wrap_width` and returning the content's measured size
-/// plus whether a body link was activated this frame.
-pub(crate) fn show_at(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Place, access: Access, wrap_width: f32) -> ChatPainted {
-    show_inner(app, ui, message, place, access, Some(wrap_width))
+/// Same as [`show`], laying text out at `wrap_width`, capping the allocated vertical height to
+/// `max_alloc_height` when collapsed (while still reporting full laid height in [`ChatPainted`]),
+/// and returning measured size plus whether a body link was activated this frame.
+pub(crate) fn show_at(
+    app: &mut MailApp,
+    ui: &mut Ui,
+    message: &Arc<Message>,
+    place: Place,
+    access: Access,
+    wrap_width: f32,
+    max_alloc_height: Option<f32>,
+) -> ChatPainted {
+    show_inner(app, ui, message, place, access, Some(wrap_width), max_alloc_height)
 }
 
-fn show_inner(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Place, access: Access, wrap_width: Option<f32>) -> ChatPainted {
+fn show_inner(
+    app: &mut MailApp,
+    ui: &mut Ui,
+    message: &Arc<Message>,
+    place: Place,
+    access: Access,
+    wrap_width: Option<f32>,
+    max_alloc_height: Option<f32>,
+) -> ChatPainted {
     let ctx = ui.ctx().clone();
     let light = on_light_page(app, place);
     let t = if light { Tokens::light() } else { Tokens::get(&ctx) };
@@ -540,6 +585,7 @@ fn show_inner(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Pla
         app.session.read_at(message.id, here, env, entry.doc.from_text && message.body.html.is_some());
     }
     if entry.doc.blocks.is_empty() {
+        entry.laid.done = true;
         if !matches!(place, Place::Chat(_)) {
             ui.label(egui::RichText::new(tl!("This message has no text.")).color(t.text_dim));
         }
@@ -570,9 +616,11 @@ fn show_inner(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Pla
     };
     if entry.key == Some(key) {
         entry.next = None;
-    } else if entry.laid.done && entry.key.is_some_and(|old| Key { remote: key.remote, fonts: key.fonts, ..old } == key) {
-        // Only the pictures or the message's fonts changed: what is shown stays until the new
-        // layout is whole.
+    } else if entry.laid.done
+        && entry.key.is_some_and(|old| (old.remote.is_none() || key.remote.is_some()) && Key { remote: key.remote, fonts: key.fonts, ..old } == key)
+    {
+        // Only the pictures (with permission still granted) or the message's fonts changed: what is
+        // shown stays until the new layout is whole. Permission revocation invalidates immediately.
         if entry.next.as_ref().is_none_or(|(next, _)| *next != key) {
             entry.next = Some((
                 key,
@@ -625,7 +673,7 @@ fn show_inner(app: &mut MailApp, ui: &mut Ui, message: &Arc<Message>, place: Pla
         },
         entry.laid.size.y,
     );
-    let (origin, asked, link_clicked) = paint_in(ui, &entry.laid, &t, access, state, &flagged, chat);
+    let (origin, asked, link_clicked) = paint_in(ui, &entry.laid, &t, access, state, &flagged, chat, max_alloc_height);
     #[cfg(test)]
     {
         entry.origin = origin;
@@ -750,6 +798,12 @@ pub fn layouts_begun(ctx: &egui::Context) -> usize {
     Store::of(ctx).lock().unwrap().begun
 }
 
+/// Whether the cached layout for `message` at `place` contains at least one rendered picture item, for tests.
+#[cfg(test)]
+pub fn has_picture_item(ctx: &egui::Context, place: Place, message: mailcraft_model::Id) -> bool {
+    with_laid(ctx, place, message, |laid| laid.items.iter().any(|item| matches!(item.kind, ItemKind::Picture(_)))).unwrap_or(false)
+}
+
 /// What the pointer is over that leads somewhere, or that has something to say.
 struct Hover {
     /// Where a click leads.
@@ -763,6 +817,7 @@ struct Hover {
 /// layout is shown in). Where its top left is, and what its menu was asked to do.
 /// `flagged` are the addresses of the links that go somewhere other than their text says: each
 /// wears a frame, and its tip says so.
+#[allow(clippy::too_many_arguments)]
 fn paint_in(
     ui: &mut Ui,
     laid: &Laid,
@@ -771,13 +826,15 @@ fn paint_in(
     mut state: Option<&mut select::PlaceState>,
     flagged: &[String],
     shrink_to_content: bool,
+    max_alloc_height: Option<f32>,
 ) -> (egui::Pos2, Option<Action>, bool) {
     let alloc_w = if shrink_to_content && laid.done && laid.content_right > 0.0 {
         laid.content_right.clamp(1.0, super::MAX_TEXT_WIDTH)
     } else {
         laid.size.x.max(1.0)
     };
-    let (area, _) = ui.allocate_exact_size(vec2(alloc_w, laid.size.y.max(1.0)), Sense::hover());
+    let alloc_h = max_alloc_height.map_or(laid.size.y, |cap| laid.size.y.min(cap)).max(1.0);
+    let (area, _) = ui.allocate_exact_size(vec2(alloc_w, alloc_h), Sense::hover());
     let origin = area.min.to_vec2();
     let clip = ui.clip_rect();
     let ctx = ui.ctx().clone();

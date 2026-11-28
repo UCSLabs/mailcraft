@@ -2787,6 +2787,11 @@ msgstr ""
 msgid "Chart"
 msgstr ""
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr ""
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 msgid ""
@@ -3841,7 +3846,7 @@ msgid "Decrease Indent"
 msgstr ""
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 msgid "Default"
 msgstr ""
 
@@ -7827,6 +7832,11 @@ msgstr ""
 msgid "Manage Task"
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr ""
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 msgid "Many organisations let only an administrator approve a new program. Nothing is wrong with your account or your phone."
@@ -11773,6 +11783,11 @@ msgstr ""
 msgid "Resend Message"
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+msgid "Reset"
+msgstr ""
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 msgid ""
@@ -12575,6 +12590,16 @@ msgstr ""
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+msgid "Selected bubble colour"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+msgid "Selected bubble colour as hex"
+msgstr ""
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 msgid "Send"
@@ -13273,6 +13298,11 @@ msgstr ""
 msgid "Show details"
 msgstr ""
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+msgid "Show full conversation"
+msgstr ""
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 msgid "Show in Calendar"
@@ -13402,6 +13432,13 @@ msgstr ""
 #: crates/ui-egui/src/backstage.rs
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr ""
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] ""
+msgstr[1] ""
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -17437,6 +17474,16 @@ msgid "Unread"
 msgstr ""
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+msgid "Unread bubble colour"
+msgstr ""
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+msgid "Unread bubble colour as hex"
+msgstr ""
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 msgid "Unread messages in the folder itself"
 msgstr ""
@@ -19109,6 +19156,11 @@ msgstr ""
 #. interface
 #: crates/ui-egui/src/reading/remote.rs
 msgid "everybody at @{domain}"
+msgstr ""
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
 msgstr ""
 
 #. what a command says

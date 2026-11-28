@@ -3350,6 +3350,11 @@ msgstr "字符（带空格）"
 msgid "Chart"
 msgstr "图表"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "聊天气泡颜色"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4619,7 +4624,7 @@ msgid "Decrease Indent"
 msgstr "减少缩进"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Default"
 msgstr "默认"
@@ -7040,10 +7045,13 @@ msgstr "组"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"根据地址\n"
+"聚合"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -9411,6 +9419,12 @@ msgstr "管理规则..."
 #, fuzzy
 msgid "Manage Task"
 msgstr "管理任务"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "已移除手动合并，但该地址仍通过联系人卡片关联。"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -14179,6 +14193,12 @@ msgstr "必填"
 msgid "Resend Message"
 msgstr "重新发送邮件"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "重置"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -15152,6 +15172,18 @@ msgstr "请先选择邮件，再预览其附件。"
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "一次最多选择 {n} 封邮件来退订。"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "选中气泡边框颜色"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "选中气泡边框颜色（十六进制）"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -15992,6 +16024,12 @@ msgstr "显示已完成的任务"
 msgid "Show details"
 msgstr "显示详细信息"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "显示完整会话"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -16147,6 +16185,13 @@ msgstr "显示用户名、显示名称或真实姓名"
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "在月视图和日期导航器中显示周数"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "显示 {n} 条匹配搜索的邮件"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -20983,6 +21028,18 @@ msgid "Unread"
 msgstr "未读"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "未读气泡边框颜色"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "未读气泡边框颜色（十六进制）"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -22989,6 +23046,11 @@ msgstr "输入用户名以登录"
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "@{domain} 的所有人"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "请输入 2 至 50 个地址"
 
 #. what a command says
 #: crates/model/src/rich/body.rs

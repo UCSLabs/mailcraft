@@ -3342,6 +3342,11 @@ msgstr "სიმბოლო (შორისებით)"
 msgid "Chart"
 msgstr "დიაგრამა"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "ჩატის ბუშტების ფერები"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4607,7 +4612,7 @@ msgid "Decrease Indent"
 msgstr "შეწევის შემცირება"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Default"
 msgstr "ნაგულისხმევი"
@@ -7034,10 +7039,13 @@ msgstr "ჯგუფი"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"მისამართით\n"
+"დაჯგუფება"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -9395,6 +9403,12 @@ msgstr "წესების მართვა…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "დავალების მართვა"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "ხელით გაერთიანება წაიშალა, მაგრამ ეს მისამართი კვლავ დაკავშირებულია კონტაქტის ბარათით."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -14138,6 +14152,12 @@ msgstr "სავალდებულო"
 msgid "Resend Message"
 msgstr "წერილის ხელახლა გაგზავნა"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "გადაყენება"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -15105,6 +15125,18 @@ msgstr "დანართის წინასწარ ნახვამდ�
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "გამოწერის გასაუქმებლად მონიშნეთ არაუმეტეს {n} წერილი."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "არჩეული ბუშტის ფერი"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "არჩეული ბუშტის ფერი ჰექსში"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -15939,6 +15971,12 @@ msgstr "შესრულებული დავალებების ჩ�
 msgid "Show details"
 msgstr "დეტალების ჩვენება"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "სრული საუბრის ჩვენება"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -16093,6 +16131,14 @@ msgstr "მომხმარებლის სახელების, სა
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "კვირის ნომრების ჩვენება თვის ხედში და თარიღის ნავიგატორში"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "ნაჩვენებია ძებნის შესაბამისი {n} შეტყობინება"
+msgstr[1] "ნაჩვენებია ძებნის შესაბამისი {n} შეტყობინება"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -20931,6 +20977,18 @@ msgid "Unread"
 msgstr "წაუკითხავი"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "წაუკითხავი ბუშტის ფერი"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "წაუკითხავი ბუშტის ფერი ჰექსში"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -22935,6 +22993,11 @@ msgstr "შესასვლელად შეიყვანეთ მომ�
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "ყველა დომენიდან @{domain}"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "საჭიროა 2-დან 50-მდე მისამართი"
 
 #. what a command says
 #: crates/model/src/rich/body.rs

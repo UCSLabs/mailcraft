@@ -3179,6 +3179,11 @@ msgstr "Zeichen (mit Leerzeichen)"
 msgid "Chart"
 msgstr "Diagramm"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "Farben der Nachrichtenblasen"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4386,7 +4391,7 @@ msgid "Decrease Indent"
 msgstr "Einzug verkleinern"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 msgid "Default"
 msgstr "Standard"
 
@@ -6649,10 +6654,13 @@ msgstr "Gruppe"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"Nach Adresse\n"
+"gruppieren"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -8857,6 +8865,12 @@ msgstr "Regeln verwalten…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "Aufgabe verwalten"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "Manuelle Zusammenführung entfernt, aber diese Adresse ist weiterhin über eine Kontaktkarte verknüpft."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -13345,6 +13359,12 @@ msgstr "Erforderlich"
 msgid "Resend Message"
 msgstr "Nachricht erneut senden"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "Zurücksetzen"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -14280,6 +14300,18 @@ msgstr "Wählen Sie die Nachricht aus, bevor Sie die Anlage in der Vorschau anze
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "Wählen Sie höchstens {n} Nachrichten zum Abmelden aus."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "Farbe ausgewählter Blasen"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "Farbe ausgewählter Blasen als Hex"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -15085,6 +15117,12 @@ msgstr "Erledigte Aufgaben anzeigen"
 msgid "Show details"
 msgstr "Details anzeigen"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "Gesamte Unterhaltung anzeigen"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -15235,6 +15273,14 @@ msgstr "Benutzernamen, Anzeigenamen oder echte Namen anzeigen"
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "Kalenderwochen in der Monatsansicht und im Datumsnavigator anzeigen"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "{n} passende Nachricht angezeigt"
+msgstr[1] "{n} passende Nachrichten angezeigt"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -19803,6 +19849,18 @@ msgid "Unread"
 msgstr "Ungelesen"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "Farbe ungelesener Blasen"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "Farbe ungelesener Blasen als Hex"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -21709,6 +21767,11 @@ msgstr "Geben Sie einen Benutzernamen ein, um sich anzumelden"
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "alle bei @{domain}"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "2 bis 50 Adressen erwartet"
 
 #. what a command says
 #: crates/model/src/rich/body.rs

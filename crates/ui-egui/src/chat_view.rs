@@ -11,7 +11,7 @@ use mailcraft_engine::correspondents::{DEFAULT_CHAT_PAGE, is_outgoing, own_addre
 use mailcraft_engine::list::when;
 use mailcraft_model::{Address, FlagStatus, FolderKind, Id, Message, format_list_capped};
 use serde_json::json;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 use crate::theme::{Tokens, regular, semibold};
@@ -19,6 +19,10 @@ use crate::{MailApp, icons};
 
 /// Maximum message bodies loaded from disk per frame while rendering a chat timeline.
 const MAX_LOADS_PER_FRAME: usize = 4;
+/// Vertical margin outside the viewport within which bubbles are kept laid out cleanly.
+const VIEWPORT_MARGIN: f32 = 400.0;
+/// Fallback height estimate for an unmeasured off-screen bubble during viewport virtualization.
+const ESTIMATED_BUBBLE_H: f32 = 140.0;
 /// Collapsed height range for tall HTML bubbles (targeted at up to half the chat viewport).
 const MIN_COLLAPSED_H: f32 = 240.0;
 const MAX_COLLAPSED_H: f32 = 460.0;
@@ -44,6 +48,14 @@ pub struct ChatPaneState {
     pub filter: Filter,
     pub expanded: HashSet<Id>,
     pub scroll_to_bottom: bool,
+    /// First message of the previous page, kept in view after prepending older mail.
+    pub prepend_anchor: Option<Id>,
+    /// Measured outer height per rendered bubble, used to virtualize off-screen bubbles without
+    /// evicting or re-laying out 100+ message pages every frame (#1907).
+    pub bubble_heights: HashMap<Id, f32>,
+    pub last_avail_w: f32,
+    /// When a global mail search matched specific messages, allow switching to the full history.
+    pub show_full_history_for: Option<(String, String)>,
 }
 
 impl ChatPaneState {
@@ -52,6 +64,9 @@ impl ChatPaneState {
             self.active_key = key.to_string();
             self.shown_limit = DEFAULT_CHAT_PAGE;
             self.expanded.clear();
+            self.bubble_heights.clear();
+            self.show_full_history_for = None;
+            self.prepend_anchor = None;
             self.scroll_to_bottom = true;
         }
         if self.shown_limit == 0 {
@@ -176,10 +191,11 @@ pub fn show_timeline(app: &mut MailApp, ui: &mut Ui, header: ChatHeader<'_>, mes
 
     let mut any_bubble_or_control_hit = false;
     ui.scope_builder(egui::UiBuilder::new().max_rect(room), |ui| {
-        egui::ScrollArea::vertical().id_salt(("chat_timeline", header.key)).auto_shrink([false, false]).show(ui, |ui| {
+        egui::ScrollArea::vertical().id_salt(("chat_timeline", header.key)).auto_shrink([false, false]).show_viewport(ui, |ui, viewport| {
             egui::Frame::NONE.inner_margin(egui::Margin { left: 16, right: 16, top: 12, bottom: 16 }).show(ui, |ui| {
                 ui.spacing_mut().item_spacing = vec2(0.0, 10.0);
 
+                let anchor = app.chat_pane.prepend_anchor.take();
                 if older_remaining > 0 {
                     ui.vertical_centered(|ui| {
                         let label = tln!(older_remaining, "Load earlier messages ({n} more)", "Load earlier messages ({n} more)");
@@ -188,6 +204,7 @@ pub fn show_timeline(app: &mut MailApp, ui: &mut Ui, header: ChatHeader<'_>, mes
                             any_bubble_or_control_hit = true;
                         }
                         if btn.clicked() {
+                            app.chat_pane.prepend_anchor = visible_ids.first().copied();
                             app.chat_pane.shown_limit = app.chat_pane.shown_limit.saturating_add(DEFAULT_CHAT_PAGE);
                         }
                     });
@@ -204,22 +221,49 @@ pub fn show_timeline(app: &mut MailApp, ui: &mut Ui, header: ChatHeader<'_>, mes
                 let mut last_date = None;
                 let mut loads_left = MAX_LOADS_PER_FRAME;
                 let avail_w = ui.available_width().max(260.0);
+                if (avail_w - app.chat_pane.last_avail_w).abs() > 4.0 {
+                    app.chat_pane.bubble_heights.clear();
+                    app.chat_pane.last_avail_w = avail_w;
+                }
+                let content_top = ui.cursor().min.y;
+                let want_bottom = app.chat_pane.scroll_to_bottom;
 
-                for &id in visible_ids {
-                    if loads_left > 0 && app.session.needs_load_for_display(id) {
-                        let _ = app.session.load_for_display(id);
-                        loads_left = loads_left.saturating_sub(1);
-                    }
+                for (idx, &id) in visible_ids.iter().enumerate() {
                     let Some(m) = app.session.mailbox.messages.get(&id).cloned() else { continue };
                     let local_dt = app.session.local(when(&m));
                     if last_date != Some(local_dt.date) {
                         date_separator(ui, &crate::dates::medium(local_dt.date), &t);
                         last_date = Some(local_dt.date);
                     }
+                    if anchor == Some(id) {
+                        ui.scroll_to_cursor(Some(egui::Align::TOP));
+                    }
+                    let rel_y = ui.cursor().min.y - content_top;
+                    let est_h = app.chat_pane.bubble_heights.get(&id).copied().unwrap_or(ESTIMATED_BUBBLE_H);
+                    let on_screen = rel_y + est_h >= viewport.min.y && rel_y <= viewport.max.y;
+                    let near_viewport = rel_y + est_h >= viewport.min.y - VIEWPORT_MARGIN && rel_y <= viewport.max.y + VIEWPORT_MARGIN;
+                    let tail_for_bottom = want_bottom && idx >= visible_ids.len().saturating_sub(12);
+                    if !near_viewport && !tail_for_bottom {
+                        ui.allocate_space(vec2(avail_w, est_h));
+                        continue;
+                    }
+
+                    if loads_left > 0 && app.session.needs_load_for_display(id) {
+                        let _ = app.session.load_for_display(id);
+                        loads_left = loads_left.saturating_sub(1);
+                    }
+                    let Some(m) = app.session.mailbox.messages.get(&id).cloned() else { continue };
+                    // Mark non-inline parts drawn by the HTML before listing attachments so the very
+                    // first frame omits already-inlined body images.
+                    app.session.note_drawn(id, &m);
+                    let m = app.session.mailbox.messages.get(&id).cloned().unwrap_or(m);
                     let outgoing = is_outgoing(&app.session.mailbox, &m, &own);
                     let focused = app.session.sel.focus() == Some(m.id);
                     let time_str = crate::dates::clock(local_dt, app.session.prefs.twelve_hour);
-                    if message_bubble(app, ui, header.key, &m, outgoing, focused, &time_str, avail_w, collapsed_max_h, &t) {
+                    let (hit, measured_h) =
+                        message_bubble(app, ui, header.key, &m, outgoing, focused, &time_str, avail_w, collapsed_max_h, on_screen, &t);
+                    app.chat_pane.bubble_heights.insert(id, measured_h);
+                    if hit {
                         any_bubble_or_control_hit = true;
                     }
                 }
@@ -253,6 +297,37 @@ fn date_separator(ui: &mut Ui, label: &str, t: &Tokens) {
     });
 }
 
+/// Card background fill and border stroke for a chat bubble, keeping unread state clearly
+/// distinct from selection focus across light and dark palettes.
+pub(crate) fn bubble_style(
+    outgoing: bool,
+    unread: bool,
+    focused: bool,
+    unread_custom: Option<Color32>,
+    selected_custom: Option<Color32>,
+    t: &Tokens,
+) -> (Color32, Stroke) {
+    let unread_base = unread_custom.unwrap_or(t.orange);
+    let selected_base = selected_custom.unwrap_or(t.selection_edge);
+    if focused {
+        let fill = match selected_custom {
+            Some(c) => {
+                let base = if outgoing { t.selection_pill } else { t.panel };
+                base.lerp_to_gamma(c, if t.dark { 0.16 } else { 0.12 })
+            }
+            None if outgoing => t.selection_pill.lerp_to_gamma(t.accent, 0.10),
+            None => t.selection,
+        };
+        (fill, Stroke::new(1.8, selected_base))
+    } else if !outgoing && unread {
+        let fill = t.panel.lerp_to_gamma(unread_base, if t.dark { 0.08 } else { 0.06 });
+        (fill, Stroke::new(1.4, unread_base))
+    } else {
+        let fill = if outgoing { t.selection_pill } else { t.panel };
+        (fill, Stroke::new(1.0, t.border))
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
 fn message_bubble(
     app: &mut MailApp,
@@ -264,19 +339,14 @@ fn message_bubble(
     time_str: &str,
     avail_w: f32,
     collapsed_max_h: f32,
+    on_screen: bool,
     t: &Tokens,
-) -> bool {
+) -> (bool, f32) {
     // Keep side breathing room on the opposite edge so bubbles clearly sit left vs. right, while
     // expanding up to content width for rich HTML emails and tables.
     let max_bubble_w = (avail_w - 84.0).max(220.0);
-    let card_fill = if outgoing { t.selection_pill } else { t.panel };
-    let card_stroke = if !outgoing && !m.read {
-        Stroke::new(1.4, t.accent)
-    } else if focused {
-        Stroke::new(1.3, t.selection_edge)
-    } else {
-        Stroke::new(1.0, t.border)
-    };
+    let unread_color = app.ui.chat_unread_color.unwrap_or(t.orange);
+    let (card_fill, card_stroke) = bubble_style(outgoing, !m.read, focused, app.ui.chat_unread_color, app.ui.chat_selected_color, t);
     let mut action_clicked = false;
     let bubble_rect = if outgoing {
         let wrap_width = (max_bubble_w - 24.0).max(180.0);
@@ -284,7 +354,7 @@ fn message_bubble(
             ui.set_max_width(avail_w);
             egui::Frame::NONE.fill(card_fill).stroke(card_stroke).corner_radius(10.0).inner_margin(egui::Margin::symmetric(12, 9)).show(ui, |ui| {
                 ui.set_max_width(max_bubble_w);
-                action_clicked = bubble_contents(app, ui, m, true, time_str, wrap_width, collapsed_max_h, card_fill, t);
+                action_clicked = bubble_contents(app, ui, m, true, time_str, wrap_width, collapsed_max_h, on_screen, card_fill, t);
             })
         });
         resp.inner.response.rect
@@ -297,13 +367,20 @@ fn message_bubble(
             crate::sender_images::avatar(app, ui, av_rect.center(), 14.0, m, &m.from);
             egui::Frame::NONE.fill(card_fill).stroke(card_stroke).corner_radius(10.0).inner_margin(egui::Margin::symmetric(12, 9)).show(ui, |ui| {
                 ui.set_max_width(inner_max);
-                action_clicked = bubble_contents(app, ui, m, false, time_str, wrap_width, collapsed_max_h, card_fill, t);
+                action_clicked = bubble_contents(app, ui, m, false, time_str, wrap_width, collapsed_max_h, on_screen, card_fill, t);
             })
         });
         resp.inner.response.rect
     };
 
     let visible_bubble = bubble_rect.intersect(ui.clip_rect());
+    if !outgoing && !m.read && focused && visible_bubble.height() > 16.0 {
+        let bar = Rect::from_min_size(pos2(bubble_rect.min.x + 2.0, bubble_rect.min.y + 8.0), vec2(3.0, (bubble_rect.height() - 16.0).max(4.0)))
+            .intersect(ui.clip_rect());
+        if bar.height() > 0.0 {
+            ui.painter().rect_filled(bar, 1.5, unread_color);
+        }
+    }
     let pointer_in_bubble = visible_bubble.width() > 2.0 && visible_bubble.height() > 2.0 && ui.rect_contains_pointer(visible_bubble);
     if visible_bubble.width() > 2.0 && visible_bubble.height() > 2.0 {
         app.hit.add("chatBubble", m.id, visible_bubble);
@@ -320,7 +397,7 @@ fn message_bubble(
     if plain_click {
         let _ = app.run("mail.selectCorrespondent", json!({"key": conv_key, "messageId": m.id}));
     }
-    pointer_in_bubble
+    (pointer_in_bubble, bubble_rect.height().max(24.0))
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -332,6 +409,7 @@ fn bubble_contents(
     time_str: &str,
     wrap_width: f32,
     collapsed_max_h: f32,
+    on_screen: bool,
     card_fill: Color32,
     t: &Tokens,
 ) -> bool {
@@ -355,7 +433,7 @@ fn bubble_contents(
 
             if !m.read {
                 let (dr, _) = ui.allocate_exact_size(vec2(8.0, 12.0), Sense::hover());
-                ui.painter().circle_filled(dr.center(), 3.5, t.accent);
+                ui.painter().circle_filled(dr.center(), 3.5, app.ui.chat_unread_color.unwrap_or(t.orange));
             }
             if m.flag == FlagStatus::Flagged {
                 let (fr, _) = ui.allocate_exact_size(vec2(14.0, 14.0), Sense::hover());
@@ -374,7 +452,11 @@ fn bubble_contents(
 
         // ---- HTML / Plain-text / Inline & Remote Images Body ----
         let expanded = app.chat_pane.expanded.contains(&m.id);
-        let body = crate::reading::show_chat_body(app, ui, m, wrap_width, collapsed_max_h, expanded, card_fill);
+        let body = ui
+            .push_id(("chat_body", m.id), |ui| {
+                crate::reading::show_chat_body(app, ui, m, wrap_width, collapsed_max_h, expanded, on_screen, card_fill)
+            })
+            .inner;
         if body.block_click {
             action_clicked = true;
         }

@@ -934,6 +934,12 @@ pub struct UiState {
     /// as none and the default custom colour is used.
     #[serde(default, with = "theme::color_option")]
     pub custom_accent: Option<egui::Color32>,
+    /// Highlight colour of unread bubbles in the conversation views (#1907); none: the theme's own.
+    #[serde(default, with = "theme::color_option")]
+    pub chat_unread_color: Option<egui::Color32>,
+    /// Highlight colour of the selected bubble in the conversation views (#1907); none: the theme's own.
+    #[serde(default, with = "theme::color_option")]
+    pub chat_selected_color: Option<egui::Color32>,
     /// The greys of the dark theme: neutral (the default) or tinted blue (#1384).
     pub dark_style: theme::DarkStyle,
     /// A message's body on a light page in the light theme's colours, as its sender made it, also
@@ -1077,6 +1083,8 @@ impl Default for UiState {
             close_to_tray_notice_seen: false,
             accent: theme::Accent::default(),
             custom_accent: None,
+            chat_unread_color: None,
+            chat_selected_color: None,
             dark_style: theme::DarkStyle::default(),
             light_messages: false,
             replies_in_window: false,
@@ -1179,6 +1187,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "Accent Colour",
         "File › Options",
         r##"{"accent": "blue"|"teal"|"violet"|"graphite"|"custom"|"#rrggbb", "color"?: "#rrggbb"|[r, g, b]} — with "custom", "color" picks the colour of your own (without it, the one last picked is kept); "#rrggbb" as "accent" itself picks a custom colour straight away"##,
+    ),
+    (
+        "ui.chatColors",
+        "Chat Bubble Colours",
+        "File › Options",
+        r##"{"unread"?: "#rrggbb"|[r, g, b]|null, "selected"?: "#rrggbb"|[r, g, b]|null, "reset"?: bool} — sets (or with null clears) the colours of unread and selected bubbles in the conversation views; "reset" clears both (#1907)"##,
     ),
     ("ui.darkStyle", "Dark Theme Style", "File › Options", r#"{"value": "neutral"|"blue"}"#),
     (
@@ -2995,6 +3009,39 @@ impl MailApp {
                     },
                 }
             }
+            "ui.chatColors" => {
+                // Each colour: a string or [r, g, b] sets it, null (or an empty string) clears it.
+                // Nothing is changed unless everything asked for reads.
+                let read = |key: &str| -> Result<Option<Option<egui::Color32>>, String> {
+                    match p.get(key) {
+                        None => Ok(None),
+                        Some(serde_json::Value::Null) => Ok(Some(None)),
+                        Some(serde_json::Value::String(t)) if t.trim().is_empty() => Ok(Some(None)),
+                        Some(v) => theme::parse_color_value(v)
+                            .map(|c| Some(Some(c)))
+                            .ok_or_else(|| "`unread` and `selected` are \"#rrggbb\", [r, g, b] or null".to_string()),
+                    }
+                };
+                match (read("unread"), read("selected")) {
+                    (Ok(unread), Ok(selected)) => {
+                        if p.get("reset").and_then(Value::as_bool) == Some(true) {
+                            self.ui.chat_unread_color = None;
+                            self.ui.chat_selected_color = None;
+                        }
+                        if let Some(c) = unread {
+                            self.ui.chat_unread_color = c;
+                        }
+                        if let Some(c) = selected {
+                            self.ui.chat_selected_color = c;
+                        }
+                        Ok(json!({
+                            "unread": self.ui.chat_unread_color.map(theme::hex_string),
+                            "selected": self.ui.chat_selected_color.map(theme::hex_string),
+                        }))
+                    }
+                    (Err(why), _) | (_, Err(why)) => Err(why),
+                }
+            }
             "ui.darkStyle" => match s("value").and_then(theme::DarkStyle::from_code) {
                 Some(style) => {
                     self.ui.dark_style = style;
@@ -4118,7 +4165,7 @@ impl MailApp {
             self.secrets_opening = opening;
             // A question about the mailbox that was open goes with it: it names messages and
             // accounts by ids, which the other mailbox may have too (#503).
-            if matches!(self.dialog, Some(dialogs::Dialog::Confirm { .. })) {
+            if matches!(self.dialog, Some(dialogs::Dialog::Confirm { .. } | dialogs::Dialog::MergeCorrespondents(_))) {
                 self.set_dialog(None);
             }
             // An agent's too.

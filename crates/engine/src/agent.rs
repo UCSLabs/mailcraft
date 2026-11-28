@@ -443,6 +443,7 @@ const SAFE: &[&str] = &[
     "ui.dialog",
     "ui.closeDialog",
     "ui.theme",
+    "ui.chatColors",
     "ui.highContrast",
     "ui.animations",
     "ui.accent",

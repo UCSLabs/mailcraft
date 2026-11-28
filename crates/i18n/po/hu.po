@@ -3352,6 +3352,11 @@ msgstr "Karakterek (terek)"
 msgid "Chart"
 msgstr "Diagram"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "Csevegőbuborékok színei"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4617,7 +4622,7 @@ msgid "Decrease Indent"
 msgstr "Behúzás csökkentése"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Default"
 msgstr "Alapértelmezett"
@@ -7040,10 +7045,13 @@ msgstr "Csoport"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"Csoportosítás\n"
+"cím alapján"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -9415,6 +9423,12 @@ msgstr "Szabályok kezelése…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "Feladat kezelése"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "A kézi egyesítés eltávolítva, de ez a cím továbbra is össze van kapcsolva egy névjegykártyával."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -14179,6 +14193,12 @@ msgstr "Szükséges"
 msgid "Resend Message"
 msgstr "Üzenet újraküldése"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "Visszaállítás"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -15154,6 +15174,18 @@ msgstr "Válassza ki az üzenetet, mielőtt megtekintené a csatolását."
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "Legfeljebb {n} üzenetet jelöljön ki a leiratkozáshoz."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "Kijelölt buborék színe"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "Kijelölt buborék színe hexában"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -15994,6 +16026,12 @@ msgstr "Befejezett feladatok megjelenítése"
 msgid "Show details"
 msgstr "Részletek megjelenítése"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "Teljes beszélgetés megjelenítése"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -16149,6 +16187,14 @@ msgstr "Felhasználónevek, név vagy valódi nevek megjelenítése"
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "Hetek sorszámának megjelenítése a havi nézetben és a kisnaptárban"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "{n} találat megjelenítve"
+msgstr[1] "{n} találat megjelenítve"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -21004,6 +21050,18 @@ msgid "Unread"
 msgstr "Olvasatlan"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "Olvasatlan buborék színe"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "Olvasatlan buborék színe hexában"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -23011,6 +23069,11 @@ msgstr "beírandó felhasználónév"
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "Mindenki a @{domain}-n"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "2–50 cím megadása szükséges"
 
 #. what a command says
 #: crates/model/src/rich/body.rs

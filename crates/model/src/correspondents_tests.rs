@@ -17,7 +17,7 @@ fn normalize_and_sanitize_reject_junk() {
     assert_eq!(normalize_address(&format!("{}@example.org", "a".repeat(320))), None);
     // Reject multiple `@` and malformed local/domain parts.
     assert_eq!(normalize_address("a@b@example.org"), None);
-    assert_eq!(normalize_address("alice@localhost"), None);
+    assert_eq!(normalize_address("alice@localhost"), Some("alice@localhost".into()));
     assert_eq!(normalize_address(".alice@example.org"), None);
     assert_eq!(normalize_address("alice@bad..example.org"), None);
     assert_eq!(normalize_address(&format!("{}@e.co", "ß".repeat(160))), None);
@@ -45,6 +45,16 @@ fn repair_groups_dedups_and_enforces_disjointness() {
     assert_eq!(groups[0].addresses, vec!["ada.work@example.org", "ada@example.org"]);
     // Already clean -> returns false.
     assert!(!repair_groups(&mut groups));
+}
+
+#[test]
+fn repair_groups_preserves_normalized_mixed_case_addresses() {
+    use crate::correspondents::repair_groups;
+    // Mixed-case `Ada@Example.ORG` without a duplicate lowercase copy must be normalized and kept.
+    let mut groups = vec![CorrespondentGroup { name: "Ada".into(), addresses: vec!["Ada@Example.ORG".into(), "ada.work@example.org".into()] }];
+    assert!(repair_groups(&mut groups));
+    assert_eq!(groups.len(), 1);
+    assert_eq!(groups[0].addresses, vec!["ada.work@example.org", "ada@example.org"]);
 }
 
 #[test]

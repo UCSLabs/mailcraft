@@ -3349,6 +3349,11 @@ msgstr "Znaky (včetně mezer)"
 msgid "Chart"
 msgstr "Graf"
 
+#. command label
+#: crates/ui-egui/src/lib.rs
+msgid "Chat Bubble Colours"
+msgstr "Barvy bublin konverzace"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -4617,7 +4622,7 @@ msgid "Decrease Indent"
 msgstr "Zmenšit odsazení"
 
 #. interface
-#: crates/ui-egui/src/ribbon.rs
+#: crates/ui-egui/src/backstage.rs crates/ui-egui/src/ribbon.rs
 #, fuzzy
 msgid "Default"
 msgstr "Výchozí"
@@ -7062,10 +7067,13 @@ msgstr ""
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Group by\n"
 "Address"
 msgstr ""
+"Seskupit podle\n"
+"adresy"
 
 #. command label, interface
 #: crates/engine/src/cmd/correspondents.rs crates/ui-egui/src/contact_view.rs crates/ui-egui/src/mail_view.rs
@@ -9439,6 +9447,12 @@ msgstr "Spravovat pravidla…"
 #, fuzzy
 msgid "Manage Task"
 msgstr "Správa úkolu"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Manual merge removed, but this address is still linked by a Contact card."
+msgstr "Ruční sloučení bylo odebráno, ale tato adresa je stále propojena kartou kontaktu."
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
@@ -14208,6 +14222,12 @@ msgstr "Povinné"
 msgid "Resend Message"
 msgstr "Znovu odeslat zprávu"
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Reset"
+msgstr "Obnovit"
+
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
 #, fuzzy
@@ -15181,6 +15201,18 @@ msgstr "Před náhledem přílohy vyberte zprávu."
 msgid "Select {n} messages at most to unsubscribe from."
 msgstr "Vyberte nejvýše {n} zpráv, ze kterých se chcete odhlásit."
 
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour"
+msgstr "Barva vybrané bubliny"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Selected bubble colour as hex"
+msgstr "Barva vybrané bubliny jako hex"
+
 #. android, command label, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/engine/src/cmd/compose.rs crates/ui-egui/src/agent_gate.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/reading/unsubscribe.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/send_later.rs
 #, fuzzy
@@ -16027,6 +16059,12 @@ msgstr "Zobrazit dokončené úkoly"
 msgid "Show details"
 msgstr "Zobrazit podrobnosti"
 
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Show full conversation"
+msgstr "Zobrazit celou konverzaci"
+
 #. command label
 #: crates/engine/src/cmd/calendar/invitation.rs
 #, fuzzy
@@ -16182,6 +16220,15 @@ msgstr "Zobrazovat uživatelská jména, zobrazovaná jména nebo skutečná jm�
 #, fuzzy
 msgid "Show week numbers in the Month view and the date navigator"
 msgstr "Zobrazovat čísla týdnů v zobrazení Měsíc a v navigátoru data"
+
+#. interface
+#: crates/ui-egui/src/contact_view.rs
+#, fuzzy
+msgid "Showing {n} message matching search"
+msgid_plural "Showing {n} messages matching search"
+msgstr[0] "Zobrazena {n} zpráva odpovídající hledání"
+msgstr[1] "Zobrazeny {n} zprávy odpovídající hledání"
+msgstr[2] "Zobrazeno {n} zpráv odpovídajících hledání"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -21054,6 +21101,18 @@ msgid "Unread"
 msgstr "Nepřečtené"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour"
+msgstr "Barva nepřečtené bubliny"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Unread bubble colour as hex"
+msgstr "Barva nepřečtené bubliny jako hex"
+
+#. interface
 #: crates/ui-egui/src/folder_properties.rs
 #, fuzzy
 msgid "Unread messages in the folder itself"
@@ -23072,6 +23131,11 @@ msgstr "k přihlášení zadejte uživatelské jméno"
 #, fuzzy
 msgid "everybody at @{domain}"
 msgstr "všichni na @{domain}"
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+msgid "expected 2 to 50 addresses"
+msgstr "Očekává se 2 až 50 adres"
 
 #. what a command says
 #: crates/model/src/rich/body.rs
