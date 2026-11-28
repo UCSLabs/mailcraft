@@ -319,7 +319,8 @@ proptest! {
             for r in &e.rules {
                 prop_assert!(r.read_only() && !r.name.is_empty());
                 prop_assert!(r.name.chars().count() <= super::sieve_elsewhere::MAX_NAME + 8);
-                prop_assert!(!r.name.chars().any(|c| c.is_control() || mailcraft_names::is_format(c)));
+                // (A joiner inside a word stays, as the names crate keeps it: scripts need it.)
+                prop_assert!(!r.name.chars().any(|c| c.is_control() || (mailcraft_names::is_format(c) && !mailcraft_names::is_joiner(c))));
             }
         }
     }

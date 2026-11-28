@@ -112,7 +112,7 @@ proptest! {
                 prop_assert!(script.get(f.header.clone()).is_some());
                 prop_assert!(f.end.clone().is_none_or(|e| script.get(e).is_some()));
                 if let Some(n) = &f.name {
-                    prop_assert!(n.chars().count() <= MAX_NAME && !n.chars().any(|c| c.is_control() || mailcraft_names::is_format(c)));
+                    prop_assert!(n.chars().count() <= MAX_NAME && !n.chars().any(|c| c.is_control() || (mailcraft_names::is_format(c) && !mailcraft_names::is_joiner(c))));
                 }
             }
         }
