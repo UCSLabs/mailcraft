@@ -3061,6 +3061,11 @@ impl MailApp {
                     Some(_) => return Some(Err("value must be a boolean".into())),
                 };
                 self.ui.start_to_tray = value;
+                // Starting hidden needs a tray icon to restore the window from, so switching
+                // "Start hidden in tray" on also switches "Close to system tray" on.
+                if value {
+                    self.ui.close_to_tray = true;
+                }
                 Ok(json!({"value": value}))
             }
             "ui.rememberSignIn" => {
