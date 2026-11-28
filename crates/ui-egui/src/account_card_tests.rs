@@ -21,6 +21,7 @@ fn drawn(shapes: &[Shape], text: &str, out: &mut Vec<(Rect, usize)>) {
 
 #[test]
 fn an_account_cards_buttons_fit_their_labels() {
+    let _language = crate::i18n::RestoreLanguage::hold();
     let mut w = testing::window("view.mail");
     w.state_mut().execute("ui.language", json!({"language": "ka"})).unwrap();
     w.state_mut().execute("ui.backstage", json!({"value": true, "page": "info"})).unwrap();
