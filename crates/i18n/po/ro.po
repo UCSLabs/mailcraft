@@ -28385,9 +28385,9 @@ msgstr "• către {to}, subiect „{subject}”"
 #, fuzzy
 msgid "…and {n} more — type to narrow it"
 msgid_plural "…and {n} more — type to narrow it"
-msgstr[0] "…and {n} more — type to narrow it"
-msgstr[1] "…and {n} more — type to narrow it"
-msgstr[2] ""
+msgstr[0] "…și încă {n} — tastați pentru a restrânge lista"
+msgstr[1] "…și încă {n} — tastați pentru a restrânge lista"
+msgstr[2] "…și încă {n} — tastați pentru a restrânge lista"
 
 #. interface
 #: crates/ui-egui/src/credits.rs
