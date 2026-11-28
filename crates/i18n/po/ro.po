@@ -1390,6 +1390,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "După Trimite, un mesaj așteaptă atât în Mesaje de trimis și arată Anulare. Dezactivat îl trimite la următorul Trimitere/Primire."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "După mutare sau ștergere"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -7006,6 +7012,18 @@ msgstr "Salt la dosar"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "Salt la dosar"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "Mergi la mesajul de deasupra"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "Mergi la mesajul de dedesubt"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs

@@ -1392,6 +1392,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "„გაგზავნის“ შემდეგ წერილი ამდენ ხანს ელოდება „გასაგზავნებში“ და ჩანს „დაბრუნება“. „გამორთული“ მას მომდევნო „გაგზავნა/მიღებისას“ აგზავნის."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "გადატანის ან წაშლის შემდეგ"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -6994,6 +7000,18 @@ msgstr "საქაღალდეზე გადასვლა"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "საქაღალდეზე გადასვლა"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "ზემოთ მდებარე შეტყობინებაზე გადასვლა"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "ქვემოთ მდებარე შეტყობინებაზე გადასვლა"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs

@@ -1390,6 +1390,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "点击发送后，邮件会在发件箱中等待这么久并显示撤销。关闭则随下一次发送/接收发出。"
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "移动或删除后"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -6975,6 +6981,18 @@ msgstr "转到文件夹"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "转到文件夹"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "转到上方的邮件"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "转到下方的邮件"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs

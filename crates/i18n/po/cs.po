@@ -1390,6 +1390,12 @@ msgid "After Send, a message waits in the Outbox for this long and shows Undo. O
 msgstr "Po odeslání zpráva po tuto dobu čeká ve složce Pošta k odeslání a nabízí Zpět. Vypnuto odešle zprávu při dalším Odeslat/přijmout."
 
 #. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "After moving or deleting"
+msgstr "Po přesunutí nebo odstranění"
+
+#. interface
 #: crates/ui-egui/src/reading/invitation.rs
 #, fuzzy
 msgid "After you accept, tentatively accept or decline a meeting request in the mail, or take a cancelled meeting out of your calendar, the message goes to Deleted Items. Left off, it stays where it is and says what you answered."
@@ -7008,6 +7014,18 @@ msgstr "Přejít do složky"
 #, fuzzy
 msgid "Go to the folder"
 msgstr "Přejít do složky"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message above"
+msgstr "Přejít na zprávu nad ní"
+
+#. interface
+#: crates/ui-egui/src/backstage.rs
+#, fuzzy
+msgid "Go to the message below"
+msgstr "Přejít na zprávu pod ní"
 
 #. interface
 #: crates/ui-egui/src/reading/view.rs
