@@ -47,6 +47,10 @@ pub enum Dialog {
     /// Delay Delivery, Send Later and Change Send Time (#950): a date and a time; runs
     /// `compose.delay`, `compose.sendLater` or `mail.setSendTime`.
     SendLater(crate::send_later::Ask),
+    /// The password of an account's calendar servers (#209).
+    DavPassword(Box<crate::dav_password_ask::DavPasswordAsk>),
+    /// Where an account's calendars and contacts are kept (#209).
+    DavSettings(Box<crate::dav_settings::DavSettings>),
     /// Direct Replies To: where replies to the message being written go; runs `compose.replyTo`.
     ReplyTo {
         text: String,
@@ -314,6 +318,8 @@ impl Dialog {
             Dialog::AddReminder(d) => d.name(),
             Dialog::ReplyTo { .. } => "replyTo",
             Dialog::SendLater(d) => d.name(),
+            Dialog::DavPassword(d) => d.name(),
+            Dialog::DavSettings(d) => d.name(),
             Dialog::SharedMailbox { .. } => "sharedMailbox",
             Dialog::OpenCalendar { .. } => "openCalendar",
             Dialog::Subscribe { .. } => "subscribe",
@@ -397,6 +403,15 @@ impl Dialog {
                     .or(app.session.sel.focus())
                     .filter(|id| app.session.mailbox.message(*id).is_some_and(|m| crate::send_later::waits(app, m)))?;
                 Dialog::SendLater(crate::send_later::Ask::open(app, crate::send_later::Mode::Change(queued))?)
+            }
+            "davPassword" => Dialog::DavPassword(Box::new(crate::dav_password_ask::DavPasswordAsk::open(app, id("id")?)?)),
+            "davSettings" => {
+                // For the account named, else the first that can have them.
+                let account = match id("id") {
+                    Some(id) => id,
+                    None => app.session.mailbox.accounts.iter().find(|a| mailcraft_engine::cmd::dav_account::may_have(a))?.id,
+                };
+                Dialog::DavSettings(Box::new(crate::dav_settings::DavSettings::open(app, account)?))
             }
             "replyTo" => Dialog::ReplyTo { text: app.session.compose.as_ref()?.reply_to.clone(), error: String::new() },
             "sharedMailbox" => {
@@ -2522,6 +2537,16 @@ pub fn show(app: &mut MailApp, ctx: &egui::Context) {
         }
         Dialog::SendLater(d) => {
             if matches!(crate::send_later::show(ctx, d, app, &t, enter), crate::send_later::Outcome::Close) {
+                close = true;
+            }
+        }
+        Dialog::DavPassword(d) => {
+            if matches!(crate::dav_password_ask::show(ctx, d, app, &t, enter), crate::dav_password_ask::Outcome::Close) {
+                close = true;
+            }
+        }
+        Dialog::DavSettings(d) => {
+            if matches!(crate::dav_settings::show(ctx, d, app, &t, enter), crate::dav_settings::Outcome::Close) {
                 close = true;
             }
         }
