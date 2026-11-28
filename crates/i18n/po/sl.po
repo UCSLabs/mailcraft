@@ -6390,7 +6390,7 @@ msgstr ""
 "mape"
 
 #. command label, ribbon location
-#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/view.rs
+#: crates/engine/src/cmd/account.rs crates/engine/src/cmd/ews_mail.rs crates/engine/src/cmd/folder.rs crates/engine/src/cmd/view.rs
 #, fuzzy
 msgid "Folder Pane"
 msgstr "Podokno map"
@@ -7350,6 +7350,12 @@ msgstr "Skrij podrobnosti"
 #, fuzzy
 msgid "Hide MailCraft"
 msgstr "Skrij MailCraft"
+
+#. command label, interface
+#: crates/engine/src/cmd/ews_mail.rs crates/ui-egui/src/nav.rs
+#, fuzzy
+msgid "Hide Online Archive"
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -8907,8 +8913,8 @@ msgstr "Navedi opravila"
 msgid "List {n}"
 msgstr "Seznam {n}"
 
-#. android
-#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarSpeech.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PeopleScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ReadingScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TasksScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TodayScreen.kt
+#. android, interface
+#: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarSpeech.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PeopleScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ReadingScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TaskEditorScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TasksScreen.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/TodayScreen.kt crates/ui-egui/src/nav.rs
 #, fuzzy
 msgid "Loading…"
 msgstr "Nalaganje…"
@@ -9105,17 +9111,35 @@ msgstr "Poštna mapa: {folder} računa"
 msgid "Mail from another mailbox can't go into an Outbox: the next Send/Receive would send it"
 msgstr "Pošta iz drugega poštnega predala ne more v mapo Odpošlji: naslednje Pošlji/prejmi bi jo poslalo"
 
+#. what a command says
+#: crates/model/src/mailbox.rs
+#, fuzzy
+msgid "Mail goes into an online archive only from its own mailbox: move it into that mailbox first"
+msgstr "P"
+
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
 msgid "Mail in Junk E-mail still asks first. File › Options turns this off again."
 msgstr "Pošta v Neželeni pošti še vedno najprej vpraša. Datoteka › Možnosti to znova izklopi."
 
+#. what a command says
+#: crates/model/src/mailbox.rs
+#, fuzzy
+msgid "Mail in an online archive is copied within the archive: move it out instead"
+msgstr "P"
+
 #. interface
 #: crates/ui-egui/src/shared_mailboxes.rs
 #, fuzzy
 msgid "Mail in this shared mailbox's Outbox waits: sending from shared mailboxes needs your permission. Use Send/Receive."
 msgstr "Pošta v mapi Odpošlji tega skupnega poštnega predala čaka: pošiljanje iz skupnih poštnih predalov potrebuje vaše dovoljenje. Uporabite Pošlji/prejmi."
+
+#. what a command says
+#: crates/model/src/mailbox.rs
+#, fuzzy
+msgid "Mail isn't copied into an online archive from elsewhere: move it there from its own mailbox"
+msgstr "P"
 
 #. what a command says
 #: crates/model/src/mailbox.rs
@@ -12114,6 +12138,12 @@ msgid "Online"
 msgstr "Povezano"
 
 #. interface
+#: crates/ui-egui/src/nav.rs
+#, fuzzy
+msgid "Online Archive – {address}"
+msgstr "S"
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "Online meeting"
@@ -13778,7 +13808,7 @@ msgid "Redo {what}"
 msgstr "Ponovi {what}"
 
 #. interface
-#: crates/ui-egui/src/security.rs
+#: crates/ui-egui/src/nav.rs crates/ui-egui/src/security.rs
 #, fuzzy
 msgid "Refresh"
 msgstr "Osveži"
@@ -15601,6 +15631,12 @@ msgstr "Pošlji/prejmi se prijavi pri Microsoftu; nato je mogoče iskati po stre
 msgid "Send/Receive stopped unexpectedly"
 msgstr "Pošlji/prejmi se je nepričakovano ustavil"
 
+#. interface
+#: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
+msgid "Send/Receive the mailbox to sign in and read its online archive"
+msgstr "U"
+
 #. command label
 #: crates/engine/src/cmd/ews_mail.rs
 #, fuzzy
@@ -16022,6 +16058,12 @@ msgstr "Pokaži MailCraft"
 #, fuzzy
 msgid "Show Message"
 msgstr "Pokaži sporočilo"
+
+#. command label, interface
+#: crates/engine/src/cmd/ews_mail.rs crates/ui-egui/src/nav.rs
+#, fuzzy
+msgid "Show Online Archive"
+msgstr "P"
 
 #. command label, interface
 #: crates/engine/src/cmd/calendar_settings.rs crates/ui-egui/src/calendar_view.rs
@@ -18738,6 +18780,18 @@ msgid "The one this build came with"
 msgstr "Tisti, ki je priložen tej gradnji"
 
 #. interface
+#: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
+msgid "The online archive couldn't be read: Refresh to try again"
+msgstr "S"
+
+#. interface
+#: crates/ui-egui/src/nav.rs
+#, fuzzy
+msgid "The online archive needs a connection to the server"
+msgstr "S"
+
+#. interface
 #: crates/ui-egui/src/address_book.rs
 #, fuzzy
 msgid "The organisation's address book is empty"
@@ -19090,6 +19144,12 @@ msgstr "Strežnik ima {total} map: en zagon prebere prvih {max} in izpusti preos
 #, fuzzy
 msgid "The server is busy. Try again in a few minutes."
 msgstr "Strežnik je zaseden. Čez nekaj minut poskusite znova."
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "The server no longer has the online archive: changes made in it that hadn't reached the server are lost"
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -20324,6 +20384,12 @@ msgstr "Ta nabiralnik je bil odprt iz datoteke. Njegovi računi se povezujejo z:
 #, fuzzy
 msgid "This mailbox was opened from a file: confirm its servers first"
 msgstr "Ta nabiralnik je bil odprt iz datoteke: najprej potrdite njegove strežnike"
+
+#. interface
+#: crates/ui-egui/src/ews_mail.rs
+#, fuzzy
+msgid "This mailbox's online archive is kept in Microsoft 365, which needs a Microsoft sign-in, so it isn't shown"
+msgstr "S"
 
 #. interface
 #: crates/ui-egui/src/calendar_sync.rs
@@ -23045,6 +23111,12 @@ msgstr "račun ima največ {max} naslovov pošiljatelja"
 msgid "an event needs a title"
 msgstr "dogodek potrebuje naslov"
 
+#. what a command says
+#: crates/model/src/mailbox.rs
+#, fuzzy
+msgid "an online archive stays under its mailbox: move that account"
+msgstr "s"
+
 #. interface
 #: crates/ui-egui/src/forms.rs
 #, fuzzy
@@ -24225,6 +24297,12 @@ msgid "only a message you sent can be sent again"
 msgstr "ponovno je mogoče poslati samo sporočilo, ki je šlo od vas"
 
 #. what a command says
+#: crates/model/src/archive.rs
+#, fuzzy
+msgid "only an Exchange server account has an online archive here"
+msgstr "s"
+
+#. what a command says
 #: crates/engine/src/cmd/senders.rs
 #, fuzzy
 msgid "only an IMAP account sends from other addresses"
@@ -24547,6 +24625,12 @@ msgid "subject or body contains {words}"
 msgstr "zadeva ali telo vsebuje {words}"
 
 #. what a command says
+#: crates/model/src/archive.rs
+#, fuzzy
+msgid "that account isn't an online archive"
+msgstr "t"
+
+#. what a command says
 #: crates/engine/src/cmd/calendar.rs
 #, fuzzy
 msgid "that event doesn't repeat"
@@ -24731,6 +24815,12 @@ msgstr "račun nima uporabniškega imena ali e-poštnega naslova za prijavo"
 #, fuzzy
 msgid "the account is gone"
 msgstr "računa ni več"
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "the account {name} is the online archive of is gone"
+msgstr "r"
 
 #. why a mail server couldn't be used
 #: crates/net/src/transport.rs
@@ -25139,6 +25229,18 @@ msgstr "omrežje tja ni moglo priti"
 #, fuzzy
 msgid "the occurrence was not changed; nothing was moved"
 msgstr "ponovitev ni bila spremenjena; nič ni bilo premaknjeno"
+
+#. what a command says
+#: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
+msgid "the online archive has changes that haven't reached the server yet: Send/Receive first, then hide it"
+msgstr "s"
+
+#. what a command says
+#: crates/engine/src/cmd/account.rs
+#, fuzzy
+msgid "the online archive has changes that haven't reached the server yet: Send/Receive first, then say it is kept in Exchange Online"
+msgstr "s"
 
 #. what a command says
 #: crates/model/src/mailbox.rs
