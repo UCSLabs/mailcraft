@@ -322,6 +322,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. Copiez le message ci-dessous et envoyez-le à l'administrateur de votre organisation."
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. Activez la validation en deux étapes de votre compte Google si ce n'est pas déjà fait : Google ne propose les mots de passe d'application qu'à cette condition."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -369,6 +375,12 @@ msgstr "2 semaines"
 msgid "2 years"
 msgstr "2 ans"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. Ouvrez la page Mots de passe des applications de Google, connectez-vous, saisissez un nom comme MailCraft et appuyez sur Créer."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -398,6 +410,12 @@ msgstr "3 jours"
 #, fuzzy
 msgid "3 months"
 msgstr "3 mois"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. Copiez le mot de passe de 16 lettres que Google affiche, une seule fois, et collez-le ici."
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -888,8 +906,9 @@ msgstr "Couleur d'accent"
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
+#, fuzzy
 msgid "Accent colour as hex"
-msgstr ""
+msgstr "Couleur d'accentuation en hexadécimal"
 
 #. android, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarScreen.kt crates/ui-egui/src/ribbon.rs
@@ -1382,8 +1401,9 @@ msgstr "Agenda"
 
 #. command label
 #: crates/engine/src/cmd/format.rs
+#, fuzzy
 msgid "Align Text"
-msgstr ""
+msgstr "Aligner le texte"
 
 #. android, interface, name
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MailListModel.kt crates/engine/src/session.rs crates/model/src/offline.rs crates/ui-egui/src/advanced_search.rs crates/ui-egui/src/backstage.rs crates/ui-egui/src/keep_offline.rs
@@ -1672,6 +1692,12 @@ msgstr "Une adresse depuis laquelle ce compte peut envoyer"
 #, fuzzy
 msgid "An address with no domain."
 msgstr "Une adresse sans domaine."
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "Un agent a créé ce contact ou lui a ajouté une adresse. Tant que vous ne modifiez pas ce contact, les images des messages de ces adresses ne sont pas téléchargées automatiquement."
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -3723,8 +3749,9 @@ msgstr "Presse-papiers"
 
 #. interface
 #: crates/ui-egui/src/backstage.rs
+#, fuzzy
 msgid "Clock"
-msgstr ""
+msgstr "Horloge"
 
 #. android, interface, ribbon
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AttachmentsView.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/CalendarEditor.kt apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/IncomingLayers.kt crates/ui-egui/src/account_setup.rs crates/ui-egui/src/account_setup/exchange.rs crates/ui-egui/src/compose.rs crates/ui-egui/src/dialogs.rs crates/ui-egui/src/find_replace.rs crates/ui-egui/src/folder_properties.rs crates/ui-egui/src/forms.rs crates/ui-egui/src/import_pst.rs crates/ui-egui/src/meeting_dialogs.rs crates/ui-egui/src/meeting_dialogs/share.rs crates/ui-egui/src/merge_contacts.rs crates/ui-egui/src/reminders.rs crates/ui-egui/src/report_problem.rs crates/ui-egui/src/ribbon.rs crates/ui-egui/src/symbol.rs crates/ui-egui/src/sync_panel.rs crates/ui-egui/src/tasks_view.rs crates/ui-egui/src/view_source.rs
@@ -4459,8 +4486,9 @@ msgstr "Affichage actuel"
 
 #. interface, name
 #: crates/ui-egui/src/backstage.rs crates/ui-egui/src/theme/accent.rs
+#, fuzzy
 msgid "Custom color"
-msgstr ""
+msgstr "Couleur personnalisée"
 
 #. command label, interface, name, ribbon
 #: crates/engine/src/cmd/format.rs crates/ui-egui/src/calendar_view.rs crates/ui-egui/src/lib.rs crates/ui-egui/src/menubar.rs crates/ui-egui/src/ribbon.rs
@@ -5186,6 +5214,12 @@ msgstr "Télécharger les images"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "Télécharger les images des contacts"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "Télécharger les images dans tous les courriers"
 
@@ -5194,6 +5228,18 @@ msgstr "Télécharger les images dans tous les courriers"
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "Télécharger automatiquement les images du courrier"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "Télécharger les images du courrier des contacts"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "Télécharger depuis les contacts"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5230,6 +5276,12 @@ msgstr "Télécharger les images de chaque message sans demander, sauf dans Cour
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "Télécharger automatiquement les images du courrier"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "Télécharger les images du courrier des personnes de mes contacts"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -7324,6 +7376,12 @@ msgid "Horizontal Line"
 msgstr "Ligne horizontale"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "Comment créer un mot de passe d'application ?"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7369,6 +7427,12 @@ msgstr "Icônes"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "Si Google indique que l'application est en test, demandez au développeur d'ajouter votre adresse e-mail comme testeur. Si votre organisation bloque MailCraft, demandez à son administrateur Workspace. Ces pages peuvent ne pas revenir ici : annulez, puis réessayez quand l'accès est accordé, ou utilisez un mot de passe d'application si c'est permis."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "Si la page de Google indique que le paramètre n'est pas disponible, la validation en deux étapes est désactivée, ou le compte n'autorise pas les mots de passe d'application (certains comptes professionnels ou scolaires, et les comptes avec la Protection avancée)."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -10761,8 +10825,9 @@ msgstr "Prochains événements"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MessageSwipe.kt
+#, fuzzy
 msgid "Next message"
-msgstr ""
+msgstr "Message suivant"
 
 #. interface
 #: crates/ui-egui/src/forms.rs
@@ -12175,6 +12240,12 @@ msgid "Open Draft Attachment"
 msgstr "Ouvrir la pièce jointe du brouillon"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "Ouvrir la page Mots de passe des applications de Google"
+
+#. interface
 #: crates/ui-egui/src/data_removal.rs
 #, fuzzy
 msgid "Open MailCraft's data folder"
@@ -12914,6 +12985,12 @@ msgstr "Les images ne sont pas incluses dans les messages en texte brut. Passez 
 msgid "Pictures in mail"
 msgstr "Images dans le courrier"
 
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "Les images des messages provenant d’une adresse de vos contacts sont téléchargées sans demande si l’adresse correspond exactement et si votre serveur de messagerie confirme le domaine d’origine. Il ne peut pas confirmer l’adresse elle-même. Cela ne s’applique jamais aux courriers indésirables. Le serveur de chaque expéditeur apprend que vous avez ouvert le message, quand et depuis quelle adresse Internet. Un contact créé par un agent, ou auquel un agent a ajouté une adresse, est pris en compte seulement après votre modification."
+
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
 #, fuzzy
@@ -12937,6 +13014,12 @@ msgstr "Les images du web ne sont pas téléchargées pour un message qui n'est 
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "Les images sur le web seront téléchargées dans chaque message que vous ouvrez. Le serveur de chaque expéditeur saura alors quand vous avez ouvert le message et depuis quelle adresse Internet."
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "Les images hébergées sur Internet seront téléchargées dans les messages des personnes de vos contacts. Leurs serveurs sauront quand vous avez ouvert le message et depuis quelle adresse Internet."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -13117,8 +13200,9 @@ msgstr "Page précédente"
 
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/MessageSwipe.kt
+#, fuzzy
 msgid "Previous message"
-msgstr ""
+msgstr "Message précédent"
 
 #. interface
 #: crates/ui-egui/src/nav.rs
@@ -14658,8 +14742,9 @@ msgstr "Message enregistré dans {name}"
 
 #. interface
 #: crates/ui-egui/src/files.rs
+#, fuzzy
 msgid "Saved the message to {name}, written from what this computer keeps of it: not byte for byte as it was received"
-msgstr ""
+msgstr "Le message a été enregistré dans {name}, reconstitué à partir de ce que cet ordinateur en conserve : pas octet pour octet tel qu'il a été reçu"
 
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/ComposerScreen.kt crates/ui-egui/src/compose.rs
@@ -15624,15 +15709,19 @@ msgstr "Plusieurs textes : séparez-les par un point-virgule (;). Un seul suff
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
+#, fuzzy
 msgid ""
 "Shade\n"
 "Rows"
 msgstr ""
+"Ombrer les\n"
+"lignes"
 
 #. command label
 #: crates/engine/src/cmd/view/display.rs
+#, fuzzy
 msgid "Shade Alternate Rows"
-msgstr ""
+msgstr "Ombrer une ligne sur deux"
 
 #. ribbon
 #: crates/ui-egui/src/ribbon.rs
@@ -19102,8 +19191,9 @@ msgstr "La signature a changé pendant que le sélecteur de fichier de signature
 
 #. interface
 #: crates/ui-egui/src/lib.rs
+#, fuzzy
 msgid "The signature couldn't be saved: {why}. Close again to leave it unsaved."
-msgstr ""
+msgstr "La signature n'a pas pu être enregistrée : {why}. Fermez à nouveau pour la laisser non enregistrée."
 
 #. interface
 #: crates/ui-egui/src/signature_files.rs
@@ -21909,6 +21999,12 @@ msgid "You don't have access to {address}. If access was just given, try again i
 msgstr "Vous n'avez pas accès à {address}. Si l'accès vient d'être accordé, réessayez dans une heure."
 
 #. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "Vous téléchargez les images de vos contacts, mais le serveur de messagerie n'a pas confirmé que ce message venait de ce contact : la question est donc posée d'abord."
+
+#. interface
 #: crates/ui-egui/src/signatures.rs
 #, fuzzy
 msgid "You edited the signature by hand, so the details no longer change it."
@@ -23745,8 +23841,9 @@ msgstr "paragraphe introuvable"
 
 #. what a command says
 #: crates/model/src/rich.rs
+#, fuzzy
 msgid "no such signature"
-msgstr ""
+msgstr "aucune signature de ce nom"
 
 #. what a command says
 #: crates/engine/src/cmd/tasks.rs crates/engine/src/cmd/tasks/status.rs
@@ -23918,8 +24015,9 @@ msgstr "seuls les en-têtes de « {subject} » sont ici, il ne peut donc pas êt
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "only the headers of “{subject}” are here, so it can't be saved as a message"
-msgstr ""
+msgstr "seuls les en-têtes de « {subject} » sont présents, il ne peut donc pas être enregistré comme message"
 
 #. what a command says
 #: crates/engine/src/cmd/calendar/share.rs
@@ -24269,8 +24367,9 @@ msgstr "cette boîte aux lettres est ouverte dans une autre fenêtre MailCraft ;
 
 #. what a command says
 #: crates/engine/src/cmd/graph_send.rs
+#, fuzzy
 msgid "that message is a draft: open it and send it"
-msgstr ""
+msgstr "ce message est un brouillon : ouvrez-le et envoyez-le"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
@@ -25324,8 +25423,9 @@ msgstr "le texte de « {subject} » ne peut pas être lu sur cet ordinateur, il 
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "the text of “{subject}” can't be read on this computer, so it can't be saved as a message"
-msgstr ""
+msgstr "le texte de « {subject} » ne peut pas être lu sur cet ordinateur, il ne peut donc pas être enregistré comme message"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -27938,8 +28038,9 @@ msgstr "« {subject} » n'est pas encore téléchargé : ouvrez-le une fois en l
 
 #. what a command says
 #: crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "“{subject}” isn't downloaded yet: open it once you're online, then save it"
-msgstr ""
+msgstr "« {subject} » n'est pas encore téléchargé : ouvrez-le une fois en ligne, puis enregistrez-le"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
@@ -27949,8 +28050,9 @@ msgstr "« {subject} » était trop volumineux pour être téléchargé : seul s
 
 #. what a command says
 #: crates/engine/src/cmd/file.rs crates/engine/src/sync_driver/as_received.rs
+#, fuzzy
 msgid "“{subject}” was too large to download: only its header is here, so it can't be saved as a message"
-msgstr ""
+msgstr "« {subject} » était trop volumineux pour être téléchargé : seul son en-tête est présent, il ne peut donc pas être enregistré comme message"
 
 #. what a command says
 #: crates/engine/src/cmd/compose.rs
