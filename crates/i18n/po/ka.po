@@ -322,6 +322,12 @@ msgid "1. Copy the message below and send it to your organisation's administrato
 msgstr "1. დააკოპირეთ ქვემოთ მოცემული შეტყობინება და გაუგზავნეთ თქვენი ორგანიზაციის ადმინისტრატორს."
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. ჩართეთ თქვენი Google-ის ანგარიშისთვის ორსაფეხურიანი ვერიფიკაცია, თუ ის ჯერ ჩართული არ არის: Google აპლიკაციის პაროლებს მხოლოდ მაშინ გვთავაზობს."
+
+#. interface
 #: crates/ui-egui/src/calendar_view.rs
 #, fuzzy
 msgid "10 Minutes"
@@ -369,6 +375,12 @@ msgstr "2 კვირა"
 msgid "2 years"
 msgstr "2 წელი"
 
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. გახსენით Google-ის აპლიკაციის პაროლების გვერდი, შედით იმ ანგარიშში, რომელსაც ამატებთ, ჩაწერეთ სახელი, მაგალითად MailCraft, და დააჭირეთ შექმნას."
+
 #. android
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/AccountScreens.kt
 #, fuzzy
@@ -398,6 +410,12 @@ msgstr "3 დღე"
 #, fuzzy
 msgid "3 months"
 msgstr "3 თვე"
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. დააკოპირეთ 16-ასოიანი პაროლი, რომელსაც Google მხოლოდ ერთხელ აჩვენებს, და ჩასვით აქ."
 
 #. interface
 #: crates/ui-egui/src/calendar_view.rs
@@ -1678,6 +1696,12 @@ msgstr "მისამართი, საიდანაც ამ ანგ�
 #, fuzzy
 msgid "An address with no domain."
 msgstr "მისამართი დომენის გარეშე."
+
+#. interface
+#: crates/ui-egui/src/people_view.rs
+#, fuzzy
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "ეს კონტაქტი აგენტმა შექმნა ან მისამართი დაუმატა. სანამ კონტაქტს არ ჩაასწორებთ, მისი მისამართებიდან მიღებულ წერილებში სურათები ავტომატურად არ ჩამოიტვირთება."
 
 #. interface
 #: crates/ui-egui/src/agent_gate.rs
@@ -5212,6 +5236,12 @@ msgstr "სურათების ჩამოტვირთვა"
 #. interface
 #: crates/ui-egui/src/dialogs.rs
 #, fuzzy
+msgid "Download Pictures from Contacts"
+msgstr "კონტაქტებისგან მიღებული სურათების ჩამოტვირთვა"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
 msgid "Download Pictures in All Mail"
 msgstr "სურათების ჩამოტვირთვა მთელ ფოსტაში"
 
@@ -5220,6 +5250,18 @@ msgstr "სურათების ჩამოტვირთვა მთე�
 #, fuzzy
 msgid "Download Pictures in Mail Automatically"
 msgstr "ფოსტაში სურათების ავტომატურად ჩამოტვირთვა"
+
+#. command label
+#: crates/ui-egui/src/lib.rs
+#, fuzzy
+msgid "Download Pictures in Mail from Contacts"
+msgstr "კონტაქტებისგან მიღებულ წერილებში სურათების ჩამოტვირთვა"
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Download from contacts"
+msgstr "კონტაქტებისგან ჩამოტვირთვა"
 
 #. interface
 #: crates/ui-egui/src/dialogs.rs
@@ -5256,6 +5298,12 @@ msgstr "სურათების ჩამოტვირთვა ყვე�
 #, fuzzy
 msgid "Download pictures in mail automatically"
 msgstr "ფოსტაში სურათების ავტომატურად ჩამოტვირთვა"
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Download pictures in mail from people in my contacts"
+msgstr "ჩემს კონტაქტებში მყოფი ადამიანების წერილებში სურათების ჩამოტვირთვა"
 
 #. interface
 #: crates/ui-egui/src/reading/signature.rs
@@ -7374,6 +7422,12 @@ msgid "Horizontal Line"
 msgstr "ჰორიზონტალური ხაზი"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "How do I make an app password?"
+msgstr "როგორ შევქმნა აპლიკაციის პაროლი?"
+
+#. interface
 #: crates/ui-egui/src/account_setup.rs crates/ui-egui/src/keep_offline.rs
 #, fuzzy
 msgid "How far back mail is kept in full on this computer. Older mail keeps its headers and a preview, and downloads when you open it. It stays on the server."
@@ -7420,6 +7474,12 @@ msgstr "ხატულები"
 #, fuzzy
 msgid "If Google says the app is in testing, ask the developer to add your email as a test user. If your organization blocks MailCraft, ask its Workspace administrator. Those pages may not return here: cancel, then retry when access is granted or use an app password if allowed."
 msgstr "თუ Google წერს, რომ აპლიკაცია ტესტირების ეტაპზეა, სთხოვეთ დეველოპერს, თქვენი ელფოსტა სატესტო მომხმარებლად დაამატოს. თუ თქვენი ორგანიზაცია MailCraft-ს ბლოკავს, მიმართეთ მის Workspace-ის ადმინისტრატორს. ის გვერდები შეიძლება აქ არ დაბრუნდეს: გააუქმეთ და წვდომის მიღების შემდეგ კიდევ სცადეთ, ან, თუ ნებადართულია, აპლიკაციის პაროლი გამოიყენეთ."
+
+#. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "თუ Google-ის გვერდი ამბობს, რომ პარამეტრი მიუწვდომელია, ან ორსაფეხურიანი ვერიფიკაცია გამორთულია, ან ანგარიში არ იძლევა აპლიკაციის პაროლების უფლებას (ზოგი სამსახურეობრივი ან სასკოლო ანგარიში, გაფართოებული დაცვის მქონე ანგარიშები და ანგარიშები, რომელთა ორსაფეხურიანი ვერიფიკაცია მხოლოდ უსაფრთხოების გასაღებებს იყენებს)."
 
 #. interface
 #: crates/ui-egui/src/account_setup/help.rs
@@ -12244,6 +12304,12 @@ msgid "Open Draft Attachment"
 msgstr "დრაფტის დანართის გახსნა"
 
 #. interface
+#: crates/ui-egui/src/account_setup.rs
+#, fuzzy
+msgid "Open Google's App passwords page"
+msgstr "გახსენით Google-ის აპლიკაციის პაროლების გვერდი"
+
+#. interface
 #: crates/ui-egui/src/data_removal.rs
 #, fuzzy
 msgid "Open MailCraft's data folder"
@@ -12987,6 +13053,12 @@ msgstr "სურათები უბრალო ტექსტის შე
 msgid "Pictures in mail"
 msgstr "სურათები ფოსტაში"
 
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "თქვენს კონტაქტებში შენახული მისამართიდან მიღებულ წერილებში სურათები დაუკითხავად ჩამოიტვირთება მხოლოდ მაშინ, როცა მისამართი ზუსტად ემთხვევა და თქვენი ფოსტის სერვერი ადასტურებს, რომ წერილი ამ მისამართის დომენიდან მოვიდა (თავად მისამართს სერვერი ვერ ადასტურებს). არასასურველ ფოსტაში სურათები ასე არ ჩამოიტვირთება. თითოეული ასეთი გამომგზავნის სერვერი იგებს, რომ წერილი გახსენით, როდის გახსენით და რომელი ინტერნეტმისამართიდან. თუ კონტაქტი აგენტმა შექმნა ან მისამართი დაუმატა, ის არ გაითვალისწინება, სანამ კონტაქტს არ ჩაასწორებთ."
+
 #. android, interface
 #: apps/mailcraft-android/app/src/main/kotlin/work/mailcraft/android/PicturesBanner.kt crates/ui-egui/src/reading/remote.rs
 #, fuzzy
@@ -13010,6 +13082,12 @@ msgstr "ვებში არსებული სურათები არ
 #, fuzzy
 msgid "Pictures on the web will be downloaded in every message you open. Each sender's server then learns when you opened the message and from which internet address."
 msgstr "ვებში არსებული სურათები ჩამოიტვირთება ყოველ წერილში, რომელსაც გახსნით. ამის შემდეგ ყოველი გამგზავნის სერვერი გაიგებს, როდის გახსენით წერილი და რომელი ინტერნეტ-მისამართიდან."
+
+#. interface
+#: crates/ui-egui/src/dialogs.rs
+#, fuzzy
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "თქვენს კონტაქტებში მყოფი ადამიანების წერილებში ინტერნეტში განთავსებული სურათები ჩამოიტვირთება. მათი სერვერები გაიგებენ, როდის გახსენით წერილი და რომელი ინტერნეტმისამართიდან."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
@@ -22048,6 +22126,12 @@ msgstr "კალენდარზე ({address}) წვდომა არ გ
 #, fuzzy
 msgid "You don't have access to {address}. If access was just given, try again in an hour."
 msgstr "წვდომა არ გაქვთ: {address}. თუ წვდომა ახლახან მოგცეს, სცადეთ ერთ საათში."
+
+#. interface
+#: crates/ui-egui/src/reading/remote.rs
+#, fuzzy
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "თქვენი კონტაქტების წერილებიდან სურათებს ჩამოტვირთავთ, მაგრამ ფოსტის სერვერმა ვერ დაადასტურა, რომ ეს წერილი ამ კონტაქტისგან მოვიდა. ამიტომ ჩამოტვირთვამდე თანხმობას გთხოვთ."
 
 #. interface
 #: crates/ui-egui/src/signatures.rs
