@@ -26414,3 +26414,720 @@ msgstr "{name}: ikke en melding, kalender eller kontaktfil som MailCraft leser"
 #, fuzzy
 msgid "{n} messages are being written already, the most there can be at once; send, save or close one first"
 msgstr "{n} meldinger skrives allerede, det er det meste som kan være samtidig; send, lagre eller lukk én først"
+
+msgid "(read only)"
+msgstr "(skrivebeskyttet)"
+
+msgid "1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."
+msgstr "1. Slå på totrinnsbekreftelse for Google-kontoen din hvis det ikke er gjort ennå: Google tilbyr bare app-passord da."
+
+msgid "2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."
+msgstr "2. Åpne Googles side for app-passord, logg inn på kontoen du legger til, skriv et navn som MailCraft og trykk Opprett."
+
+msgid "3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."
+msgstr "3. Kopier det 16-tegns passordet Google viser, som det bare viser én gang, og lim det inn her."
+
+msgid "A new-mail notification shows up to three buttons, in the order you tick them. Reply opens the reply; the others act on the message without opening the app."
+msgstr "Et varsel om ny e-post viser opptil tre knapper, i den rekkefølgen du krysser dem av. Svar åpner svaret; de andre handler på meldingen uten å åpne appen."
+
+msgid "A text signature file is at most 10,000 characters."
+msgstr "En tekstsignaturfil er høyst 10 000 tegn."
+
+msgid "About\nMailCraft"
+msgstr "Om\nMailCraft"
+
+msgid "Account\nSettings"
+msgstr "Konto\ninnstillinger"
+
+msgid "Add to\nFavorites"
+msgstr "Legg til\ni favoritter"
+
+msgid "Add\nAccount"
+msgstr "Legg til\nkonto"
+
+msgid "Address\nBook"
+msgstr "Adresse\nbok"
+
+msgid "After 2 seconds"
+msgstr "Etter 2 sekunder"
+
+msgid "After 5 seconds"
+msgstr "Etter 5 sekunder"
+
+msgid "An HTML signature file is at most 64 KB."
+msgstr "En HTML-signaturfil er høyst 64 KB."
+
+msgid "An agent made this contact or gave it an address. Until you edit it, its addresses don't bring pictures in mail from your contacts."
+msgstr "En agent laget denne kontakten eller ga den en adresse. Til du redigerer den, henter adressene dens ikke bilder i e-post fra kontaktene dine."
+
+msgid "And {n} more change was put back."
+msgstr "Og {n} endring til ble satt tilbake."
+
+msgid "Appearance"
+msgstr "Utseende"
+
+msgid "Apply Sent Contact Changes"
+msgstr "Bruk sendte kontaktendringer"
+
+msgid "Arrange\nBy"
+msgstr "Sorter\netter"
+
+msgid "Attach\nFile"
+msgstr "Legg ved\nfil"
+
+msgid "Attachments can't be opened here."
+msgstr "Vedlegg kan ikke åpnes her."
+
+msgid "Can only be read"
+msgstr "Kan bare leses"
+
+msgid "Cancel\nAll"
+msgstr "Avbryt\nalle"
+
+msgid "Change\nView"
+msgstr "Bytt\nvisning"
+
+msgid "Changes to calendars and contacts on a server are not sent yet in this version."
+msgstr "Endringer i kalendere og kontakter på en server sendes ikke ennå i denne versjonen."
+
+msgid "Check\nNames"
+msgstr "Sjekk\nnavn"
+
+msgid "Choose Signature File"
+msgstr "Velg signaturfil"
+
+msgid "Choose a signature file"
+msgstr "Velg en signaturfil"
+
+msgid "Choose a text, HTML, PNG, JPEG or GIF signature file."
+msgstr "Velg en tekst-, HTML-, PNG-, JPEG- eller GIF-signaturfil."
+
+msgid "Choose an absolute local path for the signature file."
+msgstr "Velg en absolutt lokal sti for signaturfilen."
+
+msgid "Choose…"
+msgstr "Velg…"
+
+msgid "Classic Light"
+msgstr "Klassisk lys"
+
+msgid "Close menu"
+msgstr "Lukk meny"
+
+msgid "Contact Changes to Send"
+msgstr "Kontaktendringer å sende"
+
+msgid "Contact\nCard"
+msgstr "Kontakt\nkort"
+
+msgid "Copy\nDiagnostics"
+msgstr "Kopier\ndiagnostikk"
+
+msgid "Dark page in the dark theme"
+msgstr "Mørk side i det mørke temaet"
+
+msgid "Date &\nTime"
+msgstr "Dato og\nklokkeslett"
+
+msgid "Delete\nFolder"
+msgstr "Slett\nmappe"
+
+msgid "Double-click to download {name}"
+msgstr "Dobbeltklikk for å laste ned {name}"
+
+msgid "Double-click to open {name}"
+msgstr "Dobbeltklikk for å åpne {name}"
+
+msgid "Download Pictures from Contacts"
+msgstr "Last ned bilder fra kontakter"
+
+msgid "Download Pictures in Mail from Contacts"
+msgstr "Last ned bilder i e-post fra kontakter"
+
+msgid "Download from contacts"
+msgstr "Last ned fra kontakter"
+
+msgid "Download pictures in mail from people in my contacts"
+msgstr "Last ned bilder i e-post fra personer i kontaktene mine"
+
+msgid "Downloading the address book stopped unexpectedly"
+msgstr "Nedlasting av adresseboken stoppet uventet"
+
+msgid "Downloading the organisation's address book…"
+msgstr "Laster ned adresseboken til organisasjonen…"
+
+msgid "Edit\nContact"
+msgstr "Rediger\nkontakt"
+
+msgid "Edit\nTask"
+msgstr "Rediger\noppgave"
+
+msgid "Email\nCalendar"
+msgstr "E-post\nkalender"
+
+msgid "Empty\nFolder"
+msgstr "Tøm\nmappe"
+
+msgid "Export\nContacts"
+msgstr "Eksporter\nkontakter"
+
+msgid "Export\nFolder"
+msgstr "Eksporter\nmappe"
+
+msgid "File signature"
+msgstr "Filsignatur"
+
+msgid "Filter\nEmail"
+msgstr "Filtrer\ne-post"
+
+msgid "Fold"
+msgstr "Brett sammen"
+
+msgid "Folded"
+msgstr "Brettet sammen"
+
+msgid "Folder\nPane"
+msgstr "Mappe\nrute"
+
+msgid "Folder\nProperties"
+msgstr "Mappe\negenskaper"
+
+msgid "Follow system"
+msgstr "Følg systemet"
+
+msgid "Follow\nUp"
+msgstr "Følg\nopp"
+
+msgid "Forward\nContact"
+msgstr "Videresend\nkontakt"
+
+msgid "From the organisation's address book of {account}, held in memory while MailCraft runs and never saved: Add to Contacts keeps a copy on this computer."
+msgstr "Fra adresseboken til organisasjonen i {account}, holdt i minnet mens MailCraft kjører og aldri lagret: Legg til i kontakter beholder en kopi på denne datamaskinen."
+
+msgid "Get\nSupport"
+msgstr "Få\nhjelp"
+
+msgid "Gmail\nCategories"
+msgstr "Gmail\nkategorier"
+
+msgid "Header contains"
+msgstr "Hodet inneholder"
+
+msgid "Hello,\n\nI would like to use MailCraft with my work account. MailCraft is an open-source mail and calendar program that runs on my own computer. Our organisation lets only an administrator approve a new program, so it needs your approval once, for the whole organisation. Microsoft's page for that is here:\n\n{link}\n\nAfter you approve, your browser may show a page that can't be reached. That is expected: it is an address on your own computer, where nothing is listening, and the approval has been given by then.\n\nThank you"
+msgstr "Hei,\n\nJeg ønsker å bruke MailCraft med jobbkontoen min. MailCraft er et åpen kildekode e-post- og kalenderprogram som kjører på min egen datamaskin. Organisasjonen vår lar bare en administrator godkjenne et nytt program, så det trenger din godkjenning én gang, for hele organisasjonen. Microsofts side for det er her:\n\n{link}\n\nEtter at du godkjenner, kan nettleseren din vise en side som ikke kan nås. Det er forventet: det er en adresse på din egen datamaskin, der ingenting lytter, og godkjenningen er gitt da.\n\nTakk"
+
+msgid "Hello,\n\nI would like to use MailCraft with my work account. MailCraft is an open-source mail and calendar program that runs on my own phone. Our organisation lets only an administrator approve a new program, so it needs your approval once, for the whole organisation. Microsoft's page for that is here:\n\n{link}\n\nAfter you approve, your browser may show a page that can't be reached. That is expected: it is an address on your own computer, where nothing is listening, and the approval has been given by then.\n\nThank you"
+msgstr "Hei,\n\nJeg ønsker å bruke MailCraft med jobbkontoen min. MailCraft er et åpen kildekode e-post- og kalenderprogram som kjører på min egen telefon. Organisasjonen vår lar bare en administrator godkjenne et nytt program, så det trenger din godkjenning én gang, for hele organisasjonen. Microsofts side for det er her:\n\n{link}\n\nEtter at du godkjenner, kan nettleseren din vise en side som ikke kan nås. Det er forventet: det er en adresse på din egen datamaskin, der ingenting lytter, og godkjenningen er gitt da.\n\nTakk"
+
+msgid "Hide details"
+msgstr "Skjul detaljer"
+
+msgid "How do I make an app password?"
+msgstr "Hvordan lager jeg et app-passord?"
+
+msgid "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+msgstr "Hvis Googles side sier at innstillingen ikke er tilgjengelig, er enten totrinnsbekreftelse av eller kontoen tillater ikke app-passord (noen jobb- eller skolekontoer, kontoer med avansert beskyttelse, og kontoer der totrinnsbekreftelsen bare bruker sikkerhetsnøkler)."
+
+msgid "In your contacts"
+msgstr "I kontaktene dine"
+
+msgid "Keep this person in"
+msgstr "Behold denne personen i"
+
+msgid "Kept in: {folder}"
+msgstr "Ligger i: {folder}"
+
+msgid "Kept in: {place}"
+msgstr "Ligger i: {place}"
+
+msgid "Kept in: {place} (read only)"
+msgstr "Ligger i: {place} (skrivebeskyttet)"
+
+msgid "Light page in the dark theme"
+msgstr "Lys side i det mørke temaet"
+
+msgid "Made by UCS Labs"
+msgstr "Laget av UCS Labs"
+
+msgid "MailCraft can't open {name} because of its file type."
+msgstr "MailCraft kan ikke åpne {name} på grunn av filtypen."
+
+msgid "MailCraft holds as much from the calendar server of {account} as it can: some calendars or events were left out."
+msgstr "MailCraft holder så mye fra kalenderserveren til {account} som det kan: noen kalendere eller hendelser ble utelatt."
+
+msgid "Mark"
+msgstr "Marker"
+
+msgid "Mark All\nas Read"
+msgstr "Merk alle\nsom lest"
+
+msgid "Mark\nComplete"
+msgstr "Merk\nfullført"
+
+msgid "Marked as read"
+msgstr "Merket som lest"
+
+msgid "Merge\nDuplicates"
+msgstr "Flett\nduplikater"
+
+msgid "Message menu"
+msgstr "Meldingsmeny"
+
+msgid "Message\nPreview"
+msgstr "Melding\nforhåndsvisning"
+
+msgid "Microsoft keeps one home, one business and one other address for a contact; the ones marked stay on this phone."
+msgstr "Microsoft holder én hjemme-, én jobb- og én annen adresse for en kontakt; de merkede blir på denne telefonen."
+
+msgid "Microsoft keeps one home, one business and one other address for a contact; this one stays on this computer."
+msgstr "Microsoft holder én hjemme-, én jobb- og én annen adresse for en kontakt; denne blir på denne datamaskinen."
+
+msgid "Microsoft keeps one mobile, two home and two business numbers for a contact; the ones marked stay on this phone."
+msgstr "Microsoft holder ett mobil-, to hjemme- og to jobbnumre for en kontakt; de merkede blir på denne telefonen."
+
+msgid "Microsoft keeps one mobile, two home and two business numbers for a contact; this one stays on this computer."
+msgstr "Microsoft holder ett mobil-, to hjemme- og to jobbnumre for en kontakt; dette blir på denne datamaskinen."
+
+msgid "Microsoft keeps one web page for a contact; this one stays on this computer."
+msgstr "Microsoft holder én nettside for en kontakt; denne blir på denne datamaskinen."
+
+msgid "Microsoft keeps three email addresses for a contact; the ones marked stay on this phone."
+msgstr "Microsoft holder tre e-postadresser for en kontakt; de merkede blir på denne telefonen."
+
+msgid "Microsoft keeps three email addresses for a contact; this one stays on this computer."
+msgstr "Microsoft holder tre e-postadresser for en kontakt; denne blir på denne datamaskinen."
+
+msgid "Move \"{name}\" to:"
+msgstr "Flytt «{name}» til:"
+
+msgid "Move anyway"
+msgstr "Flytt likevel"
+
+msgid "Move to Contacts Folder"
+msgstr "Flytt til kontaktmappe"
+
+msgid "Move to Contacts Folder…"
+msgstr "Flytt til kontaktmappe…"
+
+msgid "Move to contacts folder"
+msgstr "Flytt til kontaktmappe"
+
+msgid "Move to contacts folder…"
+msgstr "Flytt til kontaktmappe…"
+
+msgid "Move {n} contact to:"
+msgstr "Flytt {n} kontakt til:"
+
+msgid "Move\nFolder"
+msgstr "Flytt\nmappe"
+
+msgid "Move…"
+msgstr "Flytt…"
+
+msgid "Navigation\nBar"
+msgstr "Navigasjon\nlinje"
+
+msgid "Never (I mark them myself)"
+msgstr "Aldri (jeg merker dem selv)"
+
+msgid "New\nAppointment"
+msgstr "Ny\navtale"
+
+msgid "New\nContact"
+msgstr "Ny\nkontakt"
+
+msgid "New\nEmail"
+msgstr "Ny\ne-post"
+
+msgid "New\nFolder"
+msgstr "Ny\nmappe"
+
+msgid "New\nItems"
+msgstr "Nye\nelementer"
+
+msgid "New\nMeeting"
+msgstr "Nytt\nmøte"
+
+msgid "New\nTask"
+msgstr "Ny\noppgave"
+
+msgid "Next 7\nDays"
+msgstr "Neste 7\ndager"
+
+msgid "Next message"
+msgstr "Neste melding"
+
+msgid "No buttons"
+msgstr "Ingen knapper"
+
+msgid "Nobody in the address book matches"
+msgstr "Ingen i adresseboken samsvarer"
+
+msgid "Not for mail, or an authority's: Add to Contacts leaves it out."
+msgstr "Ikke for e-post, eller en myndighets: Legg til i kontakter utelater den."
+
+msgid "Not sent yet"
+msgstr "Ikke sendt ennå"
+
+msgid "Notification buttons"
+msgstr "Varselknapper"
+
+msgid "On this computer only"
+msgstr "Bare på denne datamaskinen"
+
+msgid "On this phone only"
+msgstr "Bare på denne telefonen"
+
+msgid "Open Contact"
+msgstr "Åpne kontakt"
+
+msgid "Open Draft Attachment"
+msgstr "Åpne vedlegg i utkast"
+
+msgid "Open Google's App passwords page"
+msgstr "Åpne Googles side for app-passord"
+
+msgid "Open that one"
+msgstr "Åpne den"
+
+msgid "Open\nCalendar"
+msgstr "Åpne\nkalender"
+
+msgid "Pictures are not included in plain-text messages. Switch to HTML to include them."
+msgstr "Bilder tas ikke med i ren tekst-meldinger. Bytt til HTML for å ta dem med."
+
+msgid "Pictures in mail from an address in your contacts are downloaded without asking: that address exactly, only when your mail server confirms the message came from that address's domain (it can't confirm the address itself), and never in Junk E-mail. Each such sender's server learns that you opened the message, when, and from which internet address. A contact an agent made or gave an address to doesn't count until you edit it."
+msgstr "Bilder i e-post fra en adresse i kontaktene dine lastes ned uten å spørre: nøyaktig den adressen, bare når e-postserveren din bekrefter at meldingen kom fra domenet til den adressen (den kan ikke bekrefte adressen selv), og aldri i Søppelpost. Serveren til hver slik avsender får vite at du åpnet meldingen, når, og fra hvilken internettadresse. En kontakt en agent laget eller ga en adresse til, teller ikke før du redigerer den."
+
+msgid "Pictures on the web will be downloaded in mail from the people in your contacts. Their servers then learn when you opened the message and from which internet address."
+msgstr "Bilder på nettet lastes ned i e-post fra personene i kontaktene dine. Serverne deres får da vite når du åpnet meldingen og fra hvilken internettadresse."
+
+msgid "Plain\nText"
+msgstr "Ren\ntekst"
+
+msgid "Pop\nOut"
+msgstr "Sprett\nut"
+
+msgid "Previous message"
+msgstr "Forrige melding"
+
+msgid "Read again for each new message. If unavailable, the usual signature is used."
+msgstr "Les på nytt for hver nye melding. Hvis utilgjengelig, brukes den vanlige signaturen."
+
+msgid "Reading"
+msgstr "Leser"
+
+msgid "Reading\nPane"
+msgstr "Leser\nrute"
+
+msgid "Recent\nSearches"
+msgstr "Nylige\nsøk"
+
+msgid "Refresh Preview"
+msgstr "Oppdater forhåndsvisning"
+
+msgid "Reminders\nWindow"
+msgstr "Påminnelser\nvindu"
+
+msgid "Remove Imported\nDuplicates"
+msgstr "Fjern importerte\nduplikater"
+
+msgid "Remove from\nFavorites"
+msgstr "Fjern fra\nfavoritter"
+
+msgid "Remove\nAttachment"
+msgstr "Fjern\nvedlegg"
+
+msgid "Rename\nFolder"
+msgstr "Gi mappen\nnytt navn"
+
+msgid "Reply\nAll"
+msgstr "Svar\nalle"
+
+msgid "Report a\nProblem"
+msgstr "Rapporter et\nproblem"
+
+msgid "Reset\nView"
+msgstr "Nullstill\nvisning"
+
+msgid "Reverse\nSort"
+msgstr "Omvendt\nsortering"
+
+msgid "Ribbon\nLayout"
+msgstr "Bånd\nlayout"
+
+msgid "Run Rules\nNow"
+msgstr "Kjør regler\nnå"
+
+msgid "Save All\nAttachments"
+msgstr "Lagre alle\nvedlegg"
+
+msgid "Save\nCalendar"
+msgstr "Lagre\nkalender"
+
+msgid "Save\nDraft"
+msgstr "Lagre\nutkast"
+
+msgid "Search\nCalendar"
+msgstr "Søk i\nkalender"
+
+msgid "Search\nCommands"
+msgstr "Søk i\nkommandoer"
+
+msgid "Send Status\nReport"
+msgstr "Send status\nrapport"
+
+msgid "Send/Receive\nAll Folders"
+msgstr "Send/motta\nalle mapper"
+
+msgid "Shade\nRows"
+msgstr "Skygge\nrader"
+
+msgid "Show Contacts Folder"
+msgstr "Vis kontaktmappe"
+
+msgid "Show as\nConversations"
+msgstr "Vis som\nsamtaler"
+
+msgid "Show details"
+msgstr "Vis detaljer"
+
+msgid "Show on a dark background"
+msgstr "Vis på mørk bakgrunn"
+
+msgid "Show on a light background"
+msgstr "Vis på lys bakgrunn"
+
+msgid "Show\nMessage"
+msgstr "Vis\nmelding"
+
+msgid "Show\nProgress"
+msgstr "Vis\nfremdrift"
+
+msgid "Show\nTraining"
+msgstr "Vis\nopplæring"
+
+msgid "Side-by-\nSide"
+msgstr "Side om\nside"
+
+msgid "Signature files can only be configured by the owner in the desktop app."
+msgstr "Signaturfiler kan bare settes opp av eieren i skrivebordsappen."
+
+msgid "Signature from File"
+msgstr "Signatur fra fil"
+
+msgid "Sort"
+msgstr "Sorter"
+
+msgid "Switch to HTML"
+msgstr "Bytt til HTML"
+
+msgid "That could not be moved."
+msgstr "Det kunne ikke flyttes."
+
+msgid "The UCS Labs name and logo are trademarks of UCS Care Group Limited; see TRADEMARKS.md."
+msgstr "Navnet og logoen UCS Labs er varemerker tilhørende UCS Care Group Limited; se TRADEMARKS.md."
+
+msgid "The calendar \"{name}\" is on a calendar server: this version reads it but can't send changes to it yet."
+msgstr "Kalenderen «{name}» ligger på en kalenderserver: denne versjonen leser den, men kan ikke sende endringer til den ennå."
+
+msgid "The calendar of the shared mailbox {address} is shown twice: under My Calendars with the shared mailbox, and under Shared Calendars as \"{name}\", because it was also shared with you and accepted.\n\nHide the copy under Shared Calendars? The shared mailbox's own calendar stays, and lets you change events, answer meeting requests and send from the mailbox where you may. Nothing on the server changes: right-click the shared mailbox's calendar to show the copy again."
+msgstr "Kalenderen til den delte postkassen {address} vises to ganger: under Mine kalendere med den delte postkassen, og under Delte kalendere som «{name}», fordi den også ble delt med deg og godtatt.\n\nSkjule kopien under Delte kalendere? Den delte postkassens egen kalender blir, og lar deg endre hendelser, svare på møteforespørsler og sende fra postkassen der du kan. Ingenting på serveren endres: høyreklikk kalenderen til den delte postkassen for å vise kopien igjen."
+
+msgid "The calendar of {name} is in your calendar list now, because it was shared with you and accepted. You also opened it by address, so it is there twice.\n\nRemove the copy opened by address? The other one stays, and nothing on the server changes."
+msgstr "Kalenderen til {name} er i kalenderlisten din nå, fordi den ble delt med deg og godtatt. Du åpnet den også med adresse, så den er der to ganger.\n\nFjerne kopien som ble åpnet med adresse? Den andre blir, og ingenting på serveren endres."
+
+msgid "The calendar server of {account} answered with errors, so some events may be out of date. MailCraft will try again later."
+msgstr "Kalenderserveren til {account} svarte med feil, så noen hendelser kan være utdaterte. MailCraft prøver igjen senere."
+
+msgid "The calendar server of {account} has a certificate that isn't trusted, so nothing was sent to it."
+msgstr "Kalenderserveren til {account} har et sertifikat som ikke er klarert, så ingenting ble sendt til den."
+
+msgid "The calendar server of {account} wouldn't sign in. MailCraft will try again later, or when the password changes."
+msgstr "Kalenderserveren til {account} ville ikke logge inn. MailCraft prøver igjen senere, eller når passordet endres."
+
+msgid "The contact changes sent couldn't be noted: {error}"
+msgstr "Kontaktendringene som ble sendt, kunne ikke noteres: {error}"
+
+msgid "The contacts folder \"{name}\" can only be read: a new contact can't be put there."
+msgstr "Kontaktmappen «{name}» kan bare leses: en ny kontakt kan ikke legges der."
+
+msgid "The contacts folder \"{name}\" can only be read: its contacts can't be moved out of it."
+msgstr "Kontaktmappen «{name}» kan bare leses: kontaktene kan ikke flyttes ut av den."
+
+msgid "The contacts folder \"{name}\" can only be read: nothing can be moved into it."
+msgstr "Kontaktmappen «{name}» kan bare leses: ingenting kan flyttes inn i den."
+
+msgid "The contacts folder \"{name}\" can only be read: this contact can't be changed or deleted here."
+msgstr "Kontaktmappen «{name}» kan bare leses: denne kontakten kan ikke endres eller slettes her."
+
+msgid "The draft isn't open any more"
+msgstr "Utkastet er ikke åpent lenger"
+
+msgid "The message body is drawn on a light page, as its sender made it. The header stays dark. You can change it for one message in its menu."
+msgstr "Meldingsinnholdet tegnes på en lys side, slik avsenderen laget det. Hodet forblir mørkt. Du kan endre det for én melding i menyen."
+
+msgid "The message was moved or deleted already"
+msgstr "Meldingen er allerede flyttet eller slettet"
+
+msgid "The organisation's address book is empty"
+msgstr "Adresseboken til organisasjonen er tom"
+
+msgid "The same page asks to change your contacts, so that contacts you make, change or delete here go to its server too."
+msgstr "Den samme siden ber om å endre kontaktene dine, slik at kontakter du lager, endrer eller sletter her, også går til serveren."
+
+msgid "The server didn't delete {name}{why}: it is back."
+msgstr "Serveren slettet ikke {name}{why}: den er tilbake."
+
+msgid "The server didn't take the change to {name}{why}: it is as the server has it again."
+msgstr "Serveren tok ikke imot endringen av {name}{why}: den er slik serveren har den igjen."
+
+msgid "The server sent no address book"
+msgstr "Serveren sendte ingen adressebok"
+
+msgid "The signature changed while the signature file picker was open."
+msgstr "Signaturen ble endret mens filvelgeren for signatur var åpen."
+
+msgid "The signature file could not be read."
+msgstr "Signaturfilen kunne ikke leses."
+
+msgid "The signature file is too large."
+msgstr "Signaturfilen er for stor."
+
+msgid "The signature file must be a regular file of at most 256 KB."
+msgstr "Signaturfilen må være en vanlig fil på høyst 256 KB."
+
+msgid "The signature file must contain UTF-8 text."
+msgstr "Signaturfilen må inneholde UTF-8-tekst."
+
+msgid "The signature image could not be decoded."
+msgstr "Signaturbildet kunne ikke dekodes."
+
+msgid "There is no other contacts folder to move to."
+msgstr "Det finnes ingen annen kontaktmappe å flytte til."
+
+msgid "This change is on this computer and goes to the server at the next Send/Receive."
+msgstr "Denne endringen ligger på denne datamaskinen og går til serveren ved neste send/motta."
+
+msgid "This contacts folder can only be read, so this contact can't be edited or deleted here. Favorite is kept on this computer."
+msgstr "Denne kontaktmappen kan bare leses, så denne kontakten kan ikke endres eller slettes her. Favoritt beholdes på denne datamaskinen."
+
+msgid "Tighter\nSpacing"
+msgstr "Tettere\navstand"
+
+msgid "Time\nScale"
+msgstr "Tids\nakse"
+
+msgid "To keep the automatic replies of {address} in step with Outlook, MailCraft needs your permission to change your mailbox settings. Microsoft's page opens in your browser to ask you, once.\n\nUntil you allow it, your automatic replies aren't changed."
+msgstr "For å holde de automatiske svarene til {address} i takt med Outlook trenger MailCraft tillatelse fra deg til å endre innstillingene for postkassen. Microsofts side åpnes i nettleseren din for å spørre deg, én gang.\n\nTil du tillater det, endres ikke de automatiske svarene dine."
+
+msgid "To keep the rules, automatic replies and categories of {address} in step with Outlook, MailCraft needs your permission to change your mailbox settings. Microsoft's page opens in your browser to ask you, once.\n\nUntil you allow it, rules stay on this computer and nothing of them is sent to Microsoft, your automatic replies aren't changed, and the categories of this mailbox can't be changed here."
+msgstr "For å holde reglene, de automatiske svarene og kategoriene til {address} i takt med Outlook trenger MailCraft tillatelse fra deg til å endre innstillingene for postkassen. Microsofts side åpnes i nettleseren din for å spørre deg, én gang.\n\nTil du tillater det, blir reglene på denne datamaskinen og ingenting av dem sendes til Microsoft, de automatiske svarene dine endres ikke, og kategoriene i denne postkassen kan ikke endres her."
+
+msgid "To keep the tasks and automatic replies of {address} in step with Outlook, MailCraft needs your permission to change your To Do lists and your mailbox settings. Microsoft's page opens in your browser to ask you, once.\n\nUntil you allow it, tasks stay on this computer and nothing of them is sent to Microsoft, and your automatic replies aren't changed."
+msgstr "For å holde oppgavene og de automatiske svarene til {address} i takt med Outlook trenger MailCraft tillatelse fra deg til å endre To Do-listene og innstillingene for postkassen. Microsofts side åpnes i nettleseren din for å spørre deg, én gang.\n\nTil du tillater det, blir oppgavene på denne datamaskinen og ingenting av dem sendes til Microsoft, og de automatiske svarene dine endres ikke."
+
+msgid "To keep the tasks of {address} in step with Microsoft To Do, MailCraft needs your permission to read and change your To Do lists and tasks. Microsoft's page opens in your browser to ask you, once.\n\nUntil you allow it, tasks stay on this computer and nothing of them is sent to Microsoft."
+msgstr "For å holde oppgavene til {address} i takt med Microsoft To Do trenger MailCraft tillatelse fra deg til å lese og endre To Do-listene og oppgavene dine. Microsofts side åpnes i nettleseren din for å spørre deg, én gang.\n\nTil du tillater det, blir oppgavene på denne datamaskinen og ingenting av dem sendes til Microsoft."
+
+msgid "To keep the tasks, rules, automatic replies and categories of {address} in step with Outlook, MailCraft needs your permission to change your To Do lists and your mailbox settings. Microsoft's page opens in your browser to ask you, once.\n\nUntil you allow it, tasks and rules stay on this computer and nothing of them is sent to Microsoft, your automatic replies aren't changed, and the categories of this mailbox can't be changed here."
+msgstr "For å holde oppgavene, reglene, de automatiske svarene og kategoriene til {address} i takt med Outlook trenger MailCraft tillatelse fra deg til å endre To Do-listene og innstillingene for postkassen. Microsofts side åpnes i nettleseren din for å spørre deg, én gang.\n\nTil du tillater det, blir oppgavene og reglene på denne datamaskinen og ingenting av dem sendes til Microsoft, de automatiske svarene dine endres ikke, og kategoriene i denne postkassen kan ikke endres her."
+
+msgid "To read and send from the shared mailboxes you open with {address}, and to show the calendars shared with you, MailCraft needs your permission. Microsoft's page opens in your browser to ask you, once, for everything MailCraft uses that you haven't allowed yet.\n\nUntil you allow it, nothing of those mailboxes and calendars is read, mail and meeting answers from a shared mailbox wait on this computer, and nothing is sent from your own address in their place."
+msgstr "For å lese og sende fra de delte postkassene du åpner med {address}, og for å vise kalenderne som er delt med deg, trenger MailCraft tillatelse fra deg. Microsofts side åpnes i nettleseren din for å spørre deg, én gang, for alt MailCraft bruker som du ikke har tillatt ennå.\n\nTil du tillater det, leses ingenting av disse postkassene og kalenderne, e-post og møtesvar fra en delt postkasse venter på denne datamaskinen, og ingenting sendes fra din egen adresse i deres sted."
+
+msgid "Too many contact changes are waiting to be sent to the server. Let Send/Receive get them through first."
+msgstr "For mange kontaktendringer venter på å sendes til serveren. La send/motta få dem gjennom først."
+
+msgid "Unfolded"
+msgstr "Brettet ut"
+
+msgid "Unread/\nRead"
+msgstr "Ulest/\nlest"
+
+msgid "Waiting for your permission to change this account's contacts on its server: File › Info › Ask again"
+msgstr "Venter på tillatelse fra deg til å endre kontaktene til denne kontoen på serveren: Fil › Info › Spør igjen"
+
+msgid "What's\nNew"
+msgstr "Hva er\nnytt"
+
+msgid "When opened"
+msgstr "Når åpnet"
+
+msgid "Word\nCount"
+msgstr "Ord\ntelling"
+
+msgid "Work\nOffline"
+msgstr "Arbeid\nfrakoblet"
+
+msgid "Work\nWeek"
+msgstr "Arbeids\nuke"
+
+msgid "You download pictures from your contacts, but the mail server didn't confirm that this message came from this one, so it is asked first."
+msgstr "Du laster ned bilder fra kontaktene dine, men e-postserveren bekreftet ikke at denne meldingen kom fra denne, så det spørres først."
+
+msgid "header contains {words}"
+msgstr "hodet inneholder {words}"
+
+msgid "no account has a calendar server"
+msgstr "ingen konto har en kalenderserver"
+
+msgid "no contacts folder with id {id}"
+msgstr "ingen kontaktmappe med id {id}"
+
+msgid "this account has no calendar server"
+msgstr "denne kontoen har ingen kalenderserver"
+
+msgid "this account has too many contacts folders"
+msgstr "denne kontoen har for mange kontaktmapper"
+
+msgid "this contacts folder can only be read"
+msgstr "denne kontaktmappen kan bare leses"
+
+msgid "this read was made under the calendar server's earlier settings"
+msgstr "denne lesingen ble gjort under kalenderserverens tidligere innstillinger"
+
+msgid "{count} contacts are still being sent to their servers, among them {names}: try again shortly."
+msgstr "{count} kontakter sendes fortsatt til serverne sine, blant dem {names}: prøv igjen om litt."
+
+msgid "{folder} ({owner})"
+msgstr "{folder} ({owner})"
+
+msgid "{names} are still being sent to their servers: try again shortly."
+msgstr "{names} sendes fortsatt til serverne sine: prøv igjen om litt."
+
+msgid "{name} couldn't be added to {folder}{why}: it is kept on this computer."
+msgstr "{name} kunne ikke legges til i {folder}{why}: den beholdes på denne datamaskinen."
+
+msgid "{name} couldn't be moved to {folder}{why}: it stays in {from}."
+msgstr "{name} kunne ikke flyttes til {folder}{why}: den blir i {from}."
+
+msgid "{name} is already in {folder}."
+msgstr "{name} ligger allerede i {folder}."
+
+msgid "{name} is attached: it can't go in the text ({why})"
+msgstr "{name} er lagt ved: den kan ikke gå i teksten ({why})"
+
+msgid "{name} is kept on this computer: {folder} is no longer on the server, and the change made here couldn't go up."
+msgstr "{name} beholdes på denne datamaskinen: {folder} er ikke på serveren lenger, og endringen gjort her kunne ikke sendes opp."
+
+msgid "{name} is still being sent to its server: try again shortly."
+msgstr "{name} sendes fortsatt til serveren sin: prøv igjen om litt."
+
+msgid "{n} change to contacts isn't on the server yet: it is tried again later"
+msgstr "{n} endring i kontakter er ikke på serveren ennå: det prøves igjen senere"
+
+msgid "{n} contact isn't undone: its contacts folder can only be read now."
+msgstr "{n} kontakt er ikke angret: kontaktmappen kan bare leses nå."
+
+msgid "{n} contact isn't undone: too many changes are waiting to be sent to its server."
+msgstr "{n} kontakt er ikke angret: for mange endringer venter på å sendes til serveren."
+
+msgid "{n} contact wasn't moved, as it is still being sent to its server: {names}. Try again shortly."
+msgstr "{n} kontakt ble ikke flyttet, siden den fortsatt sendes til serveren sin: {names}. Prøv igjen om litt."
+
+msgid "{person}'s shared contacts"
+msgstr "Delte kontakter til {person}"
+
+msgid "{reason} Using the account's usual signature instead."
+msgstr "{reason} Bruker kontoens vanlige signatur i stedet."
