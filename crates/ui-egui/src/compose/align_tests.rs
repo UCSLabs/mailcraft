@@ -103,18 +103,23 @@ fn picture_painted(h: &Window, area: Rect) -> Option<Rect> {
     painted(h).into_iter().filter_map(mesh).find(|r| area.contains_rect(*r))
 }
 
-/// The frame painted round the selected picture over `area`, and the corner that sizes it.
-fn frame_and_corner(h: &Window, area: Rect) -> (Option<Rect>, Option<Rect>) {
+/// The frame painted round the selected picture over `area`, and its bottom corner on the `side`
+/// ("left" or "right") of the four that size it.
+fn frame_and_corner(h: &Window, area: Rect, side: &str) -> (Option<Rect>, Option<Rect>) {
     let accent = crate::theme::Tokens::get(&h.ctx).accent;
-    let (mut frame, mut corner) = (None, None);
+    let (mut frame, mut corners) = (None, Vec::new());
     for shape in painted(h) {
         match shape {
             Shape::Rect(r) if !area.expand(8.0).contains_rect(r.rect) => {}
             Shape::Rect(r) if r.stroke.color == accent && r.fill == egui::Color32::TRANSPARENT => frame = Some(r.rect),
-            Shape::Rect(r) if r.fill == accent && near(r.rect.width(), 8.0) && near(r.rect.height(), 8.0) => corner = Some(r.rect),
+            Shape::Rect(r) if r.fill == accent && near(r.rect.width(), 8.0) && near(r.rect.height(), 8.0) => corners.push(r.rect),
             _ => {}
         }
     }
+    let corner = frame.and_then(|f: Rect| {
+        let at = if side == "left" { f.left_bottom() } else { f.right_bottom() };
+        corners.into_iter().find(|c| near(c.center().x, at.x) && near(c.center().y, at.y))
+    });
     (frame, corner)
 }
 
@@ -502,11 +507,11 @@ fn a_signature_picture_aligned(align: Key) -> Window {
 fn a_signatures_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever_its_line_stands() {
     // The key, how far the corner is dragged to the right, the corner, and how wide the picture
     // comes out.
-    let cases = [(Key::L, 20.0, "right", 100), (Key::E, 20.0, "right", 120), (Key::R, -20.0, "left", 100)];
+    let cases = [(Key::L, 20.0, "right", 100), (Key::E, 20.0, "right", 120), (Key::E, -20.0, "left", 120), (Key::R, -20.0, "left", 100)];
     for (align, dx, side, wide) in cases {
         let mut h = a_signature_picture_aligned(align);
         let area = h.state().hit.rect("signatureBody", 0).unwrap();
-        let (frame, corner) = frame_and_corner(&h, area);
+        let (frame, corner) = frame_and_corner(&h, area, side);
         let (frame, corner) = (frame.expect("the picture's frame"), corner.expect("its corner"));
         let edge = if side == "left" { frame.left_bottom() } else { frame.right_bottom() };
         assert!(
@@ -524,7 +529,7 @@ fn a_signatures_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherev
             at = from + vec2(dx * n as f32 / 4.0, 0.0);
             h.event(Event::PointerMoved(at));
             h.step();
-            let (shown, corner) = frame_and_corner(&h, area);
+            let (shown, corner) = frame_and_corner(&h, area, side);
             let corner = corner.expect("the corner while it is dragged");
             assert!(near(corner.center().x, at.x), "{align:?}: the corner is at {corner:?}, the pointer at {at:?}, the frame {shown:?}");
         }
@@ -532,7 +537,7 @@ fn a_signatures_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherev
         h.run_steps(3);
         let e = h.state().session.signature_edit.as_ref().unwrap();
         assert_eq!(e.signature.pictures()[0].width, Some(wide), "{align:?}");
-        let (frame, corner) = frame_and_corner(&h, area);
+        let (frame, corner) = frame_and_corner(&h, area, side);
         let corner = corner.expect("the corner once it was let go");
         assert!(near(corner.center().x, at.x), "{align:?}: the picture came out with its corner at {corner:?} on {frame:?}, the pointer at {at:?}");
     }
@@ -542,7 +547,7 @@ fn a_signatures_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherev
 fn a_messages_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever_its_line_stands() {
     // The key, how far the corner is dragged to the right, the corner, and how wide the picture
     // comes out.
-    let cases = [(Key::L, 20.0, "right", 100), (Key::E, 20.0, "right", 120), (Key::R, -20.0, "left", 100)];
+    let cases = [(Key::L, 20.0, "right", 100), (Key::E, 20.0, "right", 120), (Key::E, -20.0, "left", 120), (Key::R, -20.0, "left", 100)];
     for (align, dx, side, wide) in cases {
         let board = PictureBoard::default();
         let mut h = writing_with(&board);
@@ -553,7 +558,7 @@ fn a_messages_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever
         h.state_mut().execute("compose.select", json!({"from": 0, "to": 1})).unwrap();
         h.run_steps(4);
         let area = body(&h);
-        let (frame, corner) = frame_and_corner(&h, area);
+        let (frame, corner) = frame_and_corner(&h, area, side);
         let (frame, corner) = (frame.expect("the picture's frame"), corner.expect("its corner"));
         let edge = if side == "left" { frame.left_bottom() } else { frame.right_bottom() };
         assert!(
@@ -562,7 +567,8 @@ fn a_messages_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever
         );
         // Where the window says it is, for a script or an agent, is where it is drawn.
         let id = u64::from(mailcraft_model::pictures::FIRST_ID);
-        let listed = h.state().hit.rect("pictureCorner", id).expect("the corner is listed");
+        let name = if side == "left" { "pictureCornerBottomLeft" } else { "pictureCorner" };
+        let listed = h.state().hit.rect(name, id).expect("the corner is listed");
         assert!(near(listed.center().x, corner.center().x) && near(listed.center().y, corner.center().y), "{align:?}: {listed:?} {corner:?}");
         let from = corner.center();
         let button = |pos, pressed| Event::PointerButton { pos, button: egui::PointerButton::Primary, pressed, modifiers: Modifiers::NONE };
@@ -575,7 +581,7 @@ fn a_messages_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever
             at = from + vec2(dx * n as f32 / 4.0, 0.0);
             h.event(Event::PointerMoved(at));
             h.step();
-            let (shown, corner) = frame_and_corner(&h, area);
+            let (shown, corner) = frame_and_corner(&h, area, side);
             let corner = corner.expect("the corner while it is dragged");
             assert!(near(corner.center().x, at.x), "{align:?}: the corner is at {corner:?}, the pointer at {at:?}, the frame {shown:?}");
         }
@@ -583,7 +589,7 @@ fn a_messages_picture_is_sized_by_a_corner_that_stays_under_the_pointer_wherever
         h.run_steps(3);
         let width = h.state().session.compose.as_ref().unwrap().pictures.first().and_then(|p| p.width);
         assert_eq!(width, Some(wide), "{align:?}");
-        let (frame, corner) = frame_and_corner(&h, area);
+        let (frame, corner) = frame_and_corner(&h, area, side);
         let corner = corner.expect("the corner once it was let go");
         assert!(near(corner.center().x, at.x), "{align:?}: the picture came out with its corner at {corner:?} on {frame:?}, the pointer at {at:?}");
     }
@@ -605,7 +611,7 @@ fn a_picture_between_words_of_a_centred_line_keeps_its_middle_and_its_corner_und
     h.state_mut().execute("compose.select", json!({"from": at, "to": at + 1})).unwrap();
     h.run_steps(4);
     let area = body(&h);
-    let (frame, corner) = frame_and_corner(&h, area);
+    let (frame, corner) = frame_and_corner(&h, area, "right");
     let (frame, corner) = (frame.expect("the picture's frame"), corner.expect("its corner"));
     assert!(frame.min.x > area.min.x + 40.0, "the picture stands between words: {frame:?} in {area:?}");
     let middle = frame.center().x;
@@ -624,7 +630,7 @@ fn a_picture_between_words_of_a_centred_line_keeps_its_middle_and_its_corner_und
     h.run_steps(3);
     let width = h.state().session.compose.as_ref().unwrap().pictures.first().and_then(|p| p.width);
     assert_eq!(width, Some(120));
-    let (frame, corner) = frame_and_corner(&h, area);
+    let (frame, corner) = frame_and_corner(&h, area, "right");
     let (frame, corner) = (frame.expect("the frame once it was let go"), corner.expect("the corner once it was let go"));
     assert!(near(frame.center().x, middle), "its middle stays: {frame:?}, was at {middle}");
     assert!(near(corner.center().x, to.x), "the corner is at {corner:?}, the pointer at {to:?}");
