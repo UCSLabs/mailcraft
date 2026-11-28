@@ -3796,7 +3796,8 @@ impl MailApp {
         }
         // The Inbox checked by itself gives way to a run (#276).
         self.give_up_inbox_check();
-        if self.sync_rx.is_some() || self.graph_rx.is_some() || self.ews_extra_syncing() {
+        // (A run that only goes up and waits for its marks to be written holds the one send gate.)
+        if self.sync_rx.is_some() || self.graph_rx.is_some() || self.ews_extra_syncing() || self.send_gate.is_some() {
             return Err(tl!("Send/Receive is already running").to_string());
         }
         let cant_connect = || {
@@ -4212,8 +4213,12 @@ impl MailApp {
         let next = {
             // (The line is the engine's; whether an account's calendar job is at work is the window's,
             // and so is whether what was done to it is going up beside the run: it waits for that.)
-            let front_busy =
-                self.session.driver.round.queue.front().is_some_and(|(account, _)| self.calendar_job_for(*account) || self.ews_extra_for(*account));
+            // (It waits, too, while whole runs of other Exchange accounts are under way, as it waits for
+            // the first run: start_sync turns a start down then, and the account would be left out.
+            // And while a run waits for its marks to be written: that run holds the one send gate.)
+            let front_busy = self.session.driver.round.queue.front().is_some_and(|(account, _)| {
+                self.calendar_job_for(*account) || self.ews_extra_for(*account) || self.ews_extra_syncing() || self.send_gate.is_some()
+            });
             self.session.driver.round.next(|_| front_busy)
         };
         match next {
@@ -4916,12 +4921,18 @@ impl MailApp {
             return;
         }
         let Some(sent) = self.sync_password.take() else { return };
-        if self.passwords.get(&account) != Some(&sent) {
+        self.keep_password_sent(account, &sent);
+    }
+
+    /// [`Self::keep_accepted_password`] for the password `sent` that a run of `account` went with
+    /// (also a run beside the first, [`crate::ews_push_lane`]).
+    pub(crate) fn keep_password_sent(&mut self, account: Id, sent: &str) {
+        if self.passwords.get(&account).map(String::as_str) != Some(sent) {
             return;
         }
         let Some(key) = self.session.mailbox.account(account).map(|a| Self::secret_key("password", a)) else { return };
-        if self.secret_cache.get(&key) != Some(&sent) {
-            self.remember("password", account, &sent);
+        if self.secret_cache.get(&key).map(String::as_str) != Some(sent) {
+            self.remember("password", account, sent);
         }
     }
 

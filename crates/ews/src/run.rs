@@ -486,8 +486,9 @@ pub async fn sync_mail<E: HttpExchange>(
         }
     }
     // Then the conversations of mail listed before they were asked for (#795), unless the run was
-    // stopped or the server asked to be left alone. Never worth failing the run for.
-    let threads = if request.threads.is_empty() || out.stopped || out.busy_for.is_some() || out.auth_refused {
+    // stopped or the server asked to be left alone. Never worth failing the run for. (A run that
+    // only goes up reads nothing, whatever else the request carries.)
+    let threads = if request.threads.is_empty() || request.push_only || out.stopped || out.busy_for.is_some() || out.auth_refused {
         Vec::new()
     } else {
         run.conversations(&request.threads, &mut out).await

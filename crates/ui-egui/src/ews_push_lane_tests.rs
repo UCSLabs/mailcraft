@@ -179,6 +179,102 @@ fn a_run_beside_the_first_that_ends_without_its_last_piece_is_let_go_of() {
     assert_eq!(jobs.lock().unwrap().len(), 2, "not started again by the look for what waits to go");
 }
 
+/// The system's store, in memory.
+#[derive(Clone, Default)]
+struct Store(Arc<Mutex<HashMap<String, String>>>);
+
+impl crate::SecretStore for Store {
+    fn get(&self, key: &str) -> Option<String> {
+        self.0.lock().unwrap().get(key).cloned()
+    }
+    fn set(&self, key: &str, secret: &str) -> Result<(), mailcraft_host::SecretError> {
+        self.0.lock().unwrap().insert(key.to_string(), secret.to_string());
+        Ok(())
+    }
+    fn delete(&self, key: &str) {
+        self.0.lock().unwrap().remove(key);
+    }
+}
+
+/// The password an account read beside the first went with is kept once its server takes it, as the
+/// first run's is: otherwise a second account would be asked for it again after every restart.
+#[test]
+fn the_password_of_a_run_beside_the_first_is_kept_once_the_server_takes_it() {
+    let (mut a, _, pipes, _, second) = two_together();
+    let store = Store::default();
+    a.services.secrets = Some(Arc::new(store.clone()));
+    a.ui.remember_sign_in = true;
+    assert!(store.0.lock().unwrap().is_empty());
+    let answer = EwsMailResult { folders: Some(EwsFolderDeltas::default()), ..piece(second, "bo@example.org") };
+    pipes.lock().unwrap()[&second].send(answer).unwrap();
+    a.poll_sync();
+    let kept: Vec<String> = store.0.lock().unwrap().values().cloned().collect();
+    assert_eq!(kept, ["invented-password"], "kept for that account alone");
+}
+
+/// A password the server turned down is not kept.
+#[test]
+fn the_password_a_server_turned_down_is_not_kept() {
+    let (mut a, _, pipes, _, second) = two_together();
+    let store = Store::default();
+    a.services.secrets = Some(Arc::new(store.clone()));
+    a.ui.remember_sign_in = true;
+    let answer = EwsMailResult { auth_refused: true, folders: Some(EwsFolderDeltas::default()), ..piece(second, "bo@example.org") };
+    pipes.lock().unwrap()[&second].send(answer).unwrap();
+    a.poll_sync();
+    assert!(store.0.lock().unwrap().is_empty());
+}
+
+/// The first run ends while two whole runs still go: the next account of the round waits, as it
+/// waits for the first run, and is not left out of the round (an account that is not Exchange is
+/// never read beside the others, so it is the one that would be).
+#[test]
+fn the_front_of_the_round_waits_while_whole_runs_beside_the_first_go() {
+    let (mut a, jobs, pipes) = app();
+    let ids: Vec<u64> =
+        ["ada", "bo", "cy"].iter().enumerate().map(|(n, who)| account(&mut a, &format!("{who}@example.org"), &format!("M{n}"))).collect();
+    let imap =
+        a.execute("account.add", json!({"email": "di@imap.example", "incoming": {"host": "imap.example.org"}})).unwrap()["id"].as_u64().unwrap();
+    assert_eq!(a.execute("ui.sync", json!({})).unwrap()["started"], true);
+    a.auto_sync();
+    a.auto_sync();
+    assert_eq!(jobs.lock().unwrap().len(), 3, "three Exchange accounts together");
+    pipes.lock().unwrap()[&ids[0]].send(EwsMailResult { partial: false, ..piece(ids[0], "ada@example.org") }).unwrap();
+    a.poll_sync();
+    a.auto_sync();
+    assert!(a.session.driver.round.queue.iter().any(|(account, _)| *account == imap), "it waits its turn");
+    assert!(a.ews_extra_syncing(), "the two whole runs go on");
+}
+
+/// What the owner did to an account whose run was stopped does not bring that run back.
+#[test]
+fn a_run_the_owner_stopped_is_not_made_again_for_a_change() {
+    let (mut a, _, pipes, _, second) = two_together();
+    a.execute("ui.cancelSync", json!({})).unwrap();
+    delete_one(&mut a, second);
+    a.ews_extra_checked = 0.0;
+    a.auto_sync();
+    pipes.lock().unwrap()[&second].send(EwsMailResult { partial: false, stopped: true, ..piece(second, "bo@example.org") }).unwrap();
+    a.poll_sync();
+    assert!(a.session.driver.round.queue.iter().all(|(account, _)| *account != second), "not put back in the round");
+}
+
+/// A change made after the server took earlier ones still calls off the read: what was waiting
+/// when the run began is not the line, what is waiting now is.
+#[test]
+fn a_change_after_the_server_took_earlier_ones_still_calls_the_read_off() {
+    let (mut a, _, _, _, second) = two_together();
+    // Something waited when the run began, and the server has taken it since.
+    a.ews_extra.iter_mut().filter(|run| run.account == second).for_each(|run| run.set_baseline(1));
+    a.ews_extra_checked = 0.0;
+    a.auto_sync();
+    assert!(a.ews_extra.iter().all(|run| !run.is_cancelled()), "nothing new: the line comes down to what is waiting");
+    delete_one(&mut a, second);
+    a.ews_extra_checked = 0.0;
+    a.auto_sync();
+    assert!(a.ews_extra.iter().any(|run| run.account == second && run.is_cancelled()), "the new change calls it off");
+}
+
 /// Stop reaches every run, and what a mailbox that takes the place of the open one leaves is let go of.
 #[test]
 fn stop_calls_off_every_run_under_way() {

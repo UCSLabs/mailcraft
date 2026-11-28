@@ -24447,8 +24447,9 @@ msgstr "le dossier a été renuméroté pendant sa lecture"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "les dossiers de ce compte n'ont pas encore été lus"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

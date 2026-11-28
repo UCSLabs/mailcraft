@@ -24624,8 +24624,9 @@ msgstr "dosarul a fost renumerotat în timpul citirii"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "dosarele acestui cont nu au fost încă citite"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

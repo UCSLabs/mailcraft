@@ -24539,8 +24539,9 @@ msgstr "a mappa számozása megváltozott olvasás közben"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "ennek a fióknak a mappáit még nem olvastuk be"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

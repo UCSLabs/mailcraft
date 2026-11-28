@@ -24631,8 +24631,9 @@ msgstr "folder został ponumerowany od nowa podczas odczytu"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "foldery tego konta nie zostały jeszcze odczytane"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

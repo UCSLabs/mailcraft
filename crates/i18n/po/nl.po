@@ -23923,8 +23923,9 @@ msgstr "de map is tijdens het lezen opnieuw genummerd"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "de mappen van dit account zijn nog niet gelezen"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

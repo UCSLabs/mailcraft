@@ -54,6 +54,10 @@ pub(crate) struct ExtraRun {
     baseline: usize,
     /// It was called off to let what the owner did go up first: it goes on after.
     called_off: bool,
+    /// The owner pressed Stop: it ends at its next safe place and is not made again.
+    stopped: bool,
+    /// The password it went with, worth remembering once the server takes it (as the first run's is).
+    sent: Option<String>,
     /// A piece said the server turned the password down, or a certificate asks the owner.
     refused: bool,
     untrusted: bool,
@@ -67,6 +71,11 @@ impl ExtraRun {
     #[cfg(test)]
     pub(crate) fn is_cancelled(&self) -> bool {
         self.cancel.load(Ordering::Relaxed)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn set_baseline(&mut self, waiting: usize) {
+        self.baseline = waiting;
     }
 }
 
@@ -93,6 +102,7 @@ impl MailApp {
         for run in &mut self.ews_extra {
             run.cancel();
             run.called_off = false;
+            run.stopped = true;
         }
     }
 
@@ -151,12 +161,23 @@ impl MailApp {
             return;
         }
         self.ews_extra_checked = now;
-        let reading: Vec<(usize, Id)> =
-            self.ews_extra.iter().enumerate().filter(|(_, run)| !run.push_only && !run.called_off).map(|(at, run)| (at, run.account)).collect();
+        // (A run the owner stopped is not called off again: it would be made again after.)
+        let reading: Vec<(usize, Id)> = self
+            .ews_extra
+            .iter()
+            .enumerate()
+            .filter(|(_, run)| !run.push_only && !run.called_off && !run.stopped)
+            .map(|(at, run)| (at, run.account))
+            .collect();
         for (at, account) in reading {
-            if self.waiting_to_go(account) > self.ews_extra[at].baseline {
+            let waiting = self.waiting_to_go(account);
+            if waiting > self.ews_extra[at].baseline {
                 self.ews_extra[at].cancel();
                 self.ews_extra[at].called_off = true;
+            } else {
+                // What the server took meanwhile lowers the line: a change made after that counts.
+                // (What it refused stays, and stays counted: it is not a new change.)
+                self.ews_extra[at].baseline = waiting;
             }
         }
     }
@@ -189,6 +210,7 @@ impl MailApp {
     /// Hand the run to the host and keep it as one beside the first.
     fn hand_extra(&mut self, account: Id, request: EwsMailRequest, secret: String, push_only: bool, quiet: bool, baseline: usize) -> bool {
         let cancel = Arc::new(AtomicBool::new(false));
+        let sent = Some(secret.clone());
         let job = EwsJob { request, secret, cancel: cancel.clone() };
         let Ok(pieces) = self.hand_ews(account, job) else { return false };
         self.ews_extra.push(ExtraRun {
@@ -200,6 +222,8 @@ impl MailApp {
             quiet,
             baseline,
             called_off: false,
+            stopped: false,
+            sent,
             refused: false,
             untrusted: false,
         });
@@ -316,6 +340,10 @@ impl MailApp {
         let (account, push_only) = (self.ews_extra[at].account, self.ews_extra[at].push_only);
         let (last, whole) = (!piece.partial, piece.whole);
         self.ews_extra[at].refused |= piece.auth_refused;
+        // The server answered with its folders or its mail: it took the password (#802).
+        if piece.server_answered() {
+            self.keep_extra_password(at);
+        }
         if !push_only {
             self.note_read_piece(at, &piece);
         }
@@ -333,6 +361,17 @@ impl MailApp {
         if last {
             self.finish_extra(at, whole);
         }
+    }
+
+    /// The password the run at `at` went with is worth remembering (when the owner lets it be): once
+    /// a run at most, and never after a piece said a sign-in was refused.
+    fn keep_extra_password(&mut self, at: usize) {
+        if self.ews_extra[at].refused || !self.ui.remember_sign_in {
+            return;
+        }
+        let Some(sent) = self.ews_extra[at].sent.take() else { return };
+        let account = self.ews_extra[at].account;
+        self.keep_password_sent(account, &sent);
     }
 
     /// What a piece of a run that reads says besides its mail: more to fetch whole, how the run
@@ -373,6 +412,7 @@ impl MailApp {
             // The certificate question comes first (File › Info): no round by itself tries again.
             self.jmap_refused.insert(account);
         } else if whole && !push_only {
+            self.keep_extra_password(at);
             self.ews_certificate.remove(&account);
             self.note_sync_problems(account, &[], true);
         }

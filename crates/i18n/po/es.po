@@ -24544,8 +24544,9 @@ msgstr "la carpeta se numeró de nuevo mientras se leía"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "las carpetas de esta cuenta aún no se han leído"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

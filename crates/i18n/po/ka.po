@@ -24461,8 +24461,9 @@ msgstr ""
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "ამ ანგარიშის საქაღალდეები ჯერ არ წაკითხულა"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs

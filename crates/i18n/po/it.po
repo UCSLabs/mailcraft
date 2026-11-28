@@ -24519,8 +24519,9 @@ msgstr "la cartella è stata rinumerata durante la lettura"
 
 #. what a command says
 #: crates/engine/src/cmd/ews_mail.rs
+#, fuzzy
 msgid "the folders of this account haven't been read yet"
-msgstr ""
+msgstr "le cartelle di questo account non sono ancora state lette"
 
 #. what a command says
 #: crates/engine/src/import_pst.rs
