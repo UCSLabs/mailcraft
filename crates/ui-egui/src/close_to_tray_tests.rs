@@ -73,6 +73,32 @@ fn the_command_sets_and_toggles_but_refuses_invalid_values() {
     assert!(!app.ui.close_to_tray);
 }
 
+#[test]
+fn the_start_to_tray_command_couples_close_to_tray_on() {
+    let mut app = MailApp::new(mailcraft_engine::Session::new(mailcraft_model::Mailbox::default()), Services::default());
+    assert!(!app.ui.start_to_tray);
+    assert!(!app.ui.close_to_tray);
+    // Turning start-to-tray on also switches close-to-tray on: a hidden start needs a tray
+    // icon to restore the window from.
+    assert_eq!(app.execute("ui.startToTray", json!({"value": true})).unwrap()["value"], true);
+    assert!(app.ui.start_to_tray);
+    assert!(app.ui.close_to_tray);
+    // Turning start-to-tray off does not switch close-to-tray off (one-way coupling).
+    assert_eq!(app.execute("ui.startToTray", json!({"value": false})).unwrap()["value"], false);
+    assert!(!app.ui.start_to_tray);
+    assert!(app.ui.close_to_tray);
+    // Toggling with no value flips start_to_tray and re-couples close_to_tray when turning on.
+    assert_eq!(app.execute("ui.startToTray", json!({})).unwrap()["value"], true);
+    assert!(app.ui.start_to_tray);
+    assert!(app.ui.close_to_tray);
+    // Invalid values are refused and leave both untouched.
+    for junk in [json!(null), json!(1), json!("false"), json!([]), json!({})] {
+        assert!(app.execute("ui.startToTray", json!({"value": junk})).is_err());
+        assert!(app.ui.start_to_tray);
+        assert!(app.ui.close_to_tray);
+    }
+}
+
 #[cfg(not(target_arch = "wasm32"))]
 #[test]
 fn the_checkbox_works_in_general_in_light_and_dark() {
