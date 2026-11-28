@@ -445,6 +445,8 @@ pub struct AccountSetup {
     app_passwords: bool,
     /// A new Google account starts with OAuth; its password field appears only on request.
     google_app_password_selected: bool,
+    /// The steps for making a Google app password are open under the password field.
+    app_password_steps: bool,
     /// Google sign-in is open only to the project's testers ([`Services::google_testers_only`]):
     /// a new Gmail account starts on an app password.
     google_testers_only: bool,
@@ -531,6 +533,8 @@ pub struct AccountSetup {
     /// and as the slider has it now (#143). Saved through `ui.keepOffline`, which asks first
     /// when it is shorter.
     keep_offline: Option<(KeepOffline, KeepOffline)>,
+    /// The desktop new-mail alert setting as it was and as the box has it now.
+    desktop_mail_alerts: Option<(bool, bool)>,
     /// For the settings of an account of its own: whether Delete on a whole conversation asks
     /// first, as it was and as the box has it now (#503).
     ask_conversation: Option<(bool, bool)>,
@@ -622,6 +626,7 @@ impl AccountSetup {
             picked: false,
             app_passwords: false,
             google_app_password_selected: false,
+            app_password_steps: false,
             google_testers_only: false,
             service: String::new(),
             note: String::new(),
@@ -658,6 +663,7 @@ impl AccountSetup {
             directory: Directory::Unknown,
             edit: None,
             keep_offline: None,
+            desktop_mail_alerts: None,
             ask_conversation: None,
             senders: None,
             color: None,
@@ -741,6 +747,9 @@ impl AccountSetup {
         // (A shared mailbox asks as its owner does.)
         if !a.is_shared() {
             w.ask_conversation = Some((!a.skip_conversation_question, !a.skip_conversation_question));
+        }
+        if a.kind.has_server() && !a.is_shared() {
+            w.desktop_mail_alerts = Some((!a.mute_desktop_mail, !a.mute_desktop_mail));
         }
         w.senders = senders::Senders::of(a);
         if a.is_gmail() {
@@ -1643,6 +1652,7 @@ impl AccountSetup {
         self.edit.as_ref().is_some_and(|edit| self.fields() == edit.baseline)
             && self.password.0.is_empty()
             && self.color.is_none_or(|(was, color)| was == color)
+            && self.desktop_mail_alerts.is_none_or(|(was, on)| was == on)
             && !self.senders.as_ref().is_some_and(senders::Senders::changed)
     }
 
@@ -1665,6 +1675,13 @@ impl AccountSetup {
         {
             self.error = e;
             return false;
+        }
+        if let Some((_, on)) = self.desktop_mail_alerts.filter(|(was, on)| was != on) {
+            if let Err(e) = app.execute("account.edit", json!({"id": id, "desktopMailAlerts": on})) {
+                self.error = e;
+                return false;
+            }
+            self.desktop_mail_alerts = Some((on, on));
         }
         if let Some((_, ask)) = self.ask_conversation.filter(|(was, ask)| was != ask) {
             if let Err(e) = app.execute("account.edit", json!({"id": id, "askBeforeDeletingConversation": ask})) {
@@ -2133,10 +2150,8 @@ impl AccountSetup {
     fn password_page(&mut self, app: &MailApp, ui: &mut Ui, pass: &mut Pass) -> Option<Action> {
         let t = pass.t;
         let asks = app.services.test_account.is_some() || app.services.sync.is_some();
-        let google = self.edit.is_none()
-            && self.oauth.is_none()
-            && self.incoming.host.trim().eq_ignore_ascii_case("imap.gmail.com")
-            && app.services.sign_in.is_some();
+        let google_password = self.edit.is_none() && self.oauth.is_none() && self.incoming.host.trim().eq_ignore_ascii_case("imap.gmail.com");
+        let google = google_password && app.services.sign_in.is_some();
         let configured = app.google_registration_ready();
         let oauth_first = self.google_oauth_first(app);
         let title = if self.service.is_empty() {
@@ -2232,7 +2247,13 @@ impl AccountSetup {
                             note(ui, google_testers_note(), t.text_dim);
                         }
                     }
+                }
+                if google_password {
                     note(ui, tl!("Use a Google app password, not your everyday Google account password."), t.text_dim);
+                    disclosure(ui, tl!("How do I make an app password?"), &mut self.app_password_steps, &t);
+                    if self.app_password_steps {
+                        indented(ui, |ui| google_app_password_steps(ui, &t));
+                    }
                 }
                 if asks {
                     self.password_field(ui, pass, app.secret_watch(), "");
@@ -2248,7 +2269,7 @@ impl AccountSetup {
             }
         });
         problem(ui, &self.error);
-        if self.app_passwords && !oauth_first {
+        if self.app_passwords && !oauth_first && !google {
             egui::Frame::NONE.inner_margin(Margin { left: PAD, right: PAD, top: 0, bottom: 0 }).show(ui, |ui| {
                 ui.hyperlink(GOOGLE_APP_PASSWORDS);
             });
@@ -2490,6 +2511,9 @@ impl AccountSetup {
                     *keep = steps.get(index).copied().unwrap_or(*keep);
                     ui.label(crate::keep_offline::label(*keep));
                 });
+            }
+            if let Some((_, on)) = self.desktop_mail_alerts.as_mut() {
+                ui.checkbox(on, tl!("Show a desktop alert when new mail arrives"));
             }
             if let Some((_, ask)) = self.ask_conversation.as_mut() {
                 caption(ui, tl!("Deleting"), &t);
@@ -2784,6 +2808,26 @@ fn indented(ui: &mut Ui, add: impl FnOnce(&mut Ui)) {
 /// Where a Google account's app passwords are made.
 const GOOGLE_APP_PASSWORDS: &str = "https://myaccount.google.com/apppasswords";
 
+/// How a Google app password is made, for an owner who has never made one: Google makes them
+/// only for an account with 2-Step Verification, and shows each one once.
+fn google_app_password_steps(ui: &mut Ui, t: &Tokens) {
+    note(ui, tl!("1. Turn on 2-Step Verification for your Google account, if it isn't on yet: Google offers app passwords only then."), t.text_dim);
+    note(
+        ui,
+        tl!("2. Open Google's App passwords page, sign in to the account you are adding, type a name such as MailCraft and press Create."),
+        t.text_dim,
+    );
+    ui.hyperlink_to(tl!("Open Google's App passwords page"), GOOGLE_APP_PASSWORDS);
+    note(ui, tl!("3. Copy the 16-letter password Google shows, which it shows only once, and paste it here."), t.text_dim);
+    note(
+        ui,
+        tl!(
+            "If Google's page says the setting isn't available, either 2-Step Verification is off or the account doesn't allow app passwords (some work or school accounts, accounts with Advanced Protection, and accounts whose 2-Step Verification uses only security keys)."
+        ),
+        t.text_dim,
+    );
+}
+
 fn google_testers_note() -> &'static str {
     tl!("Google sign-in is open only to invited testers while Google reviews MailCraft.")
 }
@@ -2906,6 +2950,8 @@ mod tests {
     mod found_servers;
     /// Google-specific keyboard, accessibility and compact-window behavior in both themes.
     mod google_accessibility_tests;
+    /// The steps for making a Google app password, under the password field.
+    mod google_app_password_steps_tests;
     /// Existing Gmail account preservation and transactional OAuth conversion.
     mod google_conversion_tests;
     /// OAuth-first new-account setup, deliberate app-password fallback, and missing registration.

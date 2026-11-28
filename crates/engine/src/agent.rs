@@ -22,6 +22,8 @@ use serde_json::{Value, json};
 
 pub mod bind;
 #[cfg(test)]
+mod contact_move_tests;
+#[cfg(test)]
 mod delete_form_tests;
 
 use crate::cmd::compose::{LEAVING, draft_gone};
@@ -308,6 +310,7 @@ const SAFE: &[&str] = &[
     "view.taskFilter",
     "view.taskAccount",
     "view.peopleAccount",
+    "view.peopleFolder",
     // (People shows the address list; nothing is looked up for an agent: only what the owner types
     // in the window's search box is, #1262.)
     "people.addressBook",
@@ -507,6 +510,9 @@ const DELETE: &[&str] = &[
     "people.delete",
     // A merge removes the contacts merged into the kept one.
     "people.merge",
+    // A move into another contacts folder (#1144) deletes the contacts where they were, on that
+    // account's server too, once the new folder has them.
+    "people.moveToFolder",
     "tasks.delete",
     "category.remove",
     "compose.discard",
@@ -613,6 +619,7 @@ const SETTINGS: &[&str] = &[
     "signature.close",
     "ui.alwaysDownloadPictures",
     "ui.downloadPicturesAutomatically",
+    "ui.downloadPicturesFromContacts",
     "ui.senderImages",
     "ui.desktopAlerts",
     "ui.closeToTray",
@@ -627,6 +634,8 @@ const SETTINGS: &[&str] = &[
 ];
 
 const NEVER: &[&str] = &[
+    "ui.signatureFile",
+    "ui.chooseSignatureFile",
     // The owner's Dismiss and Snooze of a follow-up reminder (#948): an agent never does either
     // for the owner.
     "mail.dismissReminder",
@@ -660,6 +669,8 @@ const NEVER: &[&str] = &[
     "sync.applyEventChanges",
     "sync.applyEvents",
     "sync.applyContacts",
+    "sync.contactChanges",
+    "sync.applyContactChanges",
     "sync.taskChanges",
     "sync.applyTaskChanges",
     "sync.applyTasks",
@@ -700,6 +711,7 @@ const NEVER: &[&str] = &[
     "ui.calendarPaste",
     // A file from a message opened with another program: only ever the owner's own doing.
     "mail.openAttachment",
+    "ui.openDraftAttachment",
     "ui.previewAttachment",
     // Installing a new version, or going back to the one before: only the owner's click.
     "ui.restartToUpdate",
@@ -2986,6 +2998,31 @@ fn what_it_does(s: &Session, id: &str, params: &Value) -> String {
                 name(p::id(params, "keep"))
             )
         }
+        "people.moveToFolder" => {
+            let ids: Vec<Id> = match params.get("ids").and_then(Value::as_array) {
+                Some(a) => a.iter().take(1000).filter_map(Value::as_u64).collect(),
+                None => s.sel.contact.into_iter().collect(),
+            };
+            let names: Vec<String> = ids.iter().filter_map(|c| s.mailbox.contact(*c)).map(|c| quoted(&c.name())).collect();
+            // 0 is On this computer, which `p::id` doesn't take.
+            let into = match params.get("folder").and_then(Value::as_u64) {
+                Some(0) => "On this computer".to_string(),
+                Some(f) => s.mailbox.contact_folders.iter().find(|x| x.id == f).map_or_else(
+                    || "a folder that isn't there".to_string(),
+                    |x| {
+                        let whose = s.mailbox.account(x.account).map_or_else(|| "another account".to_string(), |a| clip(&a.email, 80));
+                        format!("{} of {whose}", quoted(&x.name))
+                    },
+                ),
+                None => "no folder".to_string(),
+            };
+            let who = if names.is_empty() {
+                "(no contacts)".to_string()
+            } else {
+                format!("{} ({})", plural(names.len(), "{n} contact", "{n} contacts"), some(&names, 8))
+            };
+            format!("move {who} into {into}, deleting them where they are now")
+        }
         "tasks.new" | "tasks.fromMessage" if new_task_onto(s, id, params).is_some() => {
             let account = new_task_onto(s, id, params).and_then(|a| s.mailbox.account(a));
             format!("put a task in the To Do of {}", account.map(|a| a.email.trim().to_string()).unwrap_or_else(|| "an account".to_string()))
@@ -3792,6 +3829,38 @@ pub(crate) fn overstep(before: &Mailbox, after: &Mailbox, allow: &[Class]) -> Op
         }
     }
     None
+}
+
+/// Marks the contacts an agent's command made, or gave an address the contact didn't have
+/// (#891), as the agent's ([`mailcraft_model::Contact::by_agent`]): "Download pictures in mail
+/// from people in my contacts" doesn't trust them until the owner edits them. Whatever path the
+/// command took there (`people.new`, `people.edit`, `people.fromMessage`, a vCard or .pst import,
+/// a merge). A merge also preserves any existing mark, even when the owner runs it.
+/// [`Session::run`](crate::Session::run) checks what agents do.
+pub(crate) fn mark_agent_contacts(before: &Mailbox, after: &mut Mailbox) {
+    let same = |a: &str, b: &str| a.trim().eq_ignore_ascii_case(b.trim());
+    let marked: Vec<Id> = after
+        .contacts
+        .iter()
+        .filter(|(_, c)| !c.by_agent)
+        .filter(|(id, c)| match before.contacts.get(id) {
+            // (Not touched: most commands touch no contact, and the copy shares what they leave.)
+            Some(old) if std::sync::Arc::ptr_eq(old, c) => false,
+            None => c.emails.iter().any(|e| !e.value.trim().is_empty()),
+            // A contact the agent's command replaced keeps what it was: the agent's stays the agent's
+            // (the same file opened a second time brings it back unmarked, with the same addresses).
+            // Re-marking after an undo or redo of an owner-confirmed agent contact is deliberate: it errs
+            // toward not trusting.
+            Some(old) if old.by_agent => true,
+            Some(old) => c.emails.iter().any(|e| !e.value.trim().is_empty() && !old.emails.iter().any(|o| same(&o.value, &e.value))),
+        })
+        .map(|(id, _)| *id)
+        .collect();
+    for id in marked {
+        if let Ok(c) = after.contact_mut(id) {
+            c.by_agent = true;
+        }
+    }
 }
 
 #[cfg(test)]

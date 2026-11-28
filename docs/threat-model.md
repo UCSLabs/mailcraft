@@ -75,8 +75,23 @@ Writes any bytes into a message: crafted MIME, HTML, headers, attachments, pictu
   a `data:` address is never sent on. Pictures on the web only on the owner's say-so, and only
   `<img>` addresses (no backgrounds, style sheets, fonts or frames, nothing 2 px or smaller), so a
   tracking pixel doesn't fire.
-- **"Always download pictures" is not a trust in a `From:` line.** A remembered sender or domain
-  holds only for a message whose topmost `Authentication-Results` header says `dmarc=pass` (or
+- **"Always download pictures" is not a trust in a `From:` line**, and nor is "Download pictures
+  in mail from people in my contacts" (#891): a contact is an address anybody can write in a
+  `From:` too. A remembered sender or domain, and a sender in the contacts (that address exactly,
+  ASCII only and letter case aside, never a lookalike or another address at its domain;
+  `reading::remote::from_contact`; the server's word below is for the sender's domain, not the
+  mailbox, so whoever may send authenticated mail for a contact's domain can write the contact's
+  address, and File › Options says the switch trusts no more than that; and not a contact an
+  agent made or gave an address to: `people.new`, `people.edit`, `people.fromMessage` and a vCard
+  or .pst import are safe for agents, so the engine marks what they add (`Contact::by_agent`,
+  `agent::mark_agent_contacts`, whatever the command, `file.open` with `data` included, and a
+  server's update of a contact keeps it. Command parameters cannot set it). A merge keeps the
+  mark if any input contact has it.
+  Only the owner's `people.edit` clears the mark. Until then none of the merged contact's
+  addresses count, and the contact's card in People says so. Contacts saved before the mark was
+  introduced load unmarked. Contacts brought in by an owner's import, including a PST Recipient
+  Cache, count as ordinary contacts. Contact addresses are cached until the mailbox changes), holds only for a message
+  whose topmost `Authentication-Results` header says `dmarc=pass` (or
   `compauth=pass`) for the sender's domain, or, where it gives no DMARC verdict, `dkim=pass` for a
   signature of that domain, **and was written by the account's own server**
   (`crates/model/src/auth_results.rs`, `vouched`, `from_own_server`): for a Microsoft account (or
@@ -379,6 +394,34 @@ Answers IMAP, SMTP or Microsoft Graph with whatever it likes.
   as a command's params (`compose.checkNames` `found`), puts a name in only when exactly one
   person matches it, and asks the owner to choose among several. A server can offer a wrong
   person for a name; the owner sees the address before the message goes.
+- **An Offline Address Book is a server's file, read as hostile** (#1393). People's Address Book
+  downloads an Exchange server account's whole address list when it is first shown in a run (and
+  a day later, when its table of contents names another generation than the one held): Autodiscover at the host of the account's own Exchange Web Services address
+  for `OABUrl`, which is taken only when it names that same host (so the sign-in goes nowhere
+  else), `oab.xml` there (at most 2 MB, read by the hostile XML reader, a file name of letters,
+  digits, `.`, `-` and `_` alone), and the full file of version 4, at most 16 MB, unpacked to at most 256 MB with at most 128 MB of its values kept while it is read
+  (each value counting 48 bytes more for what it costs in memory, so that millions of empty ones
+  are held too; at most 6.4 million values, 32 for each person of the 200,000 kept; a schema that
+  lists a property twice is refused; a list that reaches one of these caps, or has more than
+  200,000 entries, is read up to there and no further (`Limits::keep_first`), and the Address Book
+  doesn't list it as the whole: names are looked up on the server as without one;
+  `crates/ews/src/oab.rs`; each answer is held to its cap there too, whatever the transport
+  read, and a download nobody waits for any more asks nothing after the request on its way). The
+  file is unpacked and read by `mailcraft-oab`, written from
+  [MS-OXOAB] and [MS-PATCH]: no panics, no indexing or unchecked arithmetic, every block's CRC
+  and the file's checked, every size checked against the bytes there are and against caps before
+  anything is allocated (each value of a multi-valued property counted against the cap on
+  values), a match never before the start or across a block or a chunk, every chunk, the last
+  too, ending where its size says; its own
+  property tests and fuzz target. Of each entry only what `DirectoryPerson::checked` keeps for a
+  look-up is kept (at most 200,000 people), in memory while the program runs and never written,
+  with the entry's own S/MIME certificates (`PidTagAddressBookX509Certificate`, and those inside
+  the CMS SignedData of `PidTagUserX509Certificate`, read by the S/MIME crate's strict SignedData
+  reader, at most 1 MB and 16 certificates, nothing in it checked): an authority's and what the
+  certificate reader can't read are left out, at most eight of at most 16 KB each, each once,
+  64 MB for the whole list, never in what an agent is given and never trusted for being there. The card reads them with the same certificate reader as a contact's card; Add to
+  Contacts puts on the contact's card only those `keys.import` would take (for mail, not an
+  authority's).
 - A compromised server can still read and change the mail it holds. That is the server's job, not
   something a client can prevent; end-to-end encryption would be (see Known limits).
 
@@ -707,7 +750,7 @@ A malicious or vulnerable dependency, GitHub Action or build step.
   release downloads by URL (nfpm, appimagetool and the AppImage runtime, the Artifact Signing
   client, rustup-init, wasm-opt) and WiX (a NuGet package) is an exact version checked against a recorded sha256 before
   use; trunk runs offline. Every release file gets a build provenance attestation
-  (`gh attestation verify <file> -R UCS-Care-Group/mailcraft`).
+  (`gh attestation verify <file> -R UCSLabs/mailcraft`).
 - Pure-Rust TLS (rustls), and no handwritten JavaScript.
 
 ## Assurance case

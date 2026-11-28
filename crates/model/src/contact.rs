@@ -193,10 +193,29 @@ pub struct Contact {
     /// never set by a command's params. Not written to a vCard.
     #[serde(skip_serializing_if = "String::is_empty")]
     pub imported_from: String,
+    /// An agent made the contact or gave it an address, and the owner has not edited it since
+    /// (#891): its addresses are not trusted for pictures, as the owner's own contacts are. Set by
+    /// the engine after an agent's command and carried into a merge if any input has it. Only
+    /// the owner's `people.edit` clears it. A command's params cannot set it and vCards omit it.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub by_agent: bool,
     /// Set for a contact that an account's server keeps: it is a copy of the server's, and what
     /// the server calls it is how the next download finds it again.
     #[serde(skip_serializing_if = "Origin::is_local")]
     pub origin: Origin,
+    /// The contacts folder it is kept in ([`crate::contact_sync::ContactFolder`]); 0 for On this
+    /// computer.
+    #[serde(skip_serializing_if = "is_no_folder")]
+    pub folder: Id,
+    /// Made here by Move to contacts folder (#1144) from the contact that had this id in a
+    /// server's folder: that one's deletion there waits until the server has made this one, and
+    /// comes back if the server won't. 0 for none. This computer's only: never sent or shown.
+    #[serde(skip_serializing_if = "is_no_folder")]
+    pub moved_from: Id,
+}
+
+fn is_no_folder(id: &Id) -> bool {
+    *id == 0
 }
 
 impl Contact {
