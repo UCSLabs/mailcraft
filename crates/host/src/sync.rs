@@ -137,6 +137,8 @@ struct Running {
     stopped: bool,
     /// Lines for the owner's log from the pieces taken so far.
     errors: Vec<String>,
+    /// The run reads every folder (its plan's full sweep).
+    full: bool,
 }
 
 /// What [`SendReceive::adopt_tokens`] did.
@@ -254,6 +256,17 @@ impl SendReceive {
     /// Whether a run is under way.
     pub fn busy(&self) -> bool {
         self.running.is_some()
+    }
+
+    /// The account whose run is under way, if one is.
+    pub fn running_account(&self) -> Option<Id> {
+        self.running.as_ref().map(|r| r.account)
+    }
+
+    /// Whether the run under way reads every folder (a full sweep), as its plan said; false when
+    /// none is under way.
+    pub fn running_full_sweep(&self) -> bool {
+        self.running.as_ref().is_some_and(|r| r.full)
     }
 
     /// Call the run under way off at its next safe place; the rest of the round with it.
@@ -520,8 +533,15 @@ impl SendReceive {
                 return Step::LeftOut { account, why: Left::Refused };
             }
         };
+        // Whose sign-in the run must come back with: the account's own (a shared mailbox's owner's).
+        let signer = if plan.owner.is_shared() { session.mailbox.owner_of(plan.owner.id).cloned() } else { Some(plan.owner.clone()) };
+        let Some(signer) = signer else {
+            session.sync_progress.leave_out(account);
+            return Step::LeftOut { account, why: Left::Gone };
+        };
         // What it sends is marked so, on disk, before it leaves (AU3-26).
         let going: Vec<Id> = plan.mail.sends.iter().map(|up| up.message).collect();
+        let full = plan.mail.full;
         if let Some(rev) = session.send_marking(account, &going)
             && let Some(persist) = ctx.persist
             && let Err(e) = persist(session, rev)
@@ -552,6 +572,10 @@ impl SendReceive {
             mail: Some(plan.mail),
             mail_pieces: Some(pieces_tx),
             cancel: self.cancel.clone(),
+            // A renewed sign-in that isn't the account's own (a shared mailbox's owner's) stops
+            // the run before the Outbox or anything of the mail goes.
+            signer: Some(signer),
+            contacts: None,
         };
         session.sync_progress.phase(account, SyncPhase::Sending);
         let runner = self.runner.clone();
@@ -566,6 +590,7 @@ impl SendReceive {
             called_off: false,
             stopped: false,
             errors: Vec::new(),
+            full,
         });
         Step::Started { account }
     }

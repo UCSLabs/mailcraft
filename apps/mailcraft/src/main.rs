@@ -31,6 +31,8 @@ mod block_on;
 mod browser;
 #[cfg(test)]
 mod calendar_flow;
+#[cfg(test)]
+mod categories_job_tests;
 mod clipboard;
 #[cfg(any(target_os = "linux", target_os = "freebsd"))]
 mod clipboard_mime;
@@ -46,6 +48,8 @@ mod diagnostics;
 mod diagnostics_problem_tests;
 #[cfg(test)]
 mod ews_mail_flow;
+#[cfg(test)]
+mod ews_resolve_flow;
 mod ews_runner;
 mod ews_setup;
 #[cfg(test)]
@@ -101,6 +105,8 @@ mod shared_calendar_flow;
 #[cfg(test)]
 mod shared_send_flow;
 mod single_instance;
+#[cfg(any(target_os = "windows", target_os = "macos"))]
+mod spelling;
 mod system_locale;
 mod system_motion;
 #[cfg(test)]
@@ -168,7 +174,16 @@ impl HostUpdates {
     }
 }
 
+/// What a window's frame is cleared to before it is drawn: eframe's own dark grey, opaque. eframe's
+/// has some transparency, which an opaque window never showed; on Windows the frames go to the
+/// desktop with premultiplied alpha (`graphics::premultiplied_backbuffer`), and a see-through
+/// clear colour would let what is behind the window show where nothing is drawn.
+const CLEAR_COLOR: egui::Color32 = egui::Color32::from_rgb(12, 12, 12);
+
 impl eframe::App for App {
+    fn clear_color(&self, _visuals: &egui::Visuals) -> [f32; 4] {
+        CLEAR_COLOR.to_normalized_gamma_f32()
+    }
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         #[cfg(target_os = "macos")]
         apple_events::poll(&self.7, &mut self.0, ctx);
@@ -196,6 +211,7 @@ impl eframe::App for App {
         {
             guard.follow(self.0.session.path.as_deref());
         }
+        save_prefs_when_changed(&self.0, ctx);
         self.3.show(frame);
         let prev = self.0.ui.window;
         self.0.ui.window = ctx.input(|i| WindowGeometry::track(prev, i.viewport(), i.viewport_rect().size()));
@@ -448,6 +464,60 @@ fn write_prefs(path: &std::path::Path, ui: &UiState) -> std::io::Result<()> {
     mailcraft_engine::store::write_atomic(path, &serde_json::to_vec_pretty(ui).map_err(std::io::Error::other)?)
 }
 
+/// What the settings said when they were last looked at, and when.
+struct PrefsSeen {
+    at: std::time::Instant,
+    text: Vec<u8>,
+}
+
+/// The settings are also written while the window is in use, not only when it is closed: a
+/// choice made in a window that then stops without closing properly (killed, crashed, the
+/// computer switched off) is not lost. At most every two seconds, and only when they changed.
+fn save_prefs_when_changed(app: &MailApp, ctx: &egui::Context) {
+    const EVERY: std::time::Duration = std::time::Duration::from_secs(2);
+    static SEEN: std::sync::Mutex<Option<PrefsSeen>> = std::sync::Mutex::new(None);
+    if let (Some(path), Ok(mut seen)) = (prefs_path(), SEEN.lock())
+        && let Look::Wait(left) = save_prefs_when_changed_at(app, &path, &mut seen, EVERY)
+    {
+        // A change made in the wait is looked at when it is over, even if the window is idle.
+        ctx.request_repaint_after(left);
+    }
+}
+
+/// What [`save_prefs_when_changed_at`] did.
+#[derive(Debug, PartialEq)]
+enum Look {
+    /// Looked at too lately: the time left before the next look.
+    Wait(std::time::Duration),
+    /// Looked at, nothing to write (or the first look, or nothing may be written).
+    Same,
+    /// The settings changed and were written.
+    Saved,
+    /// The settings changed and could not be written: the next look tries again.
+    Failed,
+}
+
+/// [`save_prefs_when_changed`] to `path`, looking again after `every`.
+fn save_prefs_when_changed_at(app: &MailApp, path: &std::path::Path, seen: &mut Option<PrefsSeen>, every: std::time::Duration) -> Look {
+    if app.is_opening() {
+        return Look::Same;
+    }
+    if let Some(left) = seen.as_ref().and_then(|s| every.checked_sub(s.at.elapsed())).filter(|left| !left.is_zero()) {
+        return Look::Wait(left);
+    }
+    let Ok(text) = serde_json::to_vec(&app.prefs()) else { return Look::Same };
+    // The first look only notes what the settings are: they were just read.
+    if seen.as_ref().is_none_or(|s| s.text == text) {
+        *seen = Some(PrefsSeen { at: std::time::Instant::now(), text });
+        return Look::Same;
+    }
+    let written = try_save_prefs_at(app, path);
+    // What could not be written stays what was last written: it is tried again at the next look.
+    let kept = if written.is_ok() { text } else { seen.take().map(|s| s.text).unwrap_or_default() };
+    *seen = Some(PrefsSeen { at: std::time::Instant::now(), text: kept });
+    if written.is_ok() { Look::Saved } else { Look::Failed }
+}
+
 fn save_prefs(app: &MailApp) {
     if let Some(p) = prefs_path() {
         save_prefs_at(app, &p);
@@ -456,12 +526,17 @@ fn save_prefs(app: &MailApp) {
 
 /// [`save_prefs`] to `path`.
 fn save_prefs_at(app: &MailApp, path: &std::path::Path) {
+    let _ = try_save_prefs_at(app, path);
+}
+
+/// [`save_prefs_at`], saying whether the file could not be written (nothing to write is no failure).
+fn try_save_prefs_at(app: &MailApp, path: &std::path::Path) -> std::io::Result<()> {
     // Its data was removed from this computer (File › Info): nothing is written back. Nor is
     // anything of a window closed while its mailbox was still opening (#519).
     if !prefs_enabled() || app.data_removed || app.is_opening() || PREFS_LEFT_IN_PLACE.load(std::sync::atomic::Ordering::Relaxed) {
-        return;
+        return Ok(());
     }
-    let _ = write_prefs(path, &app.prefs());
+    write_prefs(path, &app.prefs())
 }
 
 /// Run `work` on a background thread of its own; the answer comes back through the channel and
@@ -730,46 +805,14 @@ fn sign_in_with(request: SignInRequest, open_page: &dyn Fn(&str) -> bool) -> Res
         let asked = mailcraft_net::oauth::sign_in_for_favorites(&request.oauth, &request.email, &open, &request.cancel);
         return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
     }
-    // A shared mailbox is to be read (#70): the page comes up for what reading shared mailboxes
-    // takes, by itself, in the same words for a no as the Favorites'.
-    // A shared mailbox's calendar was ticked for the first time, and the owner said go ahead
-    // (#70): the page comes up for what reading shared mailboxes' calendars takes, by itself.
-    if request.graph && request.shared && request.shared_calendars {
-        let asked = mailcraft_net::oauth::sign_in_for_shared_calendars(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    // Mail is to be sent from a shared mailbox for the first time, and the owner said go ahead
-    // (#70): the page comes up for what sending from shared mailboxes takes too, by itself.
-    if request.graph && request.shared && request.shared_send {
-        let asked = mailcraft_net::oauth::sign_in_for_shared_send(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    // A tasks run found the sign-in doesn't cover the To Do lists (#248) and the owner said go
-    // ahead: the page comes up for that permission alone, by itself.
-    if request.graph && request.tasks {
-        let asked = mailcraft_net::oauth::sign_in_for_tasks(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    // A rule is to go to the server, the sign-in doesn't cover changing the rules (#566), and the
-    // owner said go ahead: the page comes up for that permission alone, by itself.
-    if request.graph && request.rules {
-        let asked = mailcraft_net::oauth::sign_in_for_rules(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    // A change of the automatic replies found the sign-in doesn't cover changing the mailbox's
-    // settings, and the owner said go ahead: the page comes up for that permission alone.
-    if request.graph && request.replies {
-        let asked = mailcraft_net::oauth::sign_in_for_replies(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    // Calendars are opened by address for the first time (#70): the page comes up for the same
-    // one permission, without what reading shared mailboxes' mail takes, by itself.
-    if request.graph && request.shared_calendars {
-        let asked = mailcraft_net::oauth::sign_in_for_opened_calendars(&request.oauth, &request.email, &open, &request.cancel);
-        return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
-    }
-    if request.graph && request.shared {
-        let asked = mailcraft_net::oauth::sign_in_for_shared(&request.oauth, &request.email, &open, &request.cancel);
+    // The one page for an older sign-in: something found the sign-in doesn't cover what a
+    // sign-in's page asks for today (the to-dos, the rules, the automatic replies and the
+    // categories kept in step, #661; the shared mailboxes and the calendars shared with the owner,
+    // #70), and the owner said go ahead or asked for a shared mailbox to be read: the page comes up
+    // for all of it, in the same words for a no as the Favorites'.
+    if request.graph && request.sync {
+        // (Reading and changing mail only for an account kept in step through Graph, R3.)
+        let asked = mailcraft_net::oauth::sign_in_for_sync(&request.oauth, &request.email, request.mail_write, &open, &request.cancel);
         return asked.map_err(|refusal| unopened(favorites_refusal(refusal)));
     }
     // A sign-in on the page, at `endpoints`: how it ended, when it brought no tokens. (How, and
@@ -845,7 +888,7 @@ fn sign_in_with(request: SignInRequest, open_page: &dyn Fn(&str) -> bool) -> Res
     }
     if request.mail_only {
         // Without the calendar and contacts along: for when the provider's page won't have both.
-        let mail = Endpoints { consent: String::new(), lesser: String::new(), ..Endpoints::of(&request.oauth) };
+        let mail = Endpoints { consent: String::new(), fewer: String::new(), lesser: String::new(), ..Endpoints::of(&request.oauth) };
         return on_the_page(&mail);
     }
     on_the_page(&Endpoints::of(&request.oauth))
@@ -898,6 +941,73 @@ fn favorites_refusal(refusal: mailcraft_net::oauth::FavoritesRefusal) -> String 
         FavoritesRefusal::Account => REFUSED_FOR_ACCOUNT.to_string(),
         FavoritesRefusal::Other(e) => e.to_string(),
     }
+}
+
+/// Keep an account's list of categories in step with its server (#661): a token that may change
+/// it (a sign-in that doesn't cover it gets none: the answer says so, and nothing is sent), what
+/// waits told to the server, then the list read back. Nothing of a category is logged.
+fn categories_job(job: mailcraft_ui_egui::category_sync::CategoriesJob) -> mailcraft_ui_egui::category_sync::CategoriesResult {
+    let mail = mailcraft_host::tasks::mail_resource(&job.account);
+    let graph = CategoriesGraph { push: &mailcraft_net::graph::push_categories, read: &mailcraft_net::graph::categories };
+    categories_job_with(job, &move |oauth, refresh| mailcraft_net::oauth::refresh_graph_categories(oauth, refresh, mail), &graph)
+}
+
+/// How a categories job reaches Microsoft Graph with its token: the changes told, and the list
+/// read back (the tests' own, which ask nobody).
+struct CategoriesGraph<'a> {
+    push: &'a dyn Fn(&str, &mailcraft_model::remote::CategoriesUpload) -> mailcraft_model::remote::CategoriesUploaded,
+    read: &'a dyn Fn(&str) -> Result<mailcraft_model::remote::CategoriesDownload, mailcraft_net::NetError>,
+}
+
+/// [`categories_job`], with how the token is had as `renew` and Graph as `graph`.
+fn categories_job_with(
+    job: mailcraft_ui_egui::category_sync::CategoriesJob,
+    renew: RenewGraph<'_>,
+    graph: &CategoriesGraph<'_>,
+) -> mailcraft_ui_egui::category_sync::CategoriesResult {
+    use mailcraft_model::remote::CategoryResult;
+    use mailcraft_net::NetError;
+    let mut out = mailcraft_ui_egui::category_sync::CategoriesResult { account: job.account.id, ..Default::default() };
+    let access = match renew(&job.oauth, &job.refresh) {
+        Ok(got) => {
+            let access = got.tokens.access.clone();
+            out.tokens = Some(got.tokens);
+            out.covered = Some(true);
+            access
+        }
+        // The list is read-only here; the calendar's job still reads it.
+        Err(e) if e.is_consent_needed() => {
+            out.covered = Some(false);
+            return out;
+        }
+        Err(e) => {
+            out.sign_in_refused = e.is_refused_sign_in();
+            if !out.sign_in_refused {
+                out.errors.push(format!("Couldn't sign in to Microsoft for the categories: {e}"));
+            }
+            return out;
+        }
+    };
+    if !job.upload.changes.is_empty() {
+        let uploaded = (graph.push)(&access, &job.upload).for_account(&job.account);
+        out.denied = uploaded.outcomes.iter().any(|o| o.result == CategoryResult::Denied);
+        let refused = uploaded.token_refused;
+        out.uploaded = Some(uploaded);
+        if refused {
+            out.sign_in_refused = true;
+            return out;
+        }
+    }
+    match (graph.read)(&access) {
+        Ok(download) => out.download = Some(download.for_account(&job.account)),
+        // (Reading takes the calendar's permission: its job says what there is to say.)
+        Err(NetError::Forbidden(_)) => {}
+        Err(e) if e.is_refused_sign_in() => out.sign_in_refused = true,
+        // A failure of the job, said as one, and what goes next waits as after any (the
+        // calendar's job reads the list again meanwhile).
+        Err(e) => out.errors.push(format!("Couldn't read the categories from Microsoft: {e}")),
+    }
+    out
 }
 
 /// Keep an account's rules on its server (#566): when something waits to go, a token that may
@@ -1056,6 +1166,7 @@ fn services(
     let pictures_ctx = ctx.clone();
     let unsubscribe_ctx = ctx.clone();
     let subscription_ctx = ctx.clone();
+    let dav_ctx = ctx.clone();
     let pictures_kept = kept_pictures.clone();
     let (images_ctx, images_kept) = (ctx.clone(), kept_pictures.clone());
     let wipe_pictures = kept_pictures.clone();
@@ -1063,10 +1174,11 @@ fn services(
     let check_ctx = ctx.clone();
     let approval_ctx = ctx.clone();
     let fetch_ctx = ctx.clone();
-    let (ews_ctx, ews_fetch_ctx, ews_setup_ctx) = (ctx.clone(), ctx.clone(), ctx.clone());
+    let (ews_ctx, ews_fetch_ctx, ews_setup_ctx, ews_resolve_ctx) = (ctx.clone(), ctx.clone(), ctx.clone(), ctx.clone());
     let search_ctx = ctx.clone();
     let tasks_ctx = ctx.clone();
     let rules_ctx = ctx.clone();
+    let categories_ctx = ctx.clone();
     let replies_ctx = ctx.clone();
     let ahead_ctx = ctx.clone();
     let update_ctx = ctx.clone();
@@ -1100,6 +1212,8 @@ fn services(
     Services {
         platform_calls,
         file_dialog: Some(file_dialog),
+        #[cfg(any(target_os = "windows", target_os = "macos"))]
+        spelling: Some(Box::new(spelling::NativeChecker::default())),
         #[cfg(windows)]
         recent_attachments: Some(Box::new(|ctx| background(ctx, "recent attachments", recent_attachments::list))),
         // Mail arrives in pieces as the run goes (what was sent, then folder by folder), through a
@@ -1170,6 +1284,8 @@ fn services(
         ews: Some(Box::new(move |job| ews_runner::run_mail(job, &ews_ctx))),
         ews_fetch: Some(Box::new(move |job| ews_runner::run_fetch(job, &ews_fetch_ctx))),
         ews_setup: Some(Box::new(move |job| ews_setup::run_setup(job, &ews_setup_ctx))),
+        // Names looked up in its address list, on the owner's Check Names (#1262).
+        ews_resolve: Some(Box::new(move |job| ews_runner::run_resolve(job, &ews_resolve_ctx))),
         // A Microsoft mailbox searched on its server, a page at a time, on the owner's click (R6.2).
         graph_search: Some(Box::new(move |job: mailcraft_ui_egui::server_search::GraphSearchJob| {
             background(&search_ctx, "server search", move || mailcraft_net::graph::search_messages(&job.access, &job.request))
@@ -1184,6 +1300,10 @@ fn services(
         // The rules a Microsoft account's server keeps (#566).
         graph_rules: Some(Box::new(move |job: mailcraft_ui_egui::rule_sync::RulesJob| {
             background(&rules_ctx, "server rules", move || rules_job(job))
+        })),
+        // A Microsoft account's list of categories, kept in step with its server (#661).
+        graph_categories: Some(Box::new(move |job: mailcraft_ui_egui::category_sync::CategoriesJob| {
+            background(&categories_ctx, "categories", move || categories_job(job))
         })),
         // File › Info › Automatic Replies of a Microsoft account, read and changed on its server.
         graph_auto_replies: Some(Box::new(move |job: mailcraft_ui_egui::auto_replies::AutoRepliesJob| {
@@ -1255,6 +1375,19 @@ fn services(
             background(&subscription_ctx, "subscribed calendar", move || mailcraft_ui_egui::SubscriptionDone {
                 calendar: job.calendar,
                 outcome: mailcraft_net::subscription::look(&job.address, &job.etag, &job.last_modified),
+            })
+        })),
+        // An account's calendars from its CalDAV server (#209, behind `MAILCRAFT_DAV=1`): the host
+        // sends a password only in answer to that origin's own challenge, over TLS, to the one
+        // certificate the owner trusted when there is one. Nothing here is logged but counts.
+        dav: Some(Box::new(move |job: mailcraft_ui_egui::DavJob| {
+            background(&dav_ctx, "calendar server", move || {
+                let passwords = job.passwords;
+                let (download, certificate) = mailcraft_net::dav::look(&job.ask, &|origin: &str| passwords.get(origin).cloned());
+                if certificate.is_some() {
+                    log::warn!("a calendar server's certificate isn't one the system or the owner trusts");
+                }
+                mailcraft_ui_egui::DavDone { download }
             })
         })),
         // A sender's picture for the message list, once the owner turned that on: from
@@ -1603,9 +1736,11 @@ fn main() -> eframe::Result {
         options.clipboard_shortcuts = false;
     }
     // Before eframe creates the wgpu instance: default Windows to DirectX 12 only, or OpenGL when
-    // DirectX 12 has no GPU driver (see graphics.rs).
+    // DirectX 12 has no GPU driver, and present DirectX 12 through DirectComposition with
+    // premultiplied alpha, so that NVIDIA's overlay doesn't take a maximized window for a game
+    // (see graphics.rs).
     #[cfg(target_os = "windows")]
-    graphics::configure(&mut options, eframe::wgpu::Backends::from_env());
+    graphics::configure(&mut options, eframe::wgpu::Backends::from_env(), eframe::wgpu::Dx12SwapchainKind::from_env());
     let (prefs, settings_unread) = load_prefs();
     let close_to_tray = prefs.as_ref().is_some_and(|ui| ui.close_to_tray);
     let restored = prefs.as_ref().and_then(|ui| ui.window).and_then(WindowGeometry::sanitized);

@@ -9,9 +9,15 @@ use serde_json::json;
 use crate::theme::{Tokens, paint_clipped, regular};
 use crate::{MailApp, icons};
 
+#[cfg(test)]
+mod attachment_tests;
 pub(crate) mod editor;
 #[cfg(test)]
 mod font_tests;
+pub(crate) mod from_list;
+#[cfg(test)]
+mod from_list_tests;
+mod picture_size;
 #[cfg(test)]
 mod picture_tests;
 #[cfg(test)]
@@ -21,12 +27,14 @@ mod tests;
 
 const MIN_LABEL_WIDTH: f32 = 62.0;
 
-/// One labelled single-line field. Returns the new text when it was edited.
-fn field(ui: &mut Ui, label: &str, text: &str, label_width: f32) -> Option<String> {
-    let at = line(ui, label, label_width, 0.0);
-    let mut buf = text.to_string();
-    let resp = crate::text_menu::field(ui.put(at, line_edit(&mut buf, ui.scope_id().with(("compose", label)), "", at.width())));
-    resp.changed().then_some(buf)
+fn header_id(compose: u64, field: &str) -> egui::Id {
+    egui::Id::unique("mailcraft-compose-header").with((compose, field))
+}
+
+/// The draft's single-line field with the keyboard, if any.
+pub(crate) fn focused_header(ctx: &egui::Context, compose: u64) -> Option<egui::Id> {
+    let focus = ctx.memory(|m| m.focused())?;
+    ["to", "cc", "bcc", "replyTo", "subject"].iter().any(|key| header_id(compose, key) == focus).then_some(focus)
 }
 
 /// A labelled line, with the rule under it; where its text goes. `right` is room kept free at
@@ -137,9 +145,9 @@ fn suggestions(ctx: &egui::Context, s: &mailcraft_engine::Session, id: egui::Id,
     found
 }
 
-/// Whether the quiet Bcc link is shown (no Bcc line yet).
-fn bcc_link(app: &MailApp) -> bool {
-    app.session.compose.as_ref().is_some_and(|c| c.bcc.is_empty()) && !app.bcc_shown()
+/// Whether the quiet Bcc link is shown (no Bcc line yet). An emptied field stays while editing it.
+fn bcc_link(app: &MailApp, ui: &Ui) -> bool {
+    app.session.compose.as_ref().is_some_and(|c| c.bcc.is_empty() && !ui.memory(|m| m.has_focus(header_id(c.id, "bcc")))) && !app.bcc_shown()
 }
 
 /// The Bcc link's hit area, including room on either side of its translated label.
@@ -150,15 +158,18 @@ fn bcc_width(ui: &Ui) -> f32 {
 
 /// A recipient line, with the recipient suggestions under it ([`recipient_line`]).
 fn recipient_field(app: &mut MailApp, ui: &mut Ui, key: &str, label: &str, text: &str, label_width: f32, focus: bool) {
-    let id = ui.scope_id().with(("compose", label));
+    let id = header_id(app.session.compose_id().unwrap_or_default(), key);
     // The Bcc link sits at the right end of the To line: a click there is for it, so the line's
     // text stops short of it (a long To line was otherwise impossible to click at its end).
-    let right = if key == "to" && bcc_link(app) { bcc_width(ui) + 4.0 } else { 0.0 };
+    let right = if key == "to" && bcc_link(app, ui) { bcc_width(ui) + 4.0 } else { 0.0 };
     let at = line(ui, label, label_width, right);
     let mut buf = text.to_string();
     let edit = line_edit(&mut buf, id, tl!("Names or addresses, separated by ;"), at.width());
     let layout = egui::Layout::centered_and_justified(egui::Direction::TopDown);
-    let out = ui.scope_builder(egui::UiBuilder::new().max_rect(at).layout(layout), |ui| recipient_line(ui, &app.session, id, edit, true)).inner;
+    // Nothing is suggested while a dialog is open (Check Names' choice): one list of people at a
+    // time.
+    let offer = app.dialog.is_none();
+    let out = ui.scope_builder(egui::UiBuilder::new().max_rect(at).layout(layout), |ui| recipient_line(ui, &app.session, id, edit, offer)).inner;
     if focus {
         out.text_edit.response.request_focus();
     }
@@ -171,10 +182,13 @@ fn recipient_field(app: &mut MailApp, ui: &mut Ui, key: &str, label: &str, text:
 /// What the window shows of the message being written besides its body (copied out of the
 /// session once a frame, so the commands it runs can change the message meanwhile).
 struct Shown {
+    id: u64,
     mode: ComposeMode,
     dirty: bool,
     draft: bool,
     account: u64,
+    /// The account's sender address it is from (#797); empty for its own.
+    from: String,
     to: String,
     cc: String,
     bcc: String,
@@ -191,11 +205,13 @@ impl Shown {
     fn of(app: &MailApp) -> Option<Shown> {
         let c = app.session.compose.as_ref()?;
         Some(Shown {
+            id: c.id,
             mode: c.mode,
             send_at: c.send_at,
             dirty: c.dirty,
             draft: c.draft.is_some(),
             account: c.account,
+            from: c.from.clone(),
             to: c.to.clone(),
             cc: c.cc.clone(),
             bcc: c.bcc.clone(),
@@ -225,6 +241,18 @@ pub(crate) fn show_in(app: &mut MailApp, ui: &mut Ui, window: Option<u64>, keybo
     let Some(c) = Shown::of(app) else { return };
     ui.spacing_mut().item_spacing = vec2(0.0, 0.0);
 
+    if let Some(warning) = app.session.compose.as_ref().map(|c| c.signature_file_warning.clone()).filter(|w| !w.is_empty()) {
+        ui.colored_label(t.orange, warning);
+    }
+    if app.session.compose.as_ref().is_some_and(|c| c.format == mailcraft_engine::BodyFormat::Plain && c.has_pictures()) {
+        ui.horizontal_wrapped(|ui| {
+            ui.colored_label(t.orange, tl!("Pictures are not included in plain-text messages. Switch to HTML to include them."));
+            if ui.button(tl!("Switch to HTML")).clicked() {
+                let _ = app.run("compose.formatHtml", json!({}));
+            }
+        });
+    }
+
     // In the reading pane, what this is and the actions; a window of its own has them in its
     // ribbon, and Send beside the lines, as a message's window has it (#286).
     if window.is_none() {
@@ -235,7 +263,14 @@ pub(crate) fn show_in(app: &mut MailApp, ui: &mut Ui, window: Option<u64>, keybo
     // back to what had it when the dialog closes (#406).
     let fresh = keyboard && !c.dirty && ui.memory(|m| m.focused().is_none() && m.allows_interaction(ui.layer_id()));
 
-    let focus_to = fresh && c.to.is_empty();
+    let requested_to = keyboard
+        && ui.memory(|memory| memory.allows_interaction(ui.layer_id()))
+        && app.recipient_focus_wanted == app.session.compose_id()
+        && app.recipient_focus_wanted.is_some();
+    if requested_to {
+        app.recipient_focus_wanted = None;
+    }
+    let focus_to = c.to.is_empty() && (fresh || requested_to);
 
     if window.is_some() {
         ui.horizontal_top(|ui| {
@@ -246,39 +281,21 @@ pub(crate) fn show_in(app: &mut MailApp, ui: &mut Ui, window: Option<u64>, keybo
         header(app, ui, &c, focus_to);
     }
 
-    // Attachments, each with a way to take it off again.
+    // Attachments, with separate targets to open and remove each one.
     if !c.attachments.is_empty() {
         egui::Frame::NONE.inner_margin(egui::Margin { left: 16, right: 12, top: 6, bottom: 6 }).show(ui, |ui| {
             ui.horizontal_wrapped(|ui| {
                 ui.spacing_mut().item_spacing = vec2(6.0, 6.0);
                 for (i, (name, size)) in c.attachments.iter().enumerate() {
-                    let label = format!("{name}  ({size})");
-                    let w = ui.ctx().fonts_mut(|f| f.layout_no_wrap(label.clone(), regular(12.0), t.text).size().x).min(260.0);
-                    let (r, _) = ui.allocate_exact_size(vec2(w + 52.0, 26.0), Sense::hover());
-                    ui.painter().rect(r, 5.0, t.panel, Stroke::new(1.0, t.border), egui::StrokeKind::Inside);
-                    icons::paint(
-                        ui.painter(),
-                        Rect::from_center_size(pos2(r.min.x + 13.0, r.center().y), vec2(16.0, 16.0)),
-                        "attach",
-                        t.icon,
-                        t.accent,
-                    );
-                    paint_clipped(ui.painter(), pos2(r.min.x + 26.0, r.center().y), w, &label, regular(12.0), t.text);
-                    let x = Rect::from_center_size(pos2(r.max.x - 12.0, r.center().y), vec2(18.0, 18.0));
-                    let xr = ui.interact(x, ui.scope_id().with(("unattach", i)), Sense::click());
-                    if xr.hovered() {
-                        ui.painter().rect_filled(x, 3.0, t.hover);
-                    }
-                    icons::paint(ui.painter(), x.shrink(4.0), "close", t.text_dim, t.accent);
-                    if xr.on_hover_text(tl!("Remove")).clicked() {
-                        let _ = app.execute("compose.removeAttachment", json!({"index": i}));
-                    }
+                    attachment_chip(app, ui, &t, c.id, i, name, size);
                 }
             });
         });
         let r = ui.available_rect_before_wrap();
         ui.painter().line_segment([pos2(r.min.x + 16.0, r.min.y), pos2(r.max.x - 12.0, r.min.y)], Stroke::new(1.0, t.border));
     }
+
+    picture_size::show(app, ui);
 
     // The body takes what is left: the owner's text, and under it the original of a reply or
     // forward in HTML, as the reading pane shows it.
@@ -301,6 +318,63 @@ pub(crate) fn show_in(app: &mut MailApp, ui: &mut Ui, window: Option<u64>, keybo
             }
         });
     });
+}
+
+fn attachment_chip(app: &mut MailApp, ui: &mut Ui, t: &Tokens, compose: u64, index: usize, name: &str, size: &str) {
+    let command = crate::attachment_open::OPEN_DRAFT;
+    let can_open = app.enabled(command);
+    let download = app.services.open_file.is_none();
+    let label = format!("{name}  ({size})");
+    let w = ui.ctx().fonts_mut(|f| f.layout_no_wrap(label.clone(), regular(12.0), t.text).size().x).min(260.0);
+    let (rect, _) = ui.allocate_exact_size(vec2(w + 52.0, 26.0), Sense::hover());
+    let x = Rect::from_center_size(pos2(rect.max.x - 12.0, rect.center().y), vec2(18.0, 18.0));
+    let main = Rect::from_min_max(rect.min, pos2(x.min.x, rect.max.y));
+    let id = ui.scope_id().with(("draftAttachment", compose, index));
+    let file = ui.interact(main, id, if can_open { Sense::click() } else { Sense::hover() });
+    let remove = ui.interact(x, id.with("remove"), Sense::click());
+    app.hit.add("draftAttachment", index as u64, main);
+    app.hit.add("draftAttachmentRemove", index as u64, x);
+
+    ui.painter().rect(rect, 5.0, t.panel, Stroke::new(1.0, t.border), egui::StrokeKind::Inside);
+    if can_open {
+        crate::widgets::bg(ui, main.shrink(1.0), &file, file.has_focus(), t);
+    }
+    icons::paint(ui.painter(), Rect::from_center_size(pos2(rect.min.x + 13.0, rect.center().y), vec2(16.0, 16.0)), "attach", t.icon, t.accent);
+    paint_clipped(ui.painter(), pos2(rect.min.x + 26.0, rect.center().y), w, &label, regular(12.0), t.text);
+    crate::widgets::bg(ui, x, &remove, remove.has_focus(), t);
+    icons::paint(ui.painter(), x.shrink(4.0), "close", t.text_dim, t.accent);
+    remove.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, true, tl!("Remove Attachment")));
+    if remove.on_hover_text(tl!("Remove")).clicked() {
+        let _ = app.execute("compose.removeAttachment", json!({"compose": compose, "index": index}));
+    }
+
+    let hint = if !can_open {
+        tl!("Attachments can't be opened here.")
+    } else if download {
+        tl!("Double-click to download {name}")
+    } else {
+        tl!("Double-click to open {name}")
+    };
+    let file = file.on_hover_text(crate::i18n::fmt(hint, &[("name", name)]));
+    file.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, can_open, &label));
+    let params = || json!({"compose": compose, "index": index});
+    let pointer_clicked = file.clicked_by(egui::PointerButton::Primary);
+    if pointer_clicked {
+        file.request_focus();
+    }
+    // `clicked` also includes keyboard and accessibility activation, which don't need two clicks.
+    if can_open && (file.double_clicked() || (file.clicked() && !pointer_clicked)) {
+        let _ = app.run(command, params());
+    }
+    if can_open {
+        file.context_menu(|ui| {
+            if download {
+                crate::widgets::mi(ui, app, "Download", command, params());
+            } else {
+                crate::widgets::mi(ui, app, "Open", command, params());
+            }
+        });
+    }
 }
 
 /// What the message is and its actions, over its lines in the reading pane. The actions use
@@ -418,11 +492,27 @@ fn send_beside(app: &mut MailApp, ui: &mut Ui) {
 
 /// The lines of the message: From (when there is a choice), To, Cc, Bcc, Reply to and Subject.
 fn header(app: &mut MailApp, ui: &mut Ui, c: &Shown, focus_to: bool) {
+    // Ribbon tabs and menus are tools for the text being edited. Clicking through them should
+    // leave the field and its selection in place until the chosen action runs.
+    let ctx = ui.ctx().clone();
+    let keeps_focus = ctx.input(|i| i.pointer.interact_pos()).is_some_and(|pos| app.hit.contains(&["ribbonBand", "ribbonTab", "ribbonPopup"], pos));
+    let was = ctx.options(|o| o.input_options.surrender_focus_on);
+    if keeps_focus {
+        ctx.options_mut(|o| o.input_options.surrender_focus_on = egui::SurrenderFocusOn::Never);
+    }
+    header_fields(app, ui, c, focus_to);
+    if keeps_focus {
+        ctx.options_mut(|o| o.input_options.surrender_focus_on = was);
+    }
+}
+
+fn header_fields(app: &mut MailApp, ui: &mut Ui, c: &Shown, focus_to: bool) {
     let t = Tokens::get(ui.ctx());
     let top = ui.cursor().min.y;
     let [from, to, cc, bcc, reply_to, subject] = [tl!("From"), tl!("To"), tl!("Cc"), tl!("Bcc"), tl!("Reply to"), tl!("Subject")];
     let bcc_width = bcc_width(ui);
-    let reserved = if bcc_link(app) { bcc_width + 4.0 } else { 0.0 };
+    let bcc_link = bcc_link(app, ui);
+    let reserved = if bcc_link { bcc_width + 4.0 } else { 0.0 };
     // In a narrow pane the translated labels yield space to the address fields.
     let label_limit = ((ui.available_width() - 28.0 - reserved) / 2.0).max(0.0);
     let label_width = [from, to, cc, bcc, reply_to, subject]
@@ -430,11 +520,12 @@ fn header(app: &mut MailApp, ui: &mut Ui, c: &Shown, focus_to: bool) {
         .map(|label| ui.painter().layout_no_wrap(label.to_owned(), regular(12.0), t.text_dim).size().x + 8.0)
         .fold(MIN_LABEL_WIDTH, f32::max)
         .min(label_limit);
-    // From, when there is a choice.
-    if app.session.mailbox.accounts.len() > 1 {
+    // From, when there is a choice: another account, or another address of one (#797).
+    let choice = from_list::has_choice(&app.session.mailbox);
+    if choice {
         let (r, _) = ui.allocate_exact_size(vec2(ui.available_width(), 30.0), Sense::hover());
         paint_clipped(ui.painter(), pos2(r.min.x + 16.0, r.center().y), (label_width - 8.0).max(0.0), from, regular(12.0), t.text_dim);
-        let current = app.session.mailbox.account(c.account).map(|a| a.address().full()).unwrap_or_default();
+        let current = from_list::current(&app.session.mailbox, c.account, &c.from);
         let end = r.max.x - 12.0;
         let pick = Rect::from_min_max(pos2((r.min.x + 16.0 + label_width).min(end), r.min.y + 4.0), pos2(end, r.max.y - 4.0));
         let resp = ui.interact(pick, ui.scope_id().with("compose_from"), Sense::click());
@@ -442,38 +533,47 @@ fn header(app: &mut MailApp, ui: &mut Ui, c: &Shown, focus_to: bool) {
             ui.painter().rect_filled(pick.expand2(vec2(4.0, 0.0)), 4.0, t.hover);
         }
         paint_clipped(ui.painter(), pos2(pick.min.x, pick.center().y), pick.width(), &format!("{current} ▾"), regular(13.0), t.text);
-        // (In the order of the folder pane, #702.)
-        let accounts: Vec<(u64, String)> = app.session.mailbox.accounts_in_order().into_iter().map(|a| (a.id, a.address().full())).collect();
+        // (In the order of the folder pane, #702; an account's other addresses under its own.)
+        let choices = from_list::choices(&app.session.mailbox);
         egui::Popup::menu(&resp).show(|ui| {
-            for (id, label) in accounts {
-                if ui.selectable_label(id == c.account, label).clicked() {
-                    let _ = app.execute("compose.set", json!({"account": id}));
+            for choice in choices {
+                let picked = ui
+                    .horizontal(|ui| {
+                        if !choice.from.is_empty() {
+                            ui.add_space(14.0);
+                        }
+                        ui.selectable_label(from_list::is_current(&choice, c.account, &c.from), &choice.label).clicked()
+                    })
+                    .inner;
+                if picked {
+                    let _ = app.execute("compose.set", json!({"account": choice.account, "from": choice.from}));
                     ui.close();
                 }
             }
         });
         ui.painter().line_segment([pos2(r.min.x + 16.0, r.max.y), pos2(r.max.x - 12.0, r.max.y)], Stroke::new(1.0, t.border));
     }
-    for (key, label, text, show) in [("to", to, &c.to, true), ("cc", cc, &c.cc, true), ("bcc", bcc, &c.bcc, !c.bcc.is_empty() || app.bcc_shown())] {
+    for (key, label, text, show) in [("to", to, &c.to, true), ("cc", cc, &c.cc, true), ("bcc", bcc, &c.bcc, !bcc_link)] {
         if !show {
             continue;
         }
         recipient_field(app, ui, key, label, text, label_width, key == "to" && focus_to);
     }
-    // (Shown once Direct Replies To has set it.)
-    if !c.reply_to.is_empty() {
+    // Shown once Direct Replies To sets it, and if the owner empties it while editing it.
+    let compose = app.session.compose_id().unwrap_or_default();
+    if !c.reply_to.is_empty() || ui.memory(|m| m.has_focus(header_id(compose, "replyTo"))) {
         recipient_field(app, ui, "replyTo", reply_to, &c.reply_to, label_width, false);
     }
-    if let Some(new) = field(ui, subject, &c.subject, label_width) {
+    let id = header_id(compose, "subject");
+    let at = line(ui, subject, label_width, 0.0);
+    let mut new = c.subject.clone();
+    if crate::text_menu::field(ui.put(at, line_edit(&mut new, id, "", at.width()))).changed() {
         let _ = app.execute("compose.set", json!({"subject": new}));
     }
-    if bcc_link(app) {
+    if bcc_link {
         // A quiet way to get the Bcc line.
         let last = ui.min_rect();
-        let br = Rect::from_min_size(
-            pos2(last.max.x - 12.0 - bcc_width, top + if app.session.mailbox.accounts.len() > 1 { 34.0 } else { 4.0 }),
-            vec2(bcc_width, 22.0),
-        );
+        let br = Rect::from_min_size(pos2(last.max.x - 12.0 - bcc_width, top + if choice { 34.0 } else { 4.0 }), vec2(bcc_width, 22.0));
         let resp = ui.interact(br, ui.scope_id().with("show_bcc"), Sense::click());
         let color = if resp.hovered() { t.accent_text } else { t.text_dim };
         ui.painter().with_clip_rect(br).text(br.center(), Align2::CENTER_CENTER, bcc, regular(11.5), color);
@@ -532,6 +632,13 @@ fn signature(app: &mut MailApp, ui: &mut Ui) {
     });
     let shown = Rect::from_min_max(pos2(ui.min_rect().min.x, top), pos2(ui.min_rect().max.x, ui.cursor().min.y));
     app.hit.add("composeSignature", 0, shown);
+    // From a linked file it is read again for each message: edits made here would be lost.
+    let from_file = app.session.compose.as_ref().is_some_and(|c| {
+        c.signature_file_warning.is_empty() && c.signature.as_ref().is_some_and(|s| crate::signature_files::setting_for_name(app, &s.name).enabled)
+    });
+    if from_file {
+        return;
+    }
     let edit = ui
         .link(tl!("Edit signature as text"))
         .on_hover_text(tl!("The signature is then sent as the simpler text shown here, not as it was designed"));

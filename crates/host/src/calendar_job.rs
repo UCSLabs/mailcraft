@@ -17,9 +17,10 @@ use std::sync::mpsc::{Receiver, TryRecvError};
 
 use mailcraft_engine::Session;
 use mailcraft_engine::sync_driver::{CalendarCame, CalendarPlan, CalendarTaken};
-use mailcraft_model::{Id, OAuth};
+use mailcraft_model::{Account, Id, OAuth};
 
-use crate::graph::{GraphRequest, GraphResult};
+use crate::graph::{ContactsAsk, GraphRequest, GraphResult};
+use crate::job_sign_in::{ForeignSignIn, foreign_sign_in};
 
 /// The sign-in a calendar job goes with, as the front end found it.
 pub struct CalendarAuth {
@@ -41,10 +42,13 @@ impl std::fmt::Debug for CalendarAuth {
 
 /// The request for the calendar job `plan` says, with `auth`: its changes when it carries any, then
 /// the days asked for (the wide stretch with the contacts when it brings the directory, counted
-/// from this session's clock as its asks are). Nothing of the mail. `None` when the plan's account
-/// is gone.
+/// from this session's clock as its asks are). Nothing of the mail. The run is to check that a
+/// token it renews is the signer's ([`GraphRequest::signer`]): the account's own, or for a shared
+/// mailbox the owner's it is opened through. `None` when the plan's account (or that owner) is gone.
 pub fn calendar_request(session: &Session, plan: &CalendarPlan, auth: CalendarAuth) -> Option<GraphRequest> {
     let account = session.mailbox.account(plan.account)?.clone();
+    // A shared mailbox's calendars are read with the sign-in of the account it is opened through.
+    let signer = if account.is_shared() { session.mailbox.owner_of(plan.account)?.clone() } else { account.clone() };
     Some(GraphRequest {
         account,
         oauth: auth.oauth,
@@ -61,12 +65,38 @@ pub fn calendar_request(session: &Session, plan: &CalendarPlan, auth: CalendarAu
         mail: None,
         mail_pieces: None,
         cancel: Default::default(),
+        signer: Some(signer),
+        contacts: contacts_ask(session, plan),
+    })
+}
+
+/// What the calendar job `plan` does with its account's contacts (#1917): what waits to go up,
+/// and with the wide stretch the folders to bring down. `None` for an account whose contacts
+/// Microsoft doesn't keep, and when there is neither.
+fn contacts_ask(session: &Session, plan: &CalendarPlan) -> Option<ContactsAsk> {
+    let account = session.mailbox.account(plan.account).filter(|a| a.keeps_contacts() && !a.is_shared())?.id;
+    let upload = mailcraft_engine::cmd::contacts_remote::contact_upload(session, account).ok()?;
+    if upload.ops.is_empty() && !plan.directory {
+        return None;
+    }
+    let mailbox = &session.mailbox;
+    // (After changes went up, the folders are read too: a new contact the server made without
+    // saying its id is known by the read.)
+    let read = plan.directory || !upload.ops.is_empty();
+    Some(ContactsAsk {
+        upload,
+        read,
+        folders: mailbox.contact_folders.iter().filter(|f| f.account == account).cloned().collect(),
+        mailboxes: mailbox.shared_mailboxes(account).iter().map(|a| a.email.trim().to_string()).filter(|a| !a.is_empty()).collect(),
     })
 }
 
 /// The job under way.
 struct Running {
     account: Id,
+    /// The account whose sign-in the job went with (a shared mailbox's owner), as it was: the
+    /// tokens that come back must be its own ([`foreign_sign_in`]).
+    signer: Account,
     carried: bool,
     started: f64,
     opening: u64,
@@ -96,6 +126,10 @@ pub struct CalendarAnswer {
     pub result: GraphResult,
     /// The job ended without an answer (its thread ended early).
     pub stopped_early: bool,
+    /// The answer came with somebody else's sign-in: it was refused whole (`result` is empty, and
+    /// its token is not to be kept). The front end tells the owner; the engine takes it as a job
+    /// that failed ([`take_answer`]).
+    pub foreign: Option<ForeignSignIn>,
 }
 
 /// What [`CalendarJobs::poll`] found.
@@ -139,9 +173,12 @@ impl CalendarJobs {
             return false;
         }
         let Some(request) = calendar_request(session, plan, auth) else { return false };
+        // (Checked again here when the answer comes: the run checks it before anything goes up.)
+        let Some(signer) = request.signer.clone() else { return false };
         let Some(rx) = launch(request) else { return false };
         session.calendar_started(plan, now);
-        self.running = Some(Running { account: plan.account, carried: plan.changes.is_some(), started: now, opening: session.openings(), rx });
+        self.running =
+            Some(Running { account: plan.account, signer, carried: plan.changes.is_some(), started: now, opening: session.openings(), rx });
         true
     }
 
@@ -164,12 +201,22 @@ impl CalendarJobs {
             }
         };
         let Some(running) = self.running.take() else { return CalendarPolled::Nothing };
+        // Somebody else's sign-in: nothing of what it brought is this account's calendar, and its
+        // token is not kept. (Logged without naming anybody.)
+        let foreign = foreign_sign_in(&running.signer, result.tokens.as_ref());
+        let result = if foreign.is_some() {
+            log::warn!("calendar: the answer came with another account's sign-in; refused whole");
+            GraphResult { account: running.account, ..Default::default() }
+        } else {
+            result
+        };
         CalendarPolled::Answer(Box::new(CalendarAnswer {
             account: running.account,
             carried: running.carried,
             started: running.started,
             result,
             stopped_early,
+            foreign,
         }))
     }
 }
@@ -186,6 +233,9 @@ pub fn came(result: &GraphResult, job_errors: bool) -> CalendarCame<'_> {
         extras_missing: result.extras_missing,
         hours: result.mailbox_hours.as_ref(),
         contacts: result.contacts.as_ref(),
+        more_contacts: &result.more_contacts,
+        contacts_uploaded: result.contacts_uploaded.as_ref(),
+        contacts_consent_needed: result.contacts_consent_needed,
         job_errors,
         consent_needed: result.consent_needed,
         token_refused: result.token_refused,
@@ -195,7 +245,9 @@ pub fn came(result: &GraphResult, job_errors: bool) -> CalendarCame<'_> {
 
 /// Have the engine take a calendar job's answer in at `now` (milliseconds): what the server said
 /// to the changes and what it has in the days asked for, and where the owner's permission stands.
-/// What the owner is to be told comes back.
+/// What the owner is to be told comes back. An answer refused for its sign-in
+/// ([`CalendarAnswer::foreign`]) is a job that failed, whatever `job_errors` says.
 pub fn take_answer(session: &mut Session, answer: &CalendarAnswer, job_errors: bool, now: f64) -> CalendarTaken {
+    let job_errors = job_errors || answer.foreign.is_some();
     session.calendar_answered(answer.account, answer.carried, answer.started, now, &came(&answer.result, job_errors))
 }

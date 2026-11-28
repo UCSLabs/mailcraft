@@ -287,6 +287,30 @@ fn the_headers_it_was_sent_with_come_first() {
     assert!(m.all_headers().iter().any(|(k, _)| k == "Received"));
 }
 
+/// Headers longer than what is read of them (#566): the lines past the limit are lost, so the
+/// header as it came is said to be cut, and a rule with words in the header can't tell of the
+/// message ("except if the header contains X-Keep" leaves it alone).
+#[test]
+fn headers_past_the_limit_leave_a_header_rule_unable_to_tell() {
+    let mut m = note("Long header");
+    // Within the limit as the file keeps them (UTF-16), past it as text (UTF-8); in Exchange's
+    // stamps, which are kept cut short with no other mark, so only the limit leaves X-Keep out.
+    let pad = "日".repeat(11_000);
+    let stamp = |name: &str| (0..16).map(|_| format!("{name}: {pad}\r\n")).collect::<String>();
+    let lines = stamp(mailcraft_mime::AUTH_AS) + &stamp(mailcraft_mime::DIRECTIONALITY);
+    m.extra = vec![(0x007D, w::unicode(&format!("Subject: Long header\r\n{lines}X-Keep: yes\r\n")))];
+    let mut s = session();
+    s.run("rules.add", &json!({"name": "Keep", "conditions": [{"type": "headerContains", "value": "x-keep"}], "actions": [{"type": "markRead"}]}))
+        .unwrap();
+    s.mailbox.rules[0].account = 0;
+    let answer = import(&mut s, &w::build(&folder_list(vec![folder("Inbox", "IPF.Note", vec![m], vec![])])), json!({})).unwrap();
+    assert!(answer["notes"].to_string().contains("longer than the limit"), "{answer}");
+    let m = messages_in(&s, &["old-mail", "Inbox"])[0];
+    assert!(m.read_header.contains("Subject: Long header") && m.header_block.is_loaded() && !m.headers_cut, "{}", m.read_header);
+    assert!(m.read_header_cut);
+    assert!(mailcraft_model::Condition::HeaderContains(vec!["x-keep".into()]).unread_in(m));
+}
+
 #[test]
 fn html_inline_pictures_ole_links_and_smime_are_kept_or_named() {
     let mut m = note("Pictures");
@@ -1182,6 +1206,17 @@ fn subclasses_and_contacts_among_mail_come_in_and_the_rest_is_still_counted() {
     assert_eq!(answer["leftOut"], 0);
     assert_eq!(s.mailbox.contacts.len(), 2);
     assert_eq!(answer["tasks"], 1);
+}
+
+#[test]
+fn a_contacts_category_in_other_letters_of_any_alphabet_comes_in_once() {
+    // As every list of categories compares names (#790): not by A to Z alone.
+    let keywords = multi_unicode(&["Ärger", "ärger", "ÄRGER", "Проект", "проект"]);
+    let pat = contact_item("Pat", vec![(0x3001, w::unicode("Pat")), (CONTACT_KEYWORDS, keywords)]);
+    let mut s = session();
+    import(&mut s, &people_file(vec![pat]), json!({"places": {"contacts": "here"}})).unwrap();
+    let pat = s.mailbox.contacts.values().find(|c| c.name() == "Pat").unwrap();
+    assert_eq!(pat.categories, ["Ärger", "Проект"]);
 }
 
 #[test]
@@ -2083,4 +2118,12 @@ fn a_streamed_list_with_long_notes_shares_the_room_with_its_members() {
     import(&mut s, &people_file(vec![list]), json!({})).unwrap();
     let c = s.mailbox.contacts.values().next().unwrap();
     assert!(c.notes.ends_with("Member 9 <m9@example.org>"), "{}", &c.notes[c.notes.len() - 200..]);
+}
+
+/// A file's list that has a name twice in other letters keeps it once, in any alphabet (#788).
+#[test]
+fn the_files_list_keeps_a_name_in_other_letters_once() {
+    let xml = r#"<categories><category name="Ärger" color="1"/><category name="ärger" color="2"/><category name="Red"/><category name="red"/></categories>"#;
+    let names: Vec<String> = categories(xml).into_iter().map(|(n, _)| n).collect();
+    assert_eq!(names, ["Ärger", "Red"]);
 }
