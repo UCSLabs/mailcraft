@@ -28392,9 +28392,9 @@ msgstr "• do {to}, temat „{subject}”"
 #, fuzzy
 msgid "…and {n} more — type to narrow it"
 msgid_plural "…and {n} more — type to narrow it"
-msgstr[0] "…and {n} more — type to narrow it"
-msgstr[1] "…and {n} more — type to narrow it"
-msgstr[2] ""
+msgstr[0] "…i {n} więcej — wpisz, aby zawęzić"
+msgstr[1] "…i {n} więcej — wpisz, aby zawęzić"
+msgstr[2] "…i {n} więcej — wpisz, aby zawęzić"
 
 #. interface
 #: crates/ui-egui/src/credits.rs
