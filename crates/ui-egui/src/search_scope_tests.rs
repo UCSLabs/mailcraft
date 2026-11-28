@@ -56,3 +56,11 @@ fn the_scope_button_is_capped_at_two_fifths_of_a_narrow_box() {
     assert_eq!(narrow, 104.0, "the least wins in a tiny box");
     assert!(mid <= 160.0 + f32::EPSILON, "two fifths of 400 is the most: {mid}");
 }
+
+/// A test that shows the window in Georgian gives the previous language back when it ends (#2070).
+#[test]
+fn a_georgian_scope_window_puts_the_language_back() {
+    let before = crate::i18n::current();
+    a_long_scope_name_stays_in_its_button_beside_the_edit_area();
+    assert_eq!(crate::i18n::current(), before, "the Georgian test left its language on");
+}

@@ -65,3 +65,11 @@ fn a_card_button_is_as_wide_as_its_label_needs() {
     assert_eq!(narrow, 50.0, "the cap wins over the least on a narrow card");
     assert_eq!(nan, 0.0, "a cap that is no number gives no width, not a panic");
 }
+
+/// A test that shows the window in Georgian gives the previous language back when it ends (#2070).
+#[test]
+fn a_georgian_account_card_puts_the_language_back() {
+    let before = crate::i18n::current();
+    an_account_cards_buttons_fit_their_labels();
+    assert_eq!(crate::i18n::current(), before, "the Georgian test left its language on");
+}
