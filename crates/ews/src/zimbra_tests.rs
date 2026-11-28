@@ -256,6 +256,30 @@ fn a_server_that_lacks_the_preview_isnt_asked_it_once_the_listing_steps_down_to_
     assert!(messages.iter().any(|m| m.subject == "Kickoff"));
 }
 
+/// A folder blocked by an item the server refuses puts the listing back in the shape it was: the
+/// folder after it is asked as before (`Default` and the other properties), not by the ids alone.
+#[test]
+fn a_folder_blocked_by_a_refused_item_leaves_the_others_in_the_shape_they_were() {
+    let standin = StandIn::new();
+    let after = {
+        let mut s = standin.state();
+        s.zimbra_ids = true;
+        let refused = s.add_folder("Refused");
+        let id = s.deliver(&refused, "Refused", false);
+        s.refused_in_get_item.push(id);
+        let after = s.add_folder("After");
+        s.deliver(&after, "Agenda", false);
+        after
+    };
+    let result = run(&standin);
+    assert_eq!(result.blocked.len(), 1);
+    let messages: Vec<_> = result.pages.iter().flat_map(|p| &p.messages).collect();
+    assert!(messages.iter().any(|m| m.subject == "Agenda"));
+    let state = standin.state();
+    let first = state.requests.iter().find(|r| r.operation == "SyncFolderItems" && r.body.contains(&after)).unwrap();
+    assert!(first.body.contains(">Default<"), "the folder after the blocked one is first asked as before");
+}
+
 /// An item the server always refuses (`GetItem` answers it with an error of its own) blocks its
 /// folder, as a page that can't be taken in: more such folders than the run stops after in a row
 /// are each blocked, and the folder after them is read.

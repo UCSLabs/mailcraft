@@ -717,7 +717,14 @@ impl<E: HttpExchange> Run<'_, E> {
             read = read.saturating_add(u32::try_from(page.messages.len()).unwrap_or(u32::MAX));
             let mut messages = page.messages;
             if self.shape == Shape::Ids {
-                self.listed(&mut messages).await?;
+                // (A page held back here: the other folders are read in the shape they were, as
+                // when the ids alone don't make a page readable.)
+                if let Err(held) = self.listed(&mut messages).await {
+                    if let Some(before) = stepped_from.take() {
+                        self.shape = before;
+                    }
+                    return Err(held);
+                }
                 stepped_from = None;
             }
             self.recipients(&mut messages).await?;
